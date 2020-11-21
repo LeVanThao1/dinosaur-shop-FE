@@ -1,0 +1,19 @@
+// {
+//   "compilerOptions": {
+//     "experimentalDecorators": true,
+//     "checkJs": false,
+//     "baseUrl": ".",
+//     "paths": {
+//       "@utils/*": ["src/utils/*"],
+//       "@pages/*": ["src/pages/*"],
+//       "@components/*": ["src/components/*"],
+//       "@constants/*": ["src/constants/*"],
+//       "@assets/*": ["src/assets/*"],
+//       "@redux/*": ["src/redux/*"],
+//       "@api/*": ["src/api/*"],
+//       "@configs/*": ["src/configs/*"]
+//     }
+//   },
+//   "exclude": ["node_modules", "public"],
+//   "include": ["src"]
+// }

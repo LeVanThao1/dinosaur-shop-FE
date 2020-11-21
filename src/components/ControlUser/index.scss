@@ -1,0 +1,61 @@
+.control_user {
+  width: 100%;
+  padding: 0px 5%;
+  display: flex;
+  justify-content: flex-end;
+  background-color: grey;
+}
+.clear {
+  clear: both;
+}
+.ant-btn {
+  border: none;
+  background-color: grey;
+}
+.ant-btn:hover,
+.ant-btn:active,
+.ant-btn:focus,
+.ant-btn:visited,
+.ant-btn:focus-within {
+  border: none;
+  background-color: grey;
+  color: orange;
+}
+.btn {
+  color: white;
+}
+.icon {
+  font-size: 16px;
+  // padding: 20px;
+}
+[ant-click-animating-without-extra-node]:after {
+  -webkit-animation: none !important;
+  -moz-animation: none !important;
+  -o-animation: none !important;
+  -ms-animation: none !important;
+  animation: none !important;
+}
+
+@media screen and (max-width: 950px) {
+  .control_user {
+    // position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0px 5% 30px;
+    // background-color: #4c4c4c;
+  }
+  .ant-btn {
+    border: none;
+    background-color: transparent;
+  }
+  .control_user {
+    background-color: transparent;
+  }
+  .btn {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 18px;
+    padding: 20px 0;
+  }
+}

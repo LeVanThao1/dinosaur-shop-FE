@@ -1,0 +1,34 @@
+.search-content {
+  margin: 0 10%;
+  height: 30px;
+  display: flex;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid #000;
+
+  .icon {
+    width: 30px;
+    background-color: white;
+    position: relative;
+    cursor: pointer;
+
+    .icon-search {
+      padding: 5px 4px;
+      font-size: 20px;
+    }
+  }
+
+  .input {
+    width: 100%;
+
+    input {
+      width: 100%;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      height: 100%;
+      padding: 0;
+      padding-left: 10px;
+    }
+  }
+}
