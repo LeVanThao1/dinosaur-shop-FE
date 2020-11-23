@@ -10,6 +10,10 @@ import {
 } from "./components";
 import NotFound from "./pages/NotFound";
 import "./App.scss";
+import { useSelector, useDispatch } from "react-redux";
+import { setToken } from "./slice/user.slice";
+import userApi from "./api/userApi";
+
 const Components = {};
 
 for (const c of routes) {
@@ -17,9 +21,40 @@ for (const c of routes) {
 }
 
 function App() {
-  const auth = {
-    isLogged: true,
-  };
+  // const auth = {
+  //   isLogged: true,
+  // };
+
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  const { isLogged, token } = user;
+  useEffect(() => {
+    const firstLogin = localStorage.getItem("firstLogin");
+
+    if (firstLogin) {
+      // const getToken = async () => {
+      //     const res = await axios.post('/user/refresh_token', null)
+      //     dispatch({ type: 'GET_TOKEN', payload: res.data.access_token })
+      // }
+      const access_token = userApi.getToken();
+      const action = setToken(access_token);
+      dispatch(action);
+    }
+  }, [isLogged, dispatch]);
+
+  useEffect(() => {
+    // if (token) {
+    // const getUser = () => {
+    //   dispatch(dispatchLogin());
+    //   return fetchUser(token).then((res) => {
+    //     console.log(res);
+    //     dispatch(dispatchGetUser(res));
+    //   });
+    // };
+    // getUser();
+    // }
+  }, [token, dispatch]);
+
   return (
     <Router>
       <div className="App">
@@ -34,13 +69,13 @@ function App() {
                 exact={true}
                 render={() =>
                   route.isProtected ? (
-                    <PrivateRouter isAuthenticated={auth.isLogged}>
+                    <PrivateRouter isAuthenticated={user.isLogged}>
                       <Suspense fallback={<Loading />}>
                         <C />
                       </Suspense>
                     </PrivateRouter>
                   ) : (
-                    <PublicRouter isAuthenticated={auth.isLogged}>
+                    <PublicRouter isAuthenticated={user.isLogged}>
                       <Suspense fallback={<Loading />}>
                         <C />
                       </Suspense>
