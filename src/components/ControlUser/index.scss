@@ -1,84 +1,84 @@
 .control_user {
-	width: 100%;
-	padding: 0px 5%;
-	display: flex;
-	justify-content: flex-end;
-	background-color: grey;
-	.anticon svg {
-		position: relative;
-		top: 2px;
-	}
+  width: 100%;
+  padding: 0px 5%;
+  display: flex;
+  justify-content: flex-end;
+  background-color: grey;
+  .anticon svg {
+    position: relative;
+    top: 2px;
+  }
 }
 .clear {
-	clear: both;
+  clear: both;
 }
 .ant-btn {
-	border: none;
-	background-color: grey;
+  border: none;
+  background-color: grey;
 }
 .ant-btn:hover,
 .ant-btn:active,
 .ant-btn:focus,
 .ant-btn:visited,
 .ant-btn:focus-within {
-	border: none;
-	background-color: grey;
-	color: orange;
+  border: none;
+  background-color: grey;
+  color: orange;
 }
-.btn {
-	color: white;
-	.avatar {
-		width: 20px;
-		height: 20px;
-		object-fit: cover;
-		border-radius: 50%;
-		position: relative;
-		top: -1px;
-	}
+.btn_control {
+  color: white;
+  .avatar {
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+    border-radius: 50%;
+    position: relative;
+    top: -1px;
+  }
 }
 .icon {
-	font-size: 18px;
-	// padding: 20px;
+  font-size: 18px;
+  // padding: 20px;
 }
 
 [ant-click-animating-without-extra-node]:after {
-	-webkit-animation: none !important;
-	-moz-animation: none !important;
-	-o-animation: none !important;
-	-ms-animation: none !important;
-	animation: none !important;
+  -webkit-animation: none !important;
+  -moz-animation: none !important;
+  -o-animation: none !important;
+  -ms-animation: none !important;
+  animation: none !important;
 }
 
 @media screen and (max-width: 950px) {
-	.control_user {
-		// position: absolute;
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		justify-content: center;
-		padding: 20px 5% 20px;
-		// background-color: #4c4c4c;
-	}
-	.ant-btn {
-		border: none;
-		background-color: transparent;
-	}
-	.control_user {
-		background-color: transparent;
-	}
-	.btn {
-		color: rgba(255, 255, 255, 0.7);
-		font-size: 16px;
-		padding: 0;
-		.avatar {
-			width: 30px;
-			height: 30px;
-			object-fit: cover;
-			border-radius: 50%;
-		}
-	}
-	.icon {
-		font-size: 20px;
-		padding-right: 10px;
-	}
+  .control_user {
+    // position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20px 5% 20px;
+    // background-color: #4c4c4c;
+  }
+  .ant-btn {
+    border: none;
+    background-color: transparent;
+  }
+  .control_user {
+    background-color: transparent;
+  }
+  .btn_control {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 16px;
+    padding: 0;
+    .avatar {
+      width: 30px;
+      height: 30px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+  }
+  .icon {
+    font-size: 20px;
+    padding-right: 10px;
+  }
 }
