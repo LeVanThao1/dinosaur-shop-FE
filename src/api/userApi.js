@@ -2,13 +2,13 @@ import axios from "axios";
 const URI = "http://localhost:3001/user";
 
 const userApi = {
-	login: async (username, password) => {
+	login: async (email, password) => {
 		try {
 			const url = "/login";
 			const res = await axios.post(
 				URI + url,
 				{
-					email: username,
+					email,
 					password,
 				},
 				{ withCredentials: true }
@@ -18,9 +18,22 @@ const userApi = {
 			console.log(e);
 		}
 	},
-	loginFB: async (tokenId) => {
+	loginGG: async (tokenId) => {
 		const url = "/google_login";
 		const res = await axios.post(URI + url, { tokenId });
+		return res;
+	},
+	loginFB: async (accessToken, userID) => {
+		const url = "/facebook_login";
+		const res = await axios.post(URI + url, { accessToken, userID });
+		return res;
+	},
+	register: async (name, email, password) => {
+		const res = await axios.post(URI + "/register", {
+			name,
+			email,
+			password,
+		});
 		return res;
 	},
 	getUser: async (token) => {
@@ -33,7 +46,7 @@ const userApi = {
 	},
 	logout: async () => {
 		const url = "/logout";
-		const res = await axios.post(URI + url, {});
+		const res = await axios.get(URI + url);
 		return res;
 	},
 	getToken: async () => {
@@ -44,6 +57,11 @@ const userApi = {
 		} catch (e) {
 			console.log(e);
 		}
+	},
+	activeEmail: async (activation_token) => {
+		const url = "/activation";
+		const res = await axios.get(URI + url, { activation_token });
+		return res;
 	},
 };
 

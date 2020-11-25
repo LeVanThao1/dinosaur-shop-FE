@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import PropTypes from "prop-types";
 import Promotion from "../../components/Promotion";
 import SliderSale from "../../components/SliderSale";
@@ -14,4 +14,4 @@ function Home(props) {
 	);
 }
 
-export default Home;
+export default memo(Home);

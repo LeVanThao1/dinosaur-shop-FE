@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import PropTypes from "prop-types";
 import ControlUser from "../ControlUser";
 import SearchBar from "../SearchBar.js";
@@ -75,4 +75,4 @@ function Header(props) {
 	);
 }
 
-export default Header;
+export default memo(Header);

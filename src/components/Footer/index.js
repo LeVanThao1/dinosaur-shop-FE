@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import PropTypes from "prop-types";
 import "./index.scss";
 import {
@@ -156,4 +156,4 @@ function Fotter(props) {
 	);
 }
 
-export default Fotter;
+export default memo(Fotter);

@@ -25,7 +25,7 @@ for (const c of routes) {
 
 function App() {
 	const dispatch = useDispatch();
-	const user = useSelector((state) => state.user);
+	const auth = useSelector((state) => state.auth);
 	const token = useSelector((state) => state.token);
 	useEffect(() => {
 		const firstLogin = localStorage.getItem("firstLogin");
@@ -43,7 +43,7 @@ function App() {
 			};
 			getToken();
 		}
-	}, [user.isLogged, dispatch]);
+	}, [auth.isLogged, dispatch]);
 
 	useEffect(() => {
 		if (token) {
@@ -73,7 +73,7 @@ function App() {
 								render={() =>
 									route.isProtected ? (
 										<PrivateRouter
-											isAuthenticated={user.isLogged}
+											isAuthenticated={auth.isLogged}
 										>
 											<Suspense fallback={<Loading />}>
 												<C />
@@ -81,7 +81,7 @@ function App() {
 										</PrivateRouter>
 									) : (
 										<PublicRouter
-											isAuthenticated={user.isLogged}
+											isAuthenticated={auth.isLogged}
 										>
 											<Suspense fallback={<Loading />}>
 												<C />

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { memo, useRef } from "react";
 import PropTypes from "prop-types";
 import "./index.scss";
 import Carousel, { consts } from "react-elastic-carousel";
@@ -52,4 +52,4 @@ function Promotion(props) {
 	);
 }
 
-export default Promotion;
+export default memo(Promotion);

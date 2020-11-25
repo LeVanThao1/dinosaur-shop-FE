@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import PropTypes from "prop-types";
 import { Button } from "antd";
 import {
@@ -6,15 +6,29 @@ import {
 	HeartOutlined,
 	UserOutlined,
 	ShoppingCartOutlined,
+	LogoutOutlined,
 } from "@ant-design/icons";
 import "./index.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { logout } from "../../slice/auth.slice";
+import userApi from "../../api/userApi";
 ControlUser.propTypes = {};
 
 function ControlUser(props) {
+	const dispatch = useDispatch();
 	const auth = useSelector((state) => state.auth);
 	const { user, isLogged } = auth;
+
+	const _onLogOut = async () => {
+		try {
+			await userApi.logout();
+			localStorage.removeItem("firstLogin");
+			dispatch(logout());
+		} catch (e) {
+			console.log(e);
+		}
+	};
 	return (
 		<>
 			<section className="control_user">
@@ -65,10 +79,16 @@ function ControlUser(props) {
 						<span>Giỏ hàng</span>
 					</Button>
 				</Link>
+				{isLogged && (
+					<Button className="btn" onClick={_onLogOut}>
+						<LogoutOutlined className="icon" />
+						<span>Đăng xuất</span>
+					</Button>
+				)}
 			</section>
 			<div className="clear"></div>
 		</>
 	);
 }
 
-export default ControlUser;
+export default memo(ControlUser);

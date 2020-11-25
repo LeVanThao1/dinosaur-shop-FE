@@ -21,21 +21,26 @@ const initialState = {
 };
 
 function Login(props) {
+	const history = useHistory();
+
+	const auth = useSelector((state) => state.auth);
+
+	if (auth.isLogged) {
+		history.push("/");
+	}
+
 	const [user, setUser] = useState(initialState);
 
 	const { email, password, err, success } = user;
 
 	const dispatch = useDispatch();
-	const history = useHistory();
-
 	const handleSubmit = async (e) => {
 		try {
 			e.preventDefault();
-			const res = await userApi.login(email, password);
-			// setUserAuth({ ...user, err: "", success: res.data.msg });
+			console.log(email, password);
+			await userApi.login(email, password);
 
 			localStorage.setItem("firstLogin", true);
-			// console.log(res)
 			const action = setLogin();
 			dispatch(action);
 			history.push("/");
@@ -50,42 +55,43 @@ function Login(props) {
 	};
 
 	const responseGoogle = async (response) => {
-		// try {
-		//   const res = await axios.post("/user/google_login", {
-		//     tokenId: response.tokenId,
-		//   });
-		//   const res = await userApi.loginFB(response.tokenId);
-		//   setUser({ ...user, error: "", success: res.data.msg });
-		//   localStorage.setItem("firstLogin", true);
-		//   dispatch(dispatchLogin());
-		//   history.push("/");
-		// } catch (err) {
-		//   err.response.data.msg &&
-		//     setUser({ ...user, err: err.response.data.msg, success: "" });
-		// }
+		try {
+			//   const res = await axios.post("/user/google_login", {
+			//     tokenId: response.tokenId,
+			//   });
+			const res = await userApi.loginGG(response.tokenId);
+			setUser({ ...user, error: "", success: res.data.msg });
+			localStorage.setItem("firstLogin", true);
+			dispatch(setLogin());
+			history.push("/");
+		} catch (err) {
+			err.response.data.msg &&
+				setUser({ ...user, err: err.response.data.msg, success: "" });
+		}
 	};
 
 	const responseFacebook = async (response) => {
-		// try {
-		//   const { accessToken, userID } = response;
-		//   console.log(accessToken, userID);
-		//   if (!accessToken || !userID) {
-		//     setUser({ ...user, error: "Login fail with facebook" });
-		//   } else {
-		//     const res = await axios.post("/user/facebook_login", {
-		//       accessToken,
-		//       userID,
-		//     });
-		//     setUser({ ...user, error: "", success: res.data.msg });
-		//     localStorage.setItem("firstLogin", true);
-		//     dispatch(dispatchLogin());
-		//     history.push("/");
-		//   }
-		// } catch (err) {
-		//   console.log(err);
-		//   err.response.data.msg &&
-		//     setUser({ ...user, err: err.response.data.msg, success: "" });
-		// }
+		try {
+			const { accessToken, userID } = response;
+			console.log(accessToken, userID);
+			if (!accessToken || !userID) {
+				setUser({ ...user, error: "Login fail with facebook" });
+			} else {
+				// const res = await axios.post("/user/facebook_login", {
+				//   accessToken,
+				//   userID,
+				// });
+				const res = await userApi.loginFB(accessToken, userID);
+				setUser({ ...user, error: "", success: res.data.msg });
+				localStorage.setItem("firstLogin", true);
+				dispatch(setLogin());
+				history.push("/");
+			}
+		} catch (err) {
+			console.log(err);
+			err.response.data.msg &&
+				setUser({ ...user, err: err.response.data.msg, success: "" });
+		}
 	};
 
 	return (
@@ -135,7 +141,7 @@ function Login(props) {
 				/>
 
 				<FacebookLogin
-					appId="2803467413259426"
+					appId="197972598576220"
 					autoLoad={false}
 					fields="name,email,picture"
 					callback={responseFacebook}

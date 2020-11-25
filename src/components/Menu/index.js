@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import PropTypes from "prop-types";
 import Images from "../../constant/image";
 import { Link } from "react-router-dom";
@@ -125,4 +125,4 @@ function Menu(props) {
 	);
 }
 
-export default Menu;
+export default memo(Menu);
