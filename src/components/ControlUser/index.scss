@@ -4,6 +4,10 @@
 	display: flex;
 	justify-content: flex-end;
 	background-color: grey;
+	.anticon svg {
+		position: relative;
+		top: 2px;
+	}
 }
 .clear {
 	clear: both;
@@ -23,11 +27,20 @@
 }
 .btn {
 	color: white;
+	.avatar {
+		width: 20px;
+		height: 20px;
+		object-fit: cover;
+		border-radius: 50%;
+		position: relative;
+		top: -1px;
+	}
 }
 .icon {
-	font-size: 16px;
+	font-size: 18px;
 	// padding: 20px;
 }
+
 [ant-click-animating-without-extra-node]:after {
 	-webkit-animation: none !important;
 	-moz-animation: none !important;
@@ -55,8 +68,14 @@
 	}
 	.btn {
 		color: rgba(255, 255, 255, 0.7);
-		font-size: 14px;
+		font-size: 16px;
 		padding: 0;
+		.avatar {
+			width: 30px;
+			height: 30px;
+			object-fit: cover;
+			border-radius: 50%;
+		}
 	}
 	.icon {
 		font-size: 20px;

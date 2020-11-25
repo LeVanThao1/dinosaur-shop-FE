@@ -8,9 +8,11 @@ import Menu from "../Menu";
 import { MenuOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import Promotion from "../Promotion";
 import SliderSale from "../SliderSale";
+import { useSelector } from "react-redux";
 Header.propTypes = {};
 
 function Header(props) {
+	const user = useSelector((state) => state.user);
 	const [isMenu, setIsMenu] = useState(false);
 	return (
 		<>
@@ -69,8 +71,6 @@ function Header(props) {
 					</div>
 				</div>
 			</header>
-			<Promotion />
-			<SliderSale />
 		</>
 	);
 }
