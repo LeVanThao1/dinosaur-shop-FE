@@ -15,10 +15,9 @@ import { setToken } from "./slice/token.slice";
 import { setLogin, setUserInfo } from "./slice/auth.slice";
 import userApi from "./api/userApi";
 import axios from "axios";
-import ProductDetail from "./components/ProductDetail";
-import SlideRelated from "./components/SlideRelated";
-import Payment from "./components/Payment";
-
+import ProductDetail from "./pages/ProductDetail";
+import Payment from "./pages/Payment";
+import Shipping from "./pages/Shipping";
 const Components = {};
 
 for (const c of routes) {
@@ -101,7 +100,8 @@ function App() {
         </Switch>
         {/* <ProductDetail /> */}
         {/* <SlideRelated /> */}
-        <Payment />
+        {/* <Payment /> */}
+        <Shipping />
         <Footer />
       </div>
     </Router>

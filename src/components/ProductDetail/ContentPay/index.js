@@ -26,12 +26,11 @@ function ContentPay(props) {
   const { Panel } = Collapse;
   const [warning, setWarning] = useState("none");
 
-  const [heart, setHeart] = useState(false);
+  const [heart, setHeart] = useState("none");
 
   const heartClick = () => {
-    // console.log(heart);
-    // heart === "none" ? setHeart("#f15e2c") : setHeart("none");
-    setHeart((cur) => !cur);
+    console.log(heart);
+    heart === "none" ? setHeart("#f15e2c") : setHeart("none");
   };
 
   const showWarning = () => {
@@ -123,7 +122,7 @@ function ContentPay(props) {
             <button
               className="btn__heart"
               onClick={() => heartClick()}
-              style={{ color: heart ? "#f15e2c" : "white" }}
+              style={{ color: heart }}
             >
               <HeartFilled />
             </button>
