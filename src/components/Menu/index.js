@@ -12,7 +12,11 @@ function Menu(props) {
 	return (
 		<>
 			<ul className="menu_desktop">
-				<li onClick={() => history.push("/product-detail/123")}>
+				<li
+					onClick={() =>
+						history.push("/product-detail/5fccf714e508f35b04ab5ebe")
+					}
+				>
 					Sản phẩm
 					<div className="container_drop">
 						<div className="menu_drop">

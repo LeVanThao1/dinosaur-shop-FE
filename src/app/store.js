@@ -4,13 +4,20 @@ import authReducer from "../slice/auth.slice";
 import tokenReducer from "../slice/token.slice";
 import productReducer from "../slice/products.slice";
 import socketReducer from "../slice/socket.slice";
-
+import productDetailReducer from "../slice/productdetail.slice";
+import likeListReducer from "../slice/likelist.slice";
+import cartReducer from "../slice/cart.slice";
+import seenListReducer from "../slice/seenlist.slice";
 const rootReducer = {
 	users: usersReducer,
 	auth: authReducer,
 	token: tokenReducer,
 	products: productReducer,
 	socket: socketReducer,
+	productDetail: productDetailReducer,
+	likeList: likeListReducer,
+	cart: cartReducer,
+	seenlist: seenListReducer,
 };
 
 const store = configureStore({
