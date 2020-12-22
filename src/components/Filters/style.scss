@@ -1,0 +1,55 @@
+* {
+  transition: all 0.3s;
+}
+
+.divider {
+  height: 2px;
+  border-top: #303030 2px solid;
+  margin: 2px 0px;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  letter-spacing: 1px;
+  & > span {
+    display: none;
+  }
+}
+
+li.current {
+  background-color: #f1f1f1;
+  color: #f15e2c;
+  text-decoration: underline;
+  font-weight: 700;
+  & > span {
+    display: block;
+    float: right;
+  }
+}
+
+li:hover {
+  background-color: #f1f1f1;
+}
+
+.ant-collapse-header {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.ant-collapse-header[aria-expanded="true"] {
+  color: #f15e2c !important;
+}
+
+.ant-slider-track {
+  background-color: #f15e2c !important;
+}
+
+.ant-slider-handle {
+  border-color: #f15e2c !important;
+}

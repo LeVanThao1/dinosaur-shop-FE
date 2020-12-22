@@ -7,6 +7,7 @@ import {
   PrivateRouter,
   PublicRouter,
   Header,
+  ProductList,
 } from "./components";
 import NotFound from "./pages/NotFound";
 import "./App.scss";
