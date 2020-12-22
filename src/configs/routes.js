@@ -70,9 +70,9 @@ export default [
 		exact: true,
 	},
 	{
-		title: "Payment Page || Shop",
+		title: "Cart Page || Shop",
 		component: "Payment",
-		path: "/payment",
+		path: "/cart",
 		isProtected: false,
 		exact: true,
 	},

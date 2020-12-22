@@ -47,17 +47,18 @@ function ViewedProduct(props) {
 				<span>SẢN PHẨM ĐÃ XEM</span>
 			</div>
 			<div className="view_produtct list-group-1">
-				{seenlist.map((ss, i) => (
-					<div
-						className="list--item"
-						key={i}
-						onClick={() =>
-							history.push("/product-detail/" + ss._id)
-						}
-					>
-						<img src={ss.images[0]}></img>
-					</div>
-				))}
+				{seenlist.length > 0 &&
+					seenlist.map((ss, i) => (
+						<div
+							className="list--item"
+							key={i}
+							onClick={() =>
+								history.push("/product-detail/" + ss._id)
+							}
+						>
+							<img src={ss.images[0]}></img>
+						</div>
+					))}
 			</div>
 		</div>
 	);

@@ -10,7 +10,6 @@ Home.propTypes = {};
 function Home(props) {
 	return (
 		<div>
-			<Promotion />
 			<SliderSale />
 		</div>
 	);

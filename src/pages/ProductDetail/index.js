@@ -12,7 +12,7 @@ import { setProduct, setComment } from "../../slice/productdetail.slice";
 import { addSeenList } from "../../slice/seenlist.slice";
 import CommentItem from "./CommentItem";
 import FormInput from "./FormInput";
-
+import cookie from "react-cookies";
 function ProductDetail({ socket }) {
 	const [loading, setLoading] = useState(true);
 	const productDetail = useSelector((state) => state.productDetail);
@@ -20,7 +20,8 @@ function ProductDetail({ socket }) {
 	const [page, setPage] = useState(1);
 	const pageEnd = useRef();
 	const dispatch = useDispatch();
-
+	const seenList = useSelector((state) => state.seenList);
+	console.log("seenlist", seenList);
 	const { product, comments } = productDetail;
 	useEffect(() => {
 		if (socket) {
@@ -33,11 +34,16 @@ function ProductDetail({ socket }) {
 		const getProduct = async () => {
 			const data = await productApi.getProductDetail(id);
 			dispatch(setProduct(data));
-			if (data) dispatch(addSeenList(data));
+			if (data) {
+				dispatch(addSeenList(data));
+
+				// cookie.save("seenList", seenList);
+			}
 			setLoading(false);
 		};
 		getProduct();
 	}, [dispatch]);
+
 	useEffect(() => {
 		const getCM = async () => {
 			const data = await productApi.getComment(id);

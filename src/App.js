@@ -13,16 +13,14 @@ import "./App.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { setToken } from "./slice/token.slice";
 import { setLogin, setUserInfo } from "./slice/auth.slice";
-// import { setSocket } from "./slice/socket.slice";
 import userApi from "./api/userApi";
 import axios from "axios";
-// import ProductDetail from "./components/ProductDetail";
-import SlideRelated from "./components/SlideRelated";
-// import ProductDetail from "./pages/ProductDetail";
-// import Payment from "./components/Payment";
 import io from "socket.io-client";
 import { setCart } from "./slice/cart.slice";
-
+import { Promotion, SlideRelated } from "./components";
+import cookie from "react-cookies";
+import { setSeenList } from "./slice/seenlist.slice";
+import { setLikeList } from "./slice/likelist.slice";
 const Components = {};
 
 for (const c of routes) {
@@ -36,22 +34,17 @@ function App() {
 	const auth = useSelector((state) => state.auth);
 	const token = useSelector((state) => state.token);
 	const [socket, setSocket] = useState(null);
-	// const socket = useSelector((state) => state.socket);
-	// const socket = io("http://localhost:3001", {
-	// 	transports: ["websocket"],
-	// 	upgrade: false,
-	// });
-	// socket.on("connection", () => {
-	// 	dispatch(setSocket(socket));
-	// 	console.log(`I'm connected with the back-end`);
-	// });
+
+	useEffect(() => {
+		const seenList = JSON.parse(localStorage.getItem("seenList"));
+		const likeList = JSON.parse(localStorage.getItem("likeList"));
+		dispatch(setSeenList(seenList ? seenList : []));
+		dispatch(setLikeList(likeList ? likeList : []));
+	}, []);
+
 	useEffect(() => {
 		const socketio = io("http://localhost:3001");
-		// const action = setSocket(socket);
-		// dispatch(action);
-		// console.log(socket);
 		setSocket(socketio);
-		// dispatch(setSocket(socket));
 		return () => socketio.disconnect();
 	}, []);
 
@@ -70,6 +63,9 @@ function App() {
 				dispatch(action);
 			};
 			getToken();
+		} else {
+			const cart = JSON.parse(localStorage.getItem("cart"));
+			dispatch(setCart(cart ? cart : []));
 		}
 	}, [auth.isLogged, dispatch]);
 
@@ -79,8 +75,8 @@ function App() {
 				dispatch(setLogin());
 				return userApi.getUser(token).then((res) => {
 					const action = setUserInfo(res.data);
-					console.log(res.data);
 					dispatch(action);
+					console.log(res.data.cart);
 					dispatch(setCart(res.data.cart));
 				});
 			};
@@ -92,6 +88,7 @@ function App() {
 		<Router>
 			<div className="App">
 				<Header />
+				<Promotion />
 				<Switch>
 					{routes.map((route) => {
 						const C = Components[route.component];
