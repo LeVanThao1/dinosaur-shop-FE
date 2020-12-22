@@ -21,6 +21,7 @@ import SlideRelated from "./components/SlideRelated";
 // import ProductDetail from "./pages/ProductDetail";
 // import Payment from "./components/Payment";
 import io from "socket.io-client";
+import { setCart } from "./slice/cart.slice";
 
 const Components = {};
 
@@ -78,7 +79,9 @@ function App() {
 				dispatch(setLogin());
 				return userApi.getUser(token).then((res) => {
 					const action = setUserInfo(res.data);
+					console.log(res.data);
 					dispatch(action);
+					dispatch(setCart(res.data.cart));
 				});
 			};
 			getUser();

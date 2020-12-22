@@ -76,4 +76,11 @@ export default [
 		isProtected: false,
 		exact: true,
 	},
+	{
+		title: "Payment Page || Shop",
+		component: "ResultPayment",
+		path: "/resultpayment",
+		isProtected: false,
+		exact: true,
+	},
 ];
