@@ -1,0 +1,21 @@
+.container__related {
+  box-sizing: border-box;
+  margin: auto;
+  width: 400px;
+  height: 400px;
+  img {
+    object-fit: cover;
+    width: 400px;
+    height: 400px;
+  }
+  .related__slide {
+    width: max-content;
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
+    img {
+      width: 280px;
+      height: 280px;
+    }
+  }
+}

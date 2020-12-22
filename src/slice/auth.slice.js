@@ -20,7 +20,7 @@ const auth = createSlice({
 			return { ...state, isLogged: true };
 		},
 		logout: (state, action) => {
-			return { ...state, isLogged: false };
+			return { isLogged: false, user: {}, isAdmin: false };
 		},
 	},
 });

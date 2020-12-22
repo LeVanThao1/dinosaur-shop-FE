@@ -62,4 +62,25 @@ export default [
 		isProtected: false,
 		exact: true,
 	},
+	{
+		title: "Product Detail Page || Shop",
+		component: "ProductDetail",
+		path: "/product-detail/:id",
+		isProtected: false,
+		exact: true,
+	},
+	{
+		title: "Payment Page || Shop",
+		component: "Payment",
+		path: "/payment",
+		isProtected: false,
+		exact: true,
+	},
+	{
+		title: "Payment Page || Shop",
+		component: "ResultPayment",
+		path: "/resultpayment",
+		isProtected: false,
+		exact: true,
+	},
 ];
