@@ -4,5 +4,13 @@ import Loading from "./Loading";
 import PrivateRouter from "./PrivateRouter";
 import PublicRouter from "./PublicRouter";
 import Filters from "./Filters";
-
-export { Footer, Header, Loading, PrivateRouter, PublicRouter, Filters };
+import Promotion from "./Promotion";
+export {
+  Footer,
+  Header,
+  Loading,
+  PrivateRouter,
+  PublicRouter,
+  Promotion,
+  Filters,
+};

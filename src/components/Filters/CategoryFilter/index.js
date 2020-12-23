@@ -4,7 +4,7 @@ import axios from "axios";
 
 export default function CategoryFilter(props) {
   /*
-    @state = {key: {name, state}}
+    @state = {[key]: {name, state}}
   */
   const [state, setState] = React.useState({});
 

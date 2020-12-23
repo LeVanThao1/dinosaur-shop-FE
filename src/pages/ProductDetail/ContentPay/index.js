@@ -7,6 +7,9 @@ import { HeartOutlined, HeartFilled } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { addLikeList, removeProduct } from "../../../slice/likelist.slice";
 import { addCart } from "../../../slice/cart.slice";
+import axios from "axios";
+import { notifiSuccess, notifiError } from "../../../utils/notification";
+const { Panel } = Collapse;
 
 function ContentPay(props) {
 	const productDetail = useSelector((state) => state.productDetail);
@@ -26,27 +29,21 @@ function ContentPay(props) {
 		name,
 		_id,
 	} = productDetail.product;
-	const { Panel } = Collapse;
+	const likeList = useSelector((state) => state.likeList);
 	const [warning, setWarning] = useState("none");
 	const dispatch = useDispatch();
 	const [heart, setHeart] = useState(false);
 	const refAmount = useRef(null);
-	// console.log(likelist);
-	useEffect(() => {
-		const check = likelist?.filter((ll) => ll === _id);
-		setHeart(check || check?.length > 0);
-	}, [likelist]);
-	const heartClick = () => {
-		// console.log(heart);
-		setHeart((cur) => {
-			if (cur) {
-				dispatch(removeProduct(_id));
-			} else {
-				dispatch(addLikeList(productDetail.product));
-			}
-			return !cur;
-		});
-		// heart === "none" ? setHeart("#f15e2c") : setHeart("none");
+	const refSize = useRef(null);
+	const cart = useSelector((state) => state.cart);
+	const token = useSelector((state) => state.token);
+
+	const handleHeart = (type = true) => {
+		if (type) {
+			dispatch(addLikeList(productDetail.product));
+		} else {
+			dispatch(removeProduct(_id));
+		}
 	};
 
 	const showWarning = () => {
@@ -57,12 +54,44 @@ function ContentPay(props) {
 	};
 
 	const handleCart = () => {
-		dispatch(
-			addCart({
-				productId: _id,
-				amount: +refAmount.current.value,
+		// dispatch(
+		// 	addCart({
+		// 		productId: _id,
+		// 		amount: +refAmount.current.value,
+		// 	})
+		// );
+		// console.log(refSize.current.value);
+		const sizeId = sizes.filter(
+			(size) => size.sizeId._id === refSize.current.value
+		)[0];
+		axios
+			.patch(
+				"http://localhost:3001/user/cart",
+				{
+					cart: [
+						...cart,
+						{
+							productId: _id,
+							amount: +refAmount.current.value,
+							sizeId: sizeId,
+						},
+					],
+				},
+				{ headers: { Authorization: token } }
+			)
+			.then((res) => {
+				dispatch(
+					addCart({
+						productId: productDetail.product,
+						amount: +refAmount.current.value,
+						sizeId: sizeId,
+					})
+				);
+				notifiSuccess("Notify", "Add cart success");
 			})
-		);
+			.catch((e) => {
+				notifiError("Error", e.response.data.msg);
+			});
 	};
 
 	return (
@@ -115,11 +144,12 @@ function ContentPay(props) {
 								className="size__option"
 								name="size"
 								id="size"
+								ref={refSize}
 							>
 								{sizes.map((size, i) => (
 									<option
 										key={i}
-										value={size.sizeId.name}
+										value={size.sizeId._id}
 										selected={i === 0}
 									>
 										{size.sizeId.name}
@@ -157,13 +187,23 @@ function ContentPay(props) {
 						<button className="btn__add">THÊM VÀO GIỎ HÀNG</button>
 					</div>
 					<div className="btn btn__like">
-						<button
-							className="btn__heart"
-							onClick={() => heartClick()}
-							style={{ color: heart ? "#f15e2c" : "white" }}
-						>
-							<HeartFilled />
-						</button>
+						{likeList.some((ll) => ll._id === _id) ? (
+							<button
+								className="btn__heart"
+								onClick={() => handleHeart(false)}
+								style={{ color: "#f15e2c" }}
+							>
+								<HeartFilled />
+							</button>
+						) : (
+							<button
+								className="btn__heart"
+								onClick={() => handleHeart(true)}
+								style={{ color: "white" }}
+							>
+								<HeartFilled />
+							</button>
+						)}
 					</div>
 				</div>
 				<div className="btn btn__payment child__detail list-group-item">

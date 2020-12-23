@@ -9,6 +9,7 @@ import { addLikeList, removeProduct } from "../../../slice/likelist.slice";
 import axios from "axios";
 import { setCart } from "../../../slice/cart.slice";
 import { useHistory } from "react-router-dom";
+import { notifiError, notifiSuccess } from "../../../utils/notification";
 function CartContent(props) {
 	const [heart, setHeart] = useState("false");
 	const cart = useSelector((state) => state.cart);
@@ -19,7 +20,6 @@ function CartContent(props) {
 
 	const handleHeart = (pd, type = true) => {
 		if (type) {
-			console.log(likeList.some((lk) => lk._id !== pd.productId._id));
 			dispatch(addLikeList(pd.productId));
 		} else {
 			dispatch(removeProduct(pd.productId._id));
@@ -34,8 +34,30 @@ function CartContent(props) {
 					headers: { Authorization: token },
 				}
 			)
-			.then((res) => dispatch(setCart([])))
-			.catch((err) => console.log);
+			.then((res) => {
+				dispatch(setCart([]));
+				notifiSuccess("Notify", res.data.msg);
+			})
+			.catch((err) => {
+				notifiError("Notify", err.response.data.msg);
+			});
+	};
+
+	const _deleteOne = (pd) => {
+		const data = cart.filter((pr) => pr.productId._id !== pd.productId._id);
+		axios
+			.patch(
+				"http://localhost:3001/user/cart",
+				{ cart: data },
+				{
+					headers: { Authorization: token },
+				}
+			)
+			.then((res) => {
+				dispatch(setCart(data));
+				notifiSuccess("Notify", res.data.msg);
+			})
+			.catch((err) => notifiError("Notify", err.response.data.msg));
 	};
 	return (
 		<div className="cart__pay">
@@ -145,7 +167,10 @@ function CartContent(props) {
 										)}
 									</div>
 									<div className="deleteBtn">
-										<Button type="primary">
+										<Button
+											type="primary"
+											onClick={() => _deleteOne(pd)}
+										>
 											<DeleteOutlined />
 										</Button>
 									</div>
