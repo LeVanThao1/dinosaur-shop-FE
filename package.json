@@ -4,7 +4,6 @@
   "private": true,
   "proxy": "http://localhost:3001",
   "dependencies": {
-    "@ant-design/icons": "^4.3.0",
     "@material-ui/icons": "^4.11.2",
     "@react-google-maps/api": "^1.13.0",
     "@reduxjs/toolkit": "^1.4.0",

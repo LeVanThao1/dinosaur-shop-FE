@@ -9,7 +9,7 @@
   .header__detail {
     display: flex;
     padding: 0px;
-    margin: 30px 0 50px 2%;
+    margin: 30px 0 50px 50px;
     border-bottom: 3px solid rgb(43, 40, 40);
     .child__detail {
       padding: 0px;
@@ -19,12 +19,134 @@
   }
 }
 
+.main__logo > img {
+  width: 640px;
+  height: 640px;
+}
+
 .content__detail {
-  width: 100%;
   display: flex;
-  justify-content: space-between;
-  padding: 0 2%;
-  margin-bottom: 5%;
+  margin: 20px;
+  .info__detail {
+    width: 100%;
+
+    .id__status {
+      display: flex;
+      .status {
+        padding-left: 40px;
+      }
+    }
+
+    .price {
+      color: orange;
+      font-size: 30px;
+      position: relative;
+    }
+
+    .price::after {
+      position: absolute;
+      content: "";
+      border-bottom: 1.5px dashed rgb(49, 49, 49);
+      width: 100%;
+      bottom: -25%;
+      left: 0%;
+    }
+
+    .color__product {
+      position: relative;
+    }
+
+    .color__product::after {
+      position: absolute;
+      content: "";
+      border-bottom: 1.5px dashed rgb(49, 49, 49);
+      width: 100%;
+      bottom: -50%;
+      left: 0%;
+    }
+
+    .color__product::before {
+      position: absolute;
+      content: "";
+      border-bottom: 1.5px dashed rgb(49, 49, 49);
+      width: 100%;
+      top: -50%;
+      left: 0%;
+    }
+
+    .child__detail {
+      margin: 30px;
+      text-align: left;
+    }
+    .size__amount {
+      display: flex;
+      .size {
+        margin-right: 150px;
+        font-size: 25px;
+        font-family: "Courier New", Courier, monospace;
+        .size__option {
+          height: 30px;
+          width: 100px;
+        }
+      }
+      .amount {
+        font-size: 25px;
+        font-family: "Courier New", Courier, monospace;
+        .amount__option {
+          display: flex;
+          font-size: 20px;
+          height: 30px;
+          width: 150px;
+          justify-content: space-between;
+          input {
+            width: 50px;
+            text-align: center;
+            border: 0.5px solid rgb(128, 126, 126);
+          }
+        }
+        span {
+          font-size: 25px;
+        }
+      }
+    }
+    .btn__addCart__like {
+      margin: 20px 20px 5px 20px;
+      display: flex;
+      justify-content: space-between;
+      .btn__add {
+        font-size: 23px;
+        width: 300px;
+        height: 75px;
+        background-color: #111;
+        color: #fff;
+        border-radius: 3px;
+      }
+      .btn__heart {
+        font-size: 25px;
+        width: 100px;
+        height: 75px;
+        background-color: #111;
+        color: #fff;
+        border-radius: 3px;
+      }
+    }
+
+    .btn__payment {
+      margin: 5px 20px 20px 20px;
+      .btn__pay {
+        font-size: 23px;
+        width: 450px;
+        height: 75px;
+        background-color: rgb(231, 91, 10);
+        color: #fff;
+        border-radius: 3px;
+      }
+    }
+    .warning {
+      color: rgb(231, 91, 10);
+      font-size: 22px;
+    }
+  }
 }
 
 .ant-collapse-item {
@@ -32,11 +154,7 @@
 }
 
 .ant-collapse-item:active {
-  color: f15e2c;
-}
-
-.viewed {
-  width: 100%;
+  color: orange;
 }
 
 .related {
@@ -58,38 +176,16 @@
   }
 }
 
-// @media only screen and (max-width: 1250px) {
-//   .main__logo > img {
-//     width: 600px;
-//     height: 600px;
-//   }
-// }
+@media only screen and (max-width: 1250px) {
+  .main__logo > img {
+    width: 600px;
+    height: 600px;
+  }
+}
 
-// @media only screen and (max-width: 1050px) {
-//   .main__logo > img {
-//     width: 500px;
-//     height: 500px;
-//   }
-// }
-
-// @media only screen and (max-width: 1000px) {
-//   .desktop-detail {
-//     .container__product__detail {
-//       .content__detail {
-//         // margin: 0px 35px;
-//         display: inline-block;
-
-//         .content__logo {
-//           margin: auto;
-
-//           .child__logo {
-//             .child-side > img {
-//               width: 100px;
-//               height: 100px;
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
+@media only screen and (max-width: 1050px) {
+  .main__logo > img {
+    width: 500px;
+    height: 500px;
+  }
+}
