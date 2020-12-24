@@ -15,13 +15,9 @@ import { setToken } from "./slice/token.slice";
 import { setLogin, setUserInfo } from "./slice/auth.slice";
 import userApi from "./api/userApi";
 import axios from "axios";
-import io from "socket.io-client";
-import { setCart } from "./slice/cart.slice";
-import { Promotion, SlideRelated } from "./components";
-import { setSeenList } from "./slice/seenlist.slice";
-import { setLikeList } from "./slice/likelist.slice";
-import API from "./axios";
-import { notifiError } from "./utils/notification";
+import ProductDetail from "./pages/ProductDetail";
+import Payment from "./pages/Payment";
+import Shipping from "./pages/Shipping";
 const Components = {};
 
 for (const c of routes) {
@@ -81,7 +77,6 @@ function App() {
 		<Router>
 			<div className="App">
 				<Header />
-				<Promotion />
 				<Switch>
 					{routes.map((route) => {
 						const C = Components[route.component];
@@ -96,7 +91,7 @@ function App() {
 											isAuthenticated={auth.isLogged}
 										>
 											<Suspense fallback={<Loading />}>
-												<C socket={socket} />
+												<C />
 											</Suspense>
 										</PrivateRouter>
 									) : (
@@ -104,7 +99,7 @@ function App() {
 											isAuthenticated={auth.isLogged}
 										>
 											<Suspense fallback={<Loading />}>
-												<C socket={socket} />
+												<C />
 											</Suspense>
 										</PublicRouter>
 									)
@@ -124,6 +119,7 @@ function App() {
 				{/* <ProductDetail /> */}
 				{/* <SlideRelated /> */}
 				{/* <Payment /> */}
+				<Shipping />
 				<Footer />
 			</div>
 		</Router>

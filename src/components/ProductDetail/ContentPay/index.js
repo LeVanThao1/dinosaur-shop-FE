@@ -1,99 +1,40 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Collapse } from "antd";
 
 import "./index.scss";
 import { HeartOutlined, HeartFilled } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
-import { addLikeList, removeProduct } from "../../../slice/likelist.slice";
-import { addCart } from "../../../slice/cart.slice";
-import axios from "axios";
-import { notifiSuccess, notifiError } from "../../../utils/notification";
-const { Panel } = Collapse;
 
 function ContentPay(props) {
-	const productDetail = useSelector((state) => state.productDetail);
-	const likelist = useSelector((state) => state.likelist);
-	const {
-		type,
-		amount,
-		code,
-		colors,
-		description,
-		images,
-		limited,
-		sizes,
-		salePrice,
-		style,
-		material,
-		name,
-		_id,
-	} = productDetail.product;
-	const likeList = useSelector((state) => state.likeList);
-	const [warning, setWarning] = useState("none");
-	const dispatch = useDispatch();
-	const [heart, setHeart] = useState(false);
-	const refAmount = useRef(null);
-	const refSize = useRef(null);
-	const cart = useSelector((state) => state.cart);
-	const token = useSelector((state) => state.token);
+  const {
+    productType,
+    producer,
+    productName,
+    idProduct,
+    status,
+    price,
+    description,
+    size,
+    amount,
+    color,
+    LOGO,
+    amontProduct,
+    customer_name,
+    repply_customer_name,
+  } = props;
 
-	const handleHeart = (type = true) => {
-		if (type) {
-			dispatch(addLikeList(productDetail.product));
-		} else {
-			dispatch(removeProduct(_id));
-		}
-	};
+  const { Panel } = Collapse;
+  const [warning, setWarning] = useState("none");
 
-  const [heart, setHeart] = useState(false);
+  const [heart, setHeart] = useState("none");
 
   const heartClick = () => {
-    // console.log(heart);
-    // heart === "none" ? setHeart("#f15e2c") : setHeart("none");
-    setHeart((cur) => !cur);
+    console.log(heart);
+    heart === "none" ? setHeart("#f15e2c") : setHeart("none");
   };
 
-	const handleCart = () => {
-		// dispatch(
-		// 	addCart({
-		// 		productId: _id,
-		// 		amount: +refAmount.current.value,
-		// 	})
-		// );
-		// console.log(refSize.current.value);
-		const sizeId = sizes.filter(
-			(size) => size.sizeId._id === refSize.current.value
-		)[0];
-		axios
-			.patch(
-				"http://localhost:3001/user/cart",
-				{
-					cart: [
-						...cart,
-						{
-							productId: _id,
-							amount: +refAmount.current.value,
-							sizeId: sizeId,
-						},
-					],
-				},
-				{ headers: { Authorization: token } }
-			)
-			.then((res) => {
-				dispatch(
-					addCart({
-						productId: productDetail.product,
-						amount: +refAmount.current.value,
-						sizeId: sizeId,
-					})
-				);
-				notifiSuccess("Notify", "Add cart success");
-			})
-			.catch((e) => {
-				notifiError("Error", e.response.data.msg);
-			});
-	};
+  const showWarning = () => {
+    //dùng cái này---------------------------------
 
     //  (size === "none" || amount === 0) ?  setWarning("grid"): setWarning("none");
     setWarning("grid");
@@ -181,7 +122,7 @@ function ContentPay(props) {
             <button
               className="btn__heart"
               onClick={() => heartClick()}
-              style={{ color: heart ? "#f15e2c" : "white" }}
+              style={{ color: heart }}
             >
               <HeartFilled />
             </button>
