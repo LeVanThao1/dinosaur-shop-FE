@@ -1,66 +1,53 @@
 import React from "react";
 import { Collapse } from "antd";
 import axios from "axios";
+import { setCategogyFT } from "../../../slice/products.slice";
+import { useDispatch, useSelector } from "react-redux";
+import { setCategories } from "../../../slice/menu.slice";
 
 export default function CategoryFilter(props) {
-  /*
+	/*
     @state = {[key]: {name, state}}
   */
-  const [state, setState] = React.useState({});
+	const dispatch = useDispatch();
+	const { filter } = useSelector((state) => state.products);
+	const { categories } = useSelector((state) => state.menu);
+	const { category } = filter;
+	React.useEffect(() => {
+		axios
+			.get("http://localhost:3001/api/categories")
+			.then(({ data }) => {
+				dispatch(setCategories(data));
+			})
+			.catch((err) => console.error(err));
+	}, []);
 
-  React.useEffect(() => {
-    axios
-      .get("http://localhost:3001/api/category")
-      .then(({ data }) => {
-        console.log(data);
-        setState(
-          data.reduce((accumulator, { _id, name }) => {
-            accumulator[_id] = { name, state: false };
-            return accumulator;
-          }, {})
-        );
-      })
-      .catch((err) => console.error(err));
-  }, []);
+	const handleClick = (e) => {
+		let key = e.target.id;
+		dispatch(setCategogyFT(key === category.split("=")[1] ? "" : key));
+	};
 
-  React.useEffect(() => {
-    console.log(state);
-  });
-
-  const fill = () => {
-    const result = [];
-    for (let key in state) {
-      result.push(
-        <li
-          className={state[key].state ? "current" : ""}
-          key={key}
-          id={key}
-          onClick={(e) => handleClick(e)}
-        >
-          {state[key].name}
-          {/* <span>X</span> */}
-        </li>
-      );
-    }
-    return result;
-  };
-
-  const handleClick = (e) => {
-    let key = e.target.id;
-    let stateKeyAfter = !state[key].state;
-    let newState = { ...state };
-    for (let key in newState) {
-      newState[key].state = false;
-    }
-    newState[key].state = stateKeyAfter;
-    setState({ ...newState });
-  };
-
-  return (
-    <Collapse ghost expandIconPosition="right">
-      <Collapse.Panel header="Categories" key="1">
-        <ul>{fill()}</ul>
-      </Collapse.Panel>
-    </Collapse>
-  );
+	return (
+		<Collapse ghost expandIconPosition="right">
+			<Collapse.Panel header="Categories" key="1">
+				<ul>
+					{categories.map((ct, i) => (
+						<li
+							className={
+								ct._id === category.split("=")[1]
+									? "item current"
+									: "item"
+							}
+							key={i}
+							id={ct._id}
+							onClick={(e) => handleClick(e)}
+						>
+							{ct.name}
+							{/* <span>X</span> */}
+						</li>
+					))}
+				</ul>
+			</Collapse.Panel>
+		</Collapse>
+	);
 }

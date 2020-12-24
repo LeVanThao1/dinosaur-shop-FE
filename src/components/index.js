@@ -6,11 +6,11 @@ import PublicRouter from "./PublicRouter";
 import Filters from "./Filters";
 import Promotion from "./Promotion";
 export {
-  Footer,
-  Header,
-  Loading,
-  PrivateRouter,
-  PublicRouter,
-  Promotion,
-  Filters,
+	Footer,
+	Header,
+	Loading,
+	PrivateRouter,
+	PublicRouter,
+	Promotion,
+	Filters,
 };

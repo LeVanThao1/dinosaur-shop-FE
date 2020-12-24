@@ -1,70 +1,87 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Card, Typography } from "antd";
 import { HeartFilled, HeartOutlined } from "@ant-design/icons";
-
 import "./style.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { addLikeList, removeProduct } from "../../slice/likelist.slice";
 // const { Meta } = Card;
 const { Title } = Typography;
 
 const styleLike = {
-  position: "absolute",
-  right: "8px",
-  bottom: "8px",
-  color: "#f15e2c",
-  fontSize: "30px",
+	position: "fixed",
+	right: "8px",
+	bottom: "8px",
+	color: "#f15e2c",
+	fontSize: "30px",
+	zIndex: 999,
 };
 
-export default function ProductCard(props) {
-  // const { images } = props;
-  const [image, setImage] = React.useState(
-    "https://ananas.vn/wp-content/uploads/pro_A61102_1-500x500.jpg"
-  );
+export default function ProductCard({ product }) {
+	const [image, setImage] = React.useState(product.images[0]);
+	const likeList = useSelector((state) => state.likeList);
+	const dispatch = useDispatch();
 
-  const [like, setLike] = React.useState(false);
+	const history = useHistory();
 
-  const handleOnMouseEnter = () => {
-    setImage("https://ananas.vn/wp-content/uploads/pro_A61102_2-500x500.jpg");
-  };
+	const handleOnMouseEnter = () => {
+		setImage(product.images[1]);
+	};
 
-  const handleOnMouseLeave = () => {
-    setImage("https://ananas.vn/wp-content/uploads/pro_A61102_1-500x500.jpg");
-  };
+	const handleOnMouseLeave = () => {
+		setImage(product.images[0]);
+	};
 
-  const handleChangeLikeStatus = () => {
-    setLike((like) => !like);
-  };
+	const handleChangeLikeStatus = (type = true) => {
+		if (type) {
+			dispatch(addLikeList(product));
+		} else {
+			dispatch(removeProduct(product._id));
+		}
+	};
 
-  const fillLike = (likeStatus) => {
-    return likeStatus ? (
-      <HeartFilled onClick={handleChangeLikeStatus} style={styleLike} />
-    ) : (
-      <HeartOutlined onClick={handleChangeLikeStatus} style={styleLike} />
-    );
-  };
-  return (
-    <div style={{ marginBottom: "16px" }} className="wrap-card">
-      <Card
-        onMouseEnter={handleOnMouseEnter}
-        onMouseLeave={handleOnMouseLeave}
-        style={{ width: 240 }}
-        cover={
-          <div style={{ width: "240px", position: "relative" }}>
-            <img alt="picture" src={image} style={{ width: "100%" }} />
+	return (
+		<div style={{ marginBottom: "16px" }} className="wrap-card">
+			<Card
+				style={{ width: 240, cursor: "pointer" }}
+				cover={
+					<div
+						style={{ width: "240px", position: "relative" }}
+						onMouseEnter={handleOnMouseEnter}
+						onMouseLeave={handleOnMouseLeave}
+					>
+						<img
+							alt="picture"
+							src={image}
+							style={{ width: "100%" }}
+						/>
 
-            {fillLike(like)}
-          </div>
-        }
-      >
-        <Title level={5} className="text-center">
-          <Link to={props.id ? "/product/" + props.id : ""}>
-            URBAS UNSETTLING - LOW TOP - STARLIGHT/LAVENDER
-          </Link>
-        </Title>
-        <Title className="text-center" level={5}>
-          500.000 VND
-        </Title>
-      </Card>
-    </div>
-  );
+						{/* {fillLike(like)} */}
+						{likeList.some((ll) => ll._id === product._id) ? (
+							<HeartFilled
+								onClick={() => handleChangeLikeStatus(false)}
+								style={styleLike}
+							/>
+						) : (
+							<HeartOutlined
+								onClick={() => handleChangeLikeStatus(true)}
+								style={styleLike}
+							/>
+						)}
+					</div>
+				}
+			>
+				<Title level={5} className="text-center">
+					<Link
+						to={product._id ? "/product-detail/" + product._id : ""}
+					>
+						{product.name}
+					</Link>
+				</Title>
+				<Title className="text-center" level={5}>
+					{product.salePrice} VND
+				</Title>
+			</Card>
+		</div>
+	);
 }

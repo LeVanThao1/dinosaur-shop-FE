@@ -8,6 +8,7 @@ import productDetailReducer from "../slice/productdetail.slice";
 import likeListReducer from "../slice/likelist.slice";
 import cartReducer from "../slice/cart.slice";
 import seenListReducer from "../slice/seenlist.slice";
+import menuReducer from "../slice/menu.slice";
 const rootReducer = {
 	users: usersReducer,
 	auth: authReducer,
@@ -18,6 +19,7 @@ const rootReducer = {
 	likeList: likeListReducer,
 	cart: cartReducer,
 	seenlist: seenListReducer,
+	menu: menuReducer,
 };
 
 const store = configureStore({

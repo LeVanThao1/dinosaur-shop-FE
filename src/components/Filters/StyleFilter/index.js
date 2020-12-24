@@ -1,66 +1,54 @@
 import React from "react";
 import { Collapse } from "antd";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setStyles } from "../../../slice/menu.slice";
+import { setStyleFT } from "../../../slice/products.slice";
 
 export default function StyleFilter(props) {
-  /*
+	/*
     @state = {[key]: {name, state}}
   */
-  const [state, setState] = React.useState({});
+	const dispatch = useDispatch();
+	const { filter } = useSelector((state) => state.products);
+	const { styles } = useSelector((state) => state.menu);
+	const { style } = filter;
 
-  React.useEffect(() => {
-    axios
-      .get("http://localhost:3001/api/styles")
-      .then(({ data }) => {
-        console.log(data);
-        setState(
-          data.reduce((accumulator, { _id, name }) => {
-            accumulator[_id] = { name, state: false };
-            return accumulator;
-          }, {})
-        );
-      })
-      .catch((err) => console.error(err));
-  }, []);
+	React.useEffect(() => {
+		axios
+			.get("http://localhost:3001/api/styles")
+			.then(({ data }) => {
+				dispatch(setStyles(data));
+			})
+			.catch((err) => console.error(err));
+	}, []);
 
-  React.useEffect(() => {
-    console.log(state);
-  });
+	const handleClick = (e) => {
+		let key = e.target.id;
+		dispatch(setStyleFT(key === style.split("=")[1] ? "" : key));
+	};
 
-  const fill = () => {
-    const result = [];
-    for (let key in state) {
-      result.push(
-        <li
-          className={state[key].state ? "current" : ""}
-          key={key}
-          id={key}
-          onClick={(e) => handleClick(e)}
-        >
-          {state[key].name}
-          {/* <span>X</span> */}
-        </li>
-      );
-    }
-    return result;
-  };
-
-  const handleClick = (e) => {
-    let key = e.target.id;
-    let stateKeyAfter = !state[key].state;
-    let newState = { ...state };
-    for (let key in newState) {
-      newState[key].state = false;
-    }
-    newState[key].state = stateKeyAfter;
-    setState({ ...newState });
-  };
-
-  return (
-    <Collapse ghost expandIconPosition="right">
-      <Collapse.Panel header="Styles" key="1">
-        <ul>{fill()}</ul>
-      </Collapse.Panel>
-    </Collapse>
-  );
+	return (
+		<Collapse ghost expandIconPosition="right">
+			<Collapse.Panel header="Styles" key="1">
+				<ul>
+					{styles.map((st, i) => (
+						<li
+							className={
+								st._id === style.split("=")[1]
+									? "item current"
+									: "item"
+							}
+							key={i}
+							id={st._id}
+							onClick={(e) => handleClick(e)}
+						>
+							{st.name}
+							{/* <span>X</span> */}
+						</li>
+					))}
+				</ul>
+			</Collapse.Panel>
+		</Collapse>
+	);
 }
