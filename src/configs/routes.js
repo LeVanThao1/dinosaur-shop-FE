@@ -1,4 +1,5 @@
 export default [
+<<<<<<< HEAD
   {
     title: "Login Page || Shop",
     component: "Login",
@@ -90,4 +91,90 @@ export default [
     isProtected: false,
     exact: true,
   },
+=======
+	{
+		title: "Login Page || Shop",
+		component: "Login",
+		path: "/login",
+		isProtected: false,
+		exact: true,
+	},
+	{
+		title: "Register Page || Shop",
+		component: "Register",
+		path: "/register",
+		isProtected: false,
+		exact: true,
+	},
+	{
+		title: "Home Page || Shop",
+		component: "Home",
+		path: "/",
+		isProtected: false,
+		exact: true,
+	},
+	{
+		title: "Active email Page || Shop",
+		component: "ActiveEmail",
+		path: "/user/activate/:activation_token",
+		isProtected: false,
+		exact: true,
+	},
+	{
+		title: "Edit Profile Page || Shop",
+		component: "EditProfile",
+		path: "/edit_user/:id",
+		isProtected: true,
+		exact: true,
+	},
+	{
+		title: "Profile Page || Shop",
+		component: "Profile",
+		path: "/profile",
+		isProtected: true,
+		exact: true,
+	},
+	{
+		title: "Forgot Password Page || Shop",
+		component: "ForgotPassword",
+		path: "/forgot",
+		isProtected: false,
+		exact: true,
+	},
+	{
+		title: "Reset Password Page || Shop",
+		component: "ResetPassword",
+		path: "/user/reset/:token",
+		isProtected: false,
+		exact: true,
+	},
+	{
+		title: "Products Page || Shop",
+		component: "Products",
+		path: "/products",
+		isProtected: false,
+		exact: true,
+	},
+	{
+		title: "Product Detail Page || Shop",
+		component: "ProductDetail",
+		path: "/product-detail/:id",
+		isProtected: false,
+		exact: true,
+	},
+	{
+		title: "Cart Page || Shop",
+		component: "Payment",
+		path: "/cart",
+		isProtected: false,
+		exact: true,
+	},
+	{
+		title: "Payment Page || Shop",
+		component: "ResultPayment",
+		path: "/resultpayment",
+		isProtected: false,
+		exact: true,
+	},
+>>>>>>> 12151109bb075c8d4b026b60e28237c5eb614e1f
 ];

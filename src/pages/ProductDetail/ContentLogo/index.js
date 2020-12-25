@@ -1,131 +1,92 @@
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Collapse } from "antd";
 
 import "./index.scss";
 import {
-  DownOutlined,
-  UserOutlined,
-  HeartFilled,
-  HeartOutlined,
+	DownOutlined,
+	UserOutlined,
+	HeartFilled,
+	HeartOutlined,
 } from "@ant-design/icons";
 import {
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  ButtonDropdown,
+	Dropdown,
+	DropdownToggle,
+	DropdownMenu,
+	DropdownItem,
+	ButtonDropdown,
 } from "reactstrap";
+import { useSelector, useDispatch } from "react-redux";
+import productAPi from "../../../api/productApi";
+import { setComment, setProduct } from "../../../slice/productdetail.slice";
+import CommentItem from "../CommentItem";
+import FormInput from "../FormInput";
 
-function ContentLogo(props) {
-  const {
-    productType,
-    producer,
-    productName,
-    idProduct,
-    status,
-    price,
-    description,
-    size,
-    amount,
-    color,
-    LOGO,
-    amontProduct,
-    customer_name,
-    repply_customer_name,
-  } = props;
+function ContentLogo({ socket }) {
+	const { Panel } = Collapse;
 
-  const { Panel } = Collapse;
+	const [like, setLike] = useState("blue");
+	const [reply, setReply] = useState("none");
+	const [warning, setWarning] = useState("none");
+	const productDetail = useSelector((state) => state.productDetail);
+	const auth = useSelector((state) => state.auth);
+	const { comments, product } = productDetail;
+	const [index, setIndex] = useState(0);
+	const dispatch = useDispatch();
+	// useEffect(() => {
+	// 	const getCM = async () => {
+	// 		const data = await productAPi.getComment(product._id);
+	// 		dispatch(setComment(data));
+	// 	};
+	// 	getCM();
+	// }, []);
 
-  const [like, setLike] = useState("blue");
-  const [reply, setReply] = useState("none");
-  const [warning, setWarning] = useState("none");
+	const likeBtn = (e) => {
+		console.log(e.target);
 
-  const likeBtn = (e) => {
-    console.log(e.target);
+		if (like === "blue") setLike("#123");
+		else {
+			setLike("blue");
+		}
+	};
 
-    if (like === "blue") setLike("#123");
-    else {
-      setLike("blue");
-    }
-  };
+	const repBtn = () => {
+		if (reply === "none") {
+			setReply("grid");
+		} else setReply("none");
+	};
 
-  const repBtn = () => {
-    if (reply === "none") {
-      setReply("grid");
-    } else setReply("none");
-  };
+	const showWarning = () => {
+		//dùng cái này---------------------------------
 
-  const showWarning = () => {
-    //dùng cái này---------------------------------
+		// if (size === "none" || amount === 0) {
+		//   setWarning("grid");
+		// } else setWarning("none");
+		setWarning("grid");
+	};
 
-    // if (size === "none" || amount === 0) {
-    //   setWarning("grid");
-    // } else setWarning("none");
-    setWarning("grid");
-  };
-
-  const imageProduct1 =
-    "https://ananas.vn/wp-content/uploads/pro_vintas_A61040_1.jpg";
-
-  const imageProduct2 =
-    "https://ananas.vn/wp-content/uploads/pro_vintas_A61040_2.jpg";
-  const imageProduct3 =
-    "https://ananas.vn/wp-content/uploads/pro_vintas_A61040_3.jpg";
-  const imageProduct4 =
-    "https://ananas.vn/wp-content/uploads/pro_vintas_A61040_4.jpg";
-  return (
-    <div className="content__logo list-group">
-      {/* col-xs-12 col-sm-12 col-md-7 col-lg-7 */}
-      <div className="main__logo list-group-item">
-        <img src={imageProduct1} alt="" />
-      </div>
-      <div className="child__detail child__logo list-group-item">
-        <div className="child-side">
-          <div className="logo-slide">
-            <img src={imageProduct2} alt="" />
-          </div>
-          <div className="logo-slide">
-            <img src={imageProduct3} alt="" />
-          </div>
-          <div className="logo-slide">
-            <img src={imageProduct4} alt="" />
-          </div>
-          <div className="logo-slide">
-            <img src={imageProduct1} alt="" />
-          </div>
-        </div>
-      </div>
-      <div className="comment list-group-item">
-        <div className="comment_content">
-          <label>Bình luận</label>
-          <label>{customer_name}Thasi Baor</label>
-          <textarea />
-          <div className="like_rep">
-            <div
-              className="like"
-              style={{ color: like, fontWeight: "bold" }}
-              onClick={(e) => likeBtn(e)}
-            >
-              Thích
-            </div>
-            <div className="rep" onClick={repBtn}>
-              Phản hồi
-            </div>
-          </div>
-        </div>
-        <div className="rep_comment" style={{ display: reply }}>
-          <label>{repply_customer_name}Baro Thais</label>
-          <textarea />
-          <div className="like_rep">
-            <div className="like">Thích</div>
-            <div onClick={reply}>Phản hồi</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+	return (
+		<div className="content__logo list-group">
+			{/* col-xs-12 col-sm-12 col-md-7 col-lg-7 */}
+			<div className="main__logo list-group-item">
+				<img src={product.images[index]} alt="image" />
+			</div>
+			<div className="child__detail child__logo list-group-item">
+				<div className="child-side">
+					{product.images.map((image, i) => (
+						<div
+							className="logo-slide"
+							key={i}
+							onClick={() => setIndex(i)}
+						>
+							<img src={image} alt="product" />
+						</div>
+					))}
+				</div>
+			</div>
+		</div>
+	);
 }
 
 export default ContentLogo;

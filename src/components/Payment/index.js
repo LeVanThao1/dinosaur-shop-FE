@@ -26,10 +26,7 @@ function Payment(props) {
                       <div className="name">
                         Urbas Unsettling - Low Top - Starlight/Lavender
                       </div>
-                      <div className="price">
-                        <b>Giá: </b>
-                        {price}500.000 VND
-                      </div>
+                      <div className="price">Giá: {price}500.000 VND</div>
                     </div>
                     <div className="size-amount">
                       <div className="size">
@@ -108,8 +105,8 @@ function Payment(props) {
                   <span>{price}500.000 VND</span>
                 </div>
                 <div className="reduction">
-                  <p>Giảm</p>
-                  <p>{price}0 VND</p>
+                  <span>Giảm</span>
+                  <span>{price}0 VND</span>
                 </div>
               </div>
               <div className="tempCacul">

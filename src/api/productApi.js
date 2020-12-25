@@ -11,14 +11,12 @@ const productApi = {
 	getProductDetail: async (productId) => {
 		const url = "/products/" + productId;
 		const res = await axios.get(URI + url);
-		console.log(res);
 		return res.data;
 	},
 	getComment: async (productId) => {
 		try {
-			const url = `/product/${productId}/comment`;
+			const url = `/product/${productId}/comments`;
 			const res = await axios.get(URI + url);
-			console.log(res);
 			return res.data;
 		} catch (e) {
 			console.log(e.message);

@@ -1,186 +1,193 @@
 .container {
-  padding: 0;
+	padding: 0;
 }
 
 .cart__pay {
-  width: 100%;
-  .header__cart {
-    width: 100%;
-    background-color: #ddd;
-    font-size: 1.5rem;
-    font-weight: bold;
-    padding: 10px 20px;
-  }
+	width: 100%;
+	.header__cart {
+		width: 100%;
+		background-color: #ddd;
+		font-size: 1.5rem;
+		font-weight: bold;
+		padding: 10px 20px;
+	}
 
-  .btn-delete-back {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    font-size: 1.6rem;
-    font-weight: bold;
-    padding: 40px 0;
-    button {
-      width: 14rem;
-      color: #fff;
-      font-size: 1.3rem;
-      height: auto;
-      background-color: rgb(65, 64, 64);
-    }
-  }
+	.btn-delete-back {
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		font-size: 1.6rem;
+		font-weight: bold;
+		padding: 40px 0;
+		button {
+			width: 14rem;
+			color: #fff;
+			font-size: 1.3rem;
+			height: auto;
+			background-color: rgb(65, 64, 64);
+		}
+	}
 }
 
 .details__cart {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  border-bottom: 1px solid #123;
-  padding: 5% 0;
-  .img_detail__cart {
-    width: 80%;
-    display: flex;
-    justify-content: space-between;
-    .logo {
-      img {
-        width: 14rem;
-        height: auto;
-      }
-    }
-    .detail {
-      display: grid;
-      justify-content: space-between;
-      width: 100%;
-      padding: 0 5%;
+	display: flex;
+	width: 100%;
+	justify-content: space-between;
+	border-bottom: 1px solid #123;
+	padding: 5% 0;
+	.img_detail__cart {
+		width: 80%;
+		display: flex;
+		justify-content: space-between;
+		.logo {
+			img {
+				width: 14rem;
+				height: auto;
+			}
+		}
+		.detail {
+			display: grid;
+			justify-content: space-between;
+			width: 100%;
+			padding: 0 5%;
 
-      .detail__content {
-        // width: 100%;
-        div {
-          // font-weight: bold;
-          // font-size: 1.4rem;
-        }
-        .name {
-          font-weight: bold;
-          font-size: 1.2rem;
-        }
-        .price {
-          font-size: 1.2rem;
-          margin-top: 4%;
-          opacity: 0.7;
-        }
-      }
+			.detail__content {
+				// width: 100%;
+				div {
+					// font-weight: bold;
+					// font-size: 1.4rem;
+				}
+				.name {
+					font-weight: bold;
+					font-size: 1.2rem;
+				}
+				.price {
+					font-size: 1.2rem;
+					margin-top: 4%;
+					opacity: 0.7;
+				}
+			}
 
-      .size-amount {
-        display: flex;
-        width: 100%;
-        div {
-          width: 100%;
-          div {
-            font-weight: bold;
-            font-size: 1.1rem;
-          }
-          select {
-            width: 80%;
-            font-size: 1rem;
-            height: auto;
-            font-weight: bold;
-          }
-        }
-      }
-    }
-  }
-  .action {
-    width: 30%;
-    // padding: 20px;
-    display: inline-block;
-    justify-content: right;
-    padding: 0;
+			.size-amount {
+				display: flex;
+				width: 100%;
+				div {
+					width: 100%;
+					div {
+						font-weight: bold;
+						font-size: 1.1rem;
+					}
+					select {
+						width: 80%;
+						font-size: 1rem;
+						height: auto;
+						font-weight: bold;
+					}
+				}
+			}
+		}
+	}
+	.action {
+		width: 30%;
+		// padding: 20px;
+		display: inline-block;
+		justify-content: right;
+		padding: 0;
 
-    display: table-row;
-    color: #f15e2c;
-    div {
-      font-size: 1.3rem;
-      text-align: right;
-      padding-bottom: 5%;
-    }
+		display: table-row;
+		color: #f15e2c;
+		div {
+			font-size: 1.3rem;
+			text-align: right;
+			padding-bottom: 5%;
+		}
 
-    .price__status {
-      //   padding-bottom: 10px;
-      .status {
-        font-size: 1rem;
-      }
-    }
+		.price__status {
+			//   padding-bottom: 10px;
+			.status {
+				font-size: 1rem;
+			}
+		}
 
-    .btnAction {
-      width: 100%;
-      div {
-        // padding-top: 10px;
-        button {
-          width: 60%;
-          font-size: 1.2rem;
-          height: auto;
-        }
-      }
-      .heartBtn > button {
-        background-color: #fff;
-        border: 0.5px solid #111;
-        // opacity: 0.5;
-        // button > :first-child {
-        //   background-color: #f15e2c;
-        // }
-      }
-      .deleteBtn > button {
-        color: #fff;
-        background-color: #303030;
-        border: 0.5px solid #111;
-        opacity: 0.9;
-      }
-    }
+		.btnAction {
+			width: 100%;
+			div {
+				// padding-top: 10px;
+				button {
+					width: 60%;
+					font-size: 1.2rem;
+					height: auto;
+				}
+			}
+			.heartBtn > button {
+				background-color: #fff;
+				border: 0.5px solid #111;
+				// opacity: 0.5;
+				// button > :first-child {
+				//   background-color: #f15e2c;
+				// }
+			}
+			.deleteBtn > button {
+				color: #fff;
+				background-color: #303030;
+				border: 0.5px solid #111;
+				opacity: 0.9;
+			}
+		}
 
-    .price__action {
-      font-weight: bold;
-    }
-  }
+		.price__action {
+			font-weight: bold;
+		}
+	}
+	button.ant-btn:hover,
+	button.ant-btn:focus,
+	button.ant-btn:visited,
+	button.ant-btn:active,
+	button.ant-btn:focus-within {
+		color: red !important;
+	}
 }
 
 @media only screen and (max-width: 768px) {
-  .details__cart {
-    .img_detail__cart {
-      .logo {
-        img {
-          width: 25vw;
-          height: auto;
-        }
-      }
+	.details__cart {
+		.img_detail__cart {
+			.logo {
+				img {
+					width: 25vw;
+					height: auto;
+				}
+			}
 
-      .detail {
-        .detail__content {
-          div {
-            font-size: 2.4vw;
-          }
-        }
-        .size-amount {
-          div {
-            font-size: 2.2vw;
-          }
-        }
-      }
-    }
+			.detail {
+				.detail__content {
+					div {
+						font-size: 2.4vw;
+					}
+				}
+				.size-amount {
+					div {
+						font-size: 2.2vw;
+					}
+				}
+			}
+		}
 
-    .action {
-      font-size: 3vw;
-      .price__status {
-        .status {
-          font-size: 2vw;
-        }
-      }
-    }
-  }
+		.action {
+			font-size: 3vw;
+			.price__status {
+				.status {
+					font-size: 2vw;
+				}
+			}
+		}
+	}
 
-  .btn-delete-back {
-    width: 100%;
-    button {
-      font-size: 2.5vw;
-      width: 80vw;
-      height: auto;
-    }
-  }
+	.btn-delete-back {
+		width: 100%;
+		button {
+			font-size: 2.5vw;
+			width: 80vw;
+			height: auto;
+		}
+	}
 }
