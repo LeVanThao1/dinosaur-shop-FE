@@ -94,6 +94,7 @@ function App() {
 									route.isProtected ? (
 										<PrivateRouter
 											isAuthenticated={auth.isLogged}
+											title={route.title}
 										>
 											<Suspense fallback={<Loading />}>
 												<C socket={socket} />
@@ -102,6 +103,7 @@ function App() {
 									) : (
 										<PublicRouter
 											isAuthenticated={auth.isLogged}
+											title={route.title}
 										>
 											<Suspense fallback={<Loading />}>
 												<C socket={socket} />

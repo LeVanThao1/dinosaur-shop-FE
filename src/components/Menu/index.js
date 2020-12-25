@@ -1,9 +1,8 @@
-import React, { memo } from "react";
-import PropTypes from "prop-types";
-import Images from "../../constant/image";
-import { Link, useHistory } from "react-router-dom";
-import "./index.scss";
 import { Collapse } from "antd";
+import React, { memo } from "react";
+import { Link, useHistory } from "react-router-dom";
+import Images from "../../constant/image";
+import "./index.scss";
 const { Panel } = Collapse;
 Menu.propTypes = {};
 

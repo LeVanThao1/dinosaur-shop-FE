@@ -20,7 +20,15 @@ function ProductList(props) {
 	const [loading, setLoading] = useState(true);
 	const productList = useSelector((state) => state.products);
 	const { products, pages, currentPage, filter } = productList;
-	const { category, material, style, typeProduct, price } = filter;
+	const {
+		category,
+		material,
+		style,
+		typeProduct,
+		price,
+		textSearch,
+		sortPrice,
+	} = filter;
 	const countRef = useRef(0);
 	const ref = useRef(null);
 	useEffect(() => {
@@ -33,7 +41,7 @@ function ProductList(props) {
 				setLoading(true);
 				axios
 					.get(
-						`http://localhost:3001/api/products?page=${currentPage}&${category}&${material}&${typeProduct}&${style}&${price}`
+						`http://localhost:3001/api/products?page=${currentPage}&${category}&${material}&${typeProduct}&${style}&${price}&${textSearch}&${sortPrice}`
 					)
 					.then((res) => {
 						dispatch(setProducts(res.data.products));

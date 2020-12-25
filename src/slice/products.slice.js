@@ -15,6 +15,7 @@ const products = createSlice({
 			max: 1000000,
 			textSearch: "",
 			price: "",
+			sortPrice: "",
 		},
 	},
 	reducers: {
@@ -104,6 +105,16 @@ const products = createSlice({
 				},
 			};
 		},
+		setSortPrice: (state, action) => {
+			return {
+				...state,
+				currentPage: 1,
+				filter: {
+					...state.filter,
+					sortPrice: action.payload ? `sort=${action.payload}` : "",
+				},
+			};
+		},
 	},
 });
 
@@ -119,4 +130,5 @@ export const {
 	setCategogyFT,
 	setPriceFT,
 	setTextSearchFT,
+	setSortPrice,
 } = actions;
