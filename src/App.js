@@ -15,9 +15,6 @@ import { setToken } from "./slice/token.slice";
 import { setLogin, setUserInfo } from "./slice/auth.slice";
 import userApi from "./api/userApi";
 import axios from "axios";
-import ProductDetail from "./pages/ProductDetail";
-import Payment from "./pages/Payment";
-import Shipping from "./pages/Shipping";
 const Components = {};
 
 for (const c of routes) {
@@ -98,10 +95,6 @@ function App() {
             )}
           ></Route>
         </Switch>
-        {/* <ProductDetail /> */}
-        {/* <SlideRelated /> */}
-        {/* <Payment /> */}
-        <Shipping />
         <Footer />
       </div>
     </Router>

@@ -69,4 +69,25 @@ export default [
     isProtected: false,
     exact: true,
   },
+  {
+    title: "Order Detail Page || Shop",
+    component: "OrderDetail",
+    path: "/order/detail",
+    isProtected: false,
+    exact: true,
+  },
+  {
+    title: "Cart Page || Shop",
+    component: "Payment",
+    path: "/cart",
+    isProtected: false,
+    exact: true,
+  },
+  {
+    title: "Shipping Page || Shop",
+    component: "Shipping",
+    path: "/shipping",
+    isProtected: false,
+    exact: true,
+  },
 ];

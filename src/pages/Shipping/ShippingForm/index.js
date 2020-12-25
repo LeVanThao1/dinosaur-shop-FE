@@ -58,6 +58,8 @@ function ShippingForm(props) {
   const [district, setDistrict] = useState("");
   const [ward, setWawrd] = useState("");
 
+  console.log(sub.getProvinces());
+  console.log(sub.getDistricts());
   const handleChangeSelect = (e) => {
     setProvince(e);
   };
