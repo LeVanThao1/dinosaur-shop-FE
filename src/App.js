@@ -1,12 +1,12 @@
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import routes from "./configs/routes";
 import {
-  Loading,
-  Footer,
-  PrivateRouter,
-  PublicRouter,
-  Header,
+	Loading,
+	Footer,
+	PrivateRouter,
+	PublicRouter,
+	Header,
 } from "./components";
 import NotFound from "./pages/NotFound";
 import "./App.scss";
@@ -15,47 +15,60 @@ import { setToken } from "./slice/token.slice";
 import { setLogin, setUserInfo } from "./slice/auth.slice";
 import userApi from "./api/userApi";
 import axios from "axios";
+<<<<<<< HEAD
+=======
+import io from "socket.io-client";
+import { setCart } from "./slice/cart.slice";
+import { Promotion, SlideRelated } from "./components";
+import { setSeenList } from "./slice/seenlist.slice";
+import { setLikeList } from "./slice/likelist.slice";
+import API from "./axios";
+import { notifiError } from "./utils/notification";
+>>>>>>> 12151109bb075c8d4b026b60e28237c5eb614e1f
 const Components = {};
 
 for (const c of routes) {
-  Components[c.component] = React.lazy(() => import("./pages/" + c.component));
+	Components[c.component] = React.lazy(() =>
+		import("./pages/" + c.component)
+	);
 }
 
 function App() {
-  const dispatch = useDispatch();
-  const auth = useSelector((state) => state.auth);
-  const token = useSelector((state) => state.token);
-  useEffect(() => {
-    const firstLogin = localStorage.getItem("firstLogin");
+	const dispatch = useDispatch();
+	const auth = useSelector((state) => state.auth);
+	const token = useSelector((state) => state.token);
+	const [socket, setSocket] = useState(null);
 
-    if (firstLogin) {
-      const getToken = async () => {
-        const res = await axios.post(
-          "http://localhost:3001/user/refresh_token",
-          null
-        );
+	useEffect(() => {
+		const seenList = JSON.parse(localStorage.getItem("seenList"));
+		const likeList = JSON.parse(localStorage.getItem("likeList"));
+		dispatch(setSeenList(seenList ? seenList : []));
+		dispatch(setLikeList(likeList ? likeList : []));
+	}, []);
 
-        const action = setToken(res.data.access_token);
+	useEffect(() => {
+		const socketio = io("http://localhost:3001");
+		setSocket(socketio);
+		return () => socketio.disconnect();
+	}, []);
 
-        dispatch(action);
-      };
-      getToken();
-    }
-  }, [auth.isLogged, dispatch]);
+	useEffect(() => {
+		const firstLogin = localStorage.getItem("firstLogin");
 
-  useEffect(() => {
-    if (token) {
-      const getUser = () => {
-        dispatch(setLogin());
-        return userApi.getUser(token).then((res) => {
-          const action = setUserInfo(res.data);
-          dispatch(action);
-        });
-      };
-      getUser();
-    }
-  }, [token, dispatch]);
+		if (firstLogin) {
+			API("user/refresh_token", "POST", null)
+				.then((res) => {
+					console.log(res);
+					dispatch(setToken(res.data.access_token));
+				})
+				.catch((err) => notifiError("Error", err.response.data.msg));
+		} else {
+			const cart = JSON.parse(localStorage.getItem("cart"));
+			dispatch(setCart(cart ? cart : []));
+		}
+	}, [auth.isLogged, dispatch]);
 
+<<<<<<< HEAD
   return (
     <Router>
       <div className="App">
@@ -99,6 +112,73 @@ function App() {
       </div>
     </Router>
   );
+=======
+	useEffect(() => {
+		if (token) {
+			dispatch(setLogin());
+			API("user/infor", "GET", null, token)
+				.then((res) => {
+					dispatch(setUserInfo(res.data));
+					dispatch(setCart(res.data.cart));
+				})
+				.catch((err) => notifiError("Error", err.response.data.msg));
+		}
+	}, [token, dispatch]);
+
+	return (
+		<Router>
+			<div className="App">
+				<Header />
+				<Promotion />
+				<Switch>
+					{routes.map((route) => {
+						const C = Components[route.component];
+						return (
+							<Route
+								key={route.path}
+								path={route.path}
+								exact={true}
+								render={() =>
+									route.isProtected ? (
+										<PrivateRouter
+											isAuthenticated={auth.isLogged}
+											title={route.title}
+										>
+											<Suspense fallback={<Loading />}>
+												<C socket={socket} />
+											</Suspense>
+										</PrivateRouter>
+									) : (
+										<PublicRouter
+											isAuthenticated={auth.isLogged}
+											title={route.title}
+										>
+											<Suspense fallback={<Loading />}>
+												<C socket={socket} />
+											</Suspense>
+										</PublicRouter>
+									)
+								}
+							/>
+						);
+					})}
+					<Route
+						path="*"
+						render={() => (
+							<Suspense fallback={<Loading />}>
+								<NotFound />
+							</Suspense>
+						)}
+					></Route>
+				</Switch>
+				{/* <ProductDetail /> */}
+				{/* <SlideRelated /> */}
+				{/* <Payment /> */}
+				<Footer />
+			</div>
+		</Router>
+	);
+>>>>>>> 12151109bb075c8d4b026b60e28237c5eb614e1f
 }
 
 export default App;

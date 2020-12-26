@@ -22,8 +22,7 @@
 		text-align: center;
 		cursor: pointer;
 	}
-	li:hover,
-	a:hover {
+	li:hover {
 		color: #f1532c;
 	}
 	li {
@@ -40,8 +39,10 @@
 			//   padding: 50px 0;
 			z-index: 99;
 			opacity: 0.2;
-			transition: all 0.3s;
+			transition: all 0.5s;
 			padding-top: 40px;
+			animation: submenu 0.5s infinite;
+			animation-iteration-count: 1;
 		}
 		.menu_drop {
 			//   position: absolute;
@@ -72,6 +73,7 @@
 						object-fit: cover;
 					}
 					.title {
+						font-size: 16px;
 						margin-top: 10px;
 					}
 				}
@@ -86,8 +88,9 @@
 			.slogent {
 				color: #808080;
 				margin: 10px 5% 0;
-
+				font-size: 16px;
 				.name {
+					font-size: 16px;
 					color: #eeeeee;
 				}
 			}
@@ -95,12 +98,12 @@
 	}
 	li:hover .container_drop {
 		display: initial;
-		top: 60px;
+		top: 40px;
 		right: 0px;
 		width: 100%;
 		z-index: 99;
 		opacity: 1;
-		transition: all 0.3s;
+		transition: all 0.5s;
 		// background-color: #4c4c4c;
 	}
 	li:last-child {
@@ -109,6 +112,20 @@
 }
 .menu_mobile {
 	display: none;
+}
+@keyframes submenu {
+	0% {
+		top: 60px;
+		opacity: 0;
+	}
+	// 50% {
+	// 	top: 50px;
+	// 	opacity: 0.5;
+	// }
+	100% {
+		top: 40px;
+		opacity: 1;
+	}
 }
 @media screen and (max-width: 950px) {
 	.menu_desktop {

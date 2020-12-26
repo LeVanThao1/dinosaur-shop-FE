@@ -1,0 +1,191 @@
+* {
+  box-sizing: border-box;
+  a:hover {
+    text-decoration: none;
+  }
+}
+
+.header__product__detail {
+  .header__detail {
+    display: flex;
+    padding: 0px;
+    margin: 30px 0 50px 50px;
+    border-bottom: 3px solid rgb(43, 40, 40);
+    .child__detail {
+      padding: 0px;
+      margin: 5px;
+      border-right: 1px solidrgb(63, 60, 60);
+    }
+  }
+}
+
+.main__logo > img {
+  width: 640px;
+  height: 640px;
+}
+
+.content__detail {
+  display: flex;
+  margin: 20px;
+  .info__detail {
+    width: 100%;
+
+    .id__status {
+      display: flex;
+      .status {
+        padding-left: 40px;
+      }
+    }
+
+    .price {
+      color: orange;
+      font-size: 30px;
+      position: relative;
+    }
+
+    .price::after {
+      position: absolute;
+      content: "";
+      border-bottom: 1.5px dashed rgb(49, 49, 49);
+      width: 100%;
+      bottom: -25%;
+      left: 0%;
+    }
+
+    .color__product {
+      position: relative;
+    }
+
+    .color__product::after {
+      position: absolute;
+      content: "";
+      border-bottom: 1.5px dashed rgb(49, 49, 49);
+      width: 100%;
+      bottom: -50%;
+      left: 0%;
+    }
+
+    .color__product::before {
+      position: absolute;
+      content: "";
+      border-bottom: 1.5px dashed rgb(49, 49, 49);
+      width: 100%;
+      top: -50%;
+      left: 0%;
+    }
+
+    .child__detail {
+      margin: 30px;
+      text-align: left;
+    }
+    .size__amount {
+      display: flex;
+      .size {
+        margin-right: 150px;
+        font-size: 25px;
+        font-family: "Courier New", Courier, monospace;
+        .size__option {
+          height: 30px;
+          width: 100px;
+        }
+      }
+      .amount {
+        font-size: 25px;
+        font-family: "Courier New", Courier, monospace;
+        .amount__option {
+          display: flex;
+          font-size: 20px;
+          height: 30px;
+          width: 150px;
+          justify-content: space-between;
+          input {
+            width: 50px;
+            text-align: center;
+            border: 0.5px solid rgb(128, 126, 126);
+          }
+        }
+        span {
+          font-size: 25px;
+        }
+      }
+    }
+    .btn__addCart__like {
+      margin: 20px 20px 5px 20px;
+      display: flex;
+      justify-content: space-between;
+      .btn__add {
+        font-size: 23px;
+        width: 300px;
+        height: 75px;
+        background-color: #111;
+        color: #fff;
+        border-radius: 3px;
+      }
+      .btn__heart {
+        font-size: 25px;
+        width: 100px;
+        height: 75px;
+        background-color: #111;
+        color: #fff;
+        border-radius: 3px;
+      }
+    }
+
+    .btn__payment {
+      margin: 5px 20px 20px 20px;
+      .btn__pay {
+        font-size: 23px;
+        width: 450px;
+        height: 75px;
+        background-color: rgb(231, 91, 10);
+        color: #fff;
+        border-radius: 3px;
+      }
+    }
+    .warning {
+      color: rgb(231, 91, 10);
+      font-size: 22px;
+    }
+  }
+}
+
+.ant-collapse-item {
+  font-size: 20px;
+}
+
+.ant-collapse-item:active {
+  color: orange;
+}
+
+.related {
+  margin: auto;
+  .header__realated {
+    text-align: center;
+    font-size: 30px;
+    font-family: "Courier New", Courier, monospace;
+  }
+  .related__slide {
+    width: max-content;
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
+    img {
+      width: 280px;
+      height: 280px;
+    }
+  }
+}
+
+@media only screen and (max-width: 1250px) {
+  .main__logo > img {
+    width: 600px;
+    height: 600px;
+  }
+}
+
+@media only screen and (max-width: 1050px) {
+  .main__logo > img {
+    width: 500px;
+    height: 500px;
+  }
+}

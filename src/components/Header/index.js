@@ -9,6 +9,7 @@ import { MenuOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import Promotion from "../Promotion";
 import SliderSale from "../SliderSale";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 Header.propTypes = {};
 
 function Header(props) {
@@ -19,14 +20,16 @@ function Header(props) {
 			<header className="desktop">
 				<ControlUser />
 				<div className="header">
-					<div className="header__logo">
-						<img
-							src={Images.LOGO}
-							alt="logo"
-							width="80px"
-							height="80px"
-						/>
-					</div>
+					<Link to="/">
+						<div className="header__logo">
+							<img
+								src={Images.LOGO}
+								alt="logo"
+								width="80px"
+								height="80px"
+							/>
+						</div>
+					</Link>
 					<div className="header__nav">
 						<Menu />
 					</div>

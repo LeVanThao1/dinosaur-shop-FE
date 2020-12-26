@@ -1,18 +1,18 @@
-import React, { memo } from "react";
-import PropTypes from "prop-types";
-import Images from "../../constant/image";
-import { Link } from "react-router-dom";
-import "./index.scss";
 import { Collapse } from "antd";
+import React, { memo } from "react";
+import { Link, useHistory } from "react-router-dom";
+import Images from "../../constant/image";
+import "./index.scss";
 const { Panel } = Collapse;
 Menu.propTypes = {};
 
 function Menu(props) {
+	const history = useHistory();
 	return (
 		<>
 			<ul className="menu_desktop">
-				<li>
-					<Link to="/products">Sản phẩm</Link>
+				<li onClick={() => history.push("/products")}>
+					Sản phẩm
 					<div className="container_drop">
 						<div className="menu_drop">
 							<div className="drop_category">
