@@ -69,7 +69,7 @@ function Login(props) {
 			setUser({ ...user, error: "", success: res.data.msg });
 			localStorage.setItem("firstLogin", true);
 			dispatch(setLogin());
-			notifiSuccess("Notify", res);
+			// notifiSuccess("Notify", res);
 			history.push("/");
 		} catch (err) {
 			err.response.data.msg &&

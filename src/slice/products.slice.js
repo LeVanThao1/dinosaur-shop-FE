@@ -2,9 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const products = createSlice({
 	name: "products",
-<<<<<<< HEAD
-	initialState: [],
-=======
 	initialState: {
 		products: [],
 		pages: 1,
@@ -21,14 +18,11 @@ const products = createSlice({
 			sortPrice: "",
 		},
 	},
->>>>>>> 12151109bb075c8d4b026b60e28237c5eb614e1f
 	reducers: {
 		setProducts: (state, action) => {
 			return {
 				...state,
 				products: action.payload,
-<<<<<<< HEAD
-=======
 				// pages: Math.ceil(action.payload.length / 9),
 			};
 		},
@@ -119,7 +113,6 @@ const products = createSlice({
 					...state.filter,
 					sortPrice: action.payload ? `sort=${action.payload}` : "",
 				},
->>>>>>> 12151109bb075c8d4b026b60e28237c5eb614e1f
 			};
 		},
 	},
@@ -127,9 +120,6 @@ const products = createSlice({
 
 const { reducer, actions } = products;
 export default reducer;
-<<<<<<< HEAD
-export const { setProducts } = actions;
-=======
 export const {
 	setProducts,
 	setCurrentPage,
@@ -142,4 +132,3 @@ export const {
 	setTextSearchFT,
 	setSortPrice,
 } = actions;
->>>>>>> 12151109bb075c8d4b026b60e28237c5eb614e1f

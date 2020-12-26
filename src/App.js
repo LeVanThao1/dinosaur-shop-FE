@@ -1,30 +1,26 @@
 import React, { Suspense, useEffect, useState } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import routes from "./configs/routes";
-import {
-	Loading,
-	Footer,
-	PrivateRouter,
-	PublicRouter,
-	Header,
-} from "./components";
-import NotFound from "./pages/NotFound";
-import "./App.scss";
-import { useSelector, useDispatch } from "react-redux";
-import { setToken } from "./slice/token.slice";
-import { setLogin, setUserInfo } from "./slice/auth.slice";
-import userApi from "./api/userApi";
-import axios from "axios";
-<<<<<<< HEAD
-=======
+import { useDispatch, useSelector } from "react-redux";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import io from "socket.io-client";
-import { setCart } from "./slice/cart.slice";
-import { Promotion, SlideRelated } from "./components";
-import { setSeenList } from "./slice/seenlist.slice";
-import { setLikeList } from "./slice/likelist.slice";
+import "./App.scss";
 import API from "./axios";
+import {
+	Footer,
+	Header,
+	Loading,
+	PrivateRouter,
+	Promotion,
+	PublicRouter,
+} from "./components";
+import routes from "./configs/routes";
+import NotFound from "./pages/NotFound";
+import { setLogin, setUserInfo } from "./slice/auth.slice";
+import { setCart } from "./slice/cart.slice";
+import { setLikeList } from "./slice/likelist.slice";
+import { setSeenList } from "./slice/seenlist.slice";
+import { setToken } from "./slice/token.slice";
 import { notifiError } from "./utils/notification";
->>>>>>> 12151109bb075c8d4b026b60e28237c5eb614e1f
+
 const Components = {};
 
 for (const c of routes) {
@@ -58,7 +54,6 @@ function App() {
 		if (firstLogin) {
 			API("user/refresh_token", "POST", null)
 				.then((res) => {
-					console.log(res);
 					dispatch(setToken(res.data.access_token));
 				})
 				.catch((err) => notifiError("Error", err.response.data.msg));
@@ -68,51 +63,6 @@ function App() {
 		}
 	}, [auth.isLogged, dispatch]);
 
-<<<<<<< HEAD
-  return (
-    <Router>
-      <div className="App">
-        <Header />
-        <Switch>
-          {routes.map((route) => {
-            const C = Components[route.component];
-            return (
-              <Route
-                key={route.path}
-                path={route.path}
-                exact={true}
-                render={() =>
-                  route.isProtected ? (
-                    <PrivateRouter isAuthenticated={auth.isLogged}>
-                      <Suspense fallback={<Loading />}>
-                        <C />
-                      </Suspense>
-                    </PrivateRouter>
-                  ) : (
-                    <PublicRouter isAuthenticated={auth.isLogged}>
-                      <Suspense fallback={<Loading />}>
-                        <C />
-                      </Suspense>
-                    </PublicRouter>
-                  )
-                }
-              />
-            );
-          })}
-          <Route
-            path="*"
-            render={() => (
-              <Suspense fallback={<Loading />}>
-                <NotFound />
-              </Suspense>
-            )}
-          ></Route>
-        </Switch>
-        <Footer />
-      </div>
-    </Router>
-  );
-=======
 	useEffect(() => {
 		if (token) {
 			dispatch(setLogin());
@@ -171,14 +121,10 @@ function App() {
 						)}
 					></Route>
 				</Switch>
-				{/* <ProductDetail /> */}
-				{/* <SlideRelated /> */}
-				{/* <Payment /> */}
 				<Footer />
 			</div>
 		</Router>
 	);
->>>>>>> 12151109bb075c8d4b026b60e28237c5eb614e1f
 }
 
 export default App;
