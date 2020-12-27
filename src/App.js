@@ -18,9 +18,10 @@ import axios from "axios";
 import io from "socket.io-client";
 import { setCart } from "./slice/cart.slice";
 import { Promotion, SlideRelated } from "./components";
-import cookie from "react-cookies";
 import { setSeenList } from "./slice/seenlist.slice";
 import { setLikeList } from "./slice/likelist.slice";
+import API from "./axios";
+import { notifiError } from "./utils/notification";
 const Components = {};
 
 for (const c of routes) {
@@ -52,17 +53,12 @@ function App() {
 		const firstLogin = localStorage.getItem("firstLogin");
 
 		if (firstLogin) {
-			const getToken = async () => {
-				const res = await axios.post(
-					"http://localhost:3001/user/refresh_token",
-					null
-				);
-
-				const action = setToken(res.data.access_token);
-
-				dispatch(action);
-			};
-			getToken();
+			API("user/refresh_token", "POST", null)
+				.then((res) => {
+					console.log(res);
+					dispatch(setToken(res.data.access_token));
+				})
+				.catch((err) => notifiError("Error", err.response.data.msg));
 		} else {
 			const cart = JSON.parse(localStorage.getItem("cart"));
 			dispatch(setCart(cart ? cart : []));
@@ -71,16 +67,13 @@ function App() {
 
 	useEffect(() => {
 		if (token) {
-			const getUser = () => {
-				dispatch(setLogin());
-				return userApi.getUser(token).then((res) => {
-					const action = setUserInfo(res.data);
-					dispatch(action);
-					console.log(res.data.cart);
+			dispatch(setLogin());
+			API("user/infor", "GET", null, token)
+				.then((res) => {
+					dispatch(setUserInfo(res.data));
 					dispatch(setCart(res.data.cart));
-				});
-			};
-			getUser();
+				})
+				.catch((err) => notifiError("Error", err.response.data.msg));
 		}
 	}, [token, dispatch]);
 
@@ -101,6 +94,7 @@ function App() {
 									route.isProtected ? (
 										<PrivateRouter
 											isAuthenticated={auth.isLogged}
+											title={route.title}
 										>
 											<Suspense fallback={<Loading />}>
 												<C socket={socket} />
@@ -109,6 +103,7 @@ function App() {
 									) : (
 										<PublicRouter
 											isAuthenticated={auth.isLogged}
+											title={route.title}
 										>
 											<Suspense fallback={<Loading />}>
 												<C socket={socket} />

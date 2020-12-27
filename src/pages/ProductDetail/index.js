@@ -12,7 +12,7 @@ import { setProduct, setComment } from "../../slice/productdetail.slice";
 import { addSeenList } from "../../slice/seenlist.slice";
 import CommentItem from "./CommentItem";
 import FormInput from "./FormInput";
-import cookie from "react-cookies";
+
 function ProductDetail({ socket }) {
 	const [loading, setLoading] = useState(true);
 	const productDetail = useSelector((state) => state.productDetail);
@@ -127,13 +127,15 @@ function ProductDetail({ socket }) {
 					</div>
 					<FormInput productId={product._id} socket={socket} />
 					<div className="comments_list">
-						{comments.map((comment) => (
-							<CommentItem
-								key={comment._id}
-								comment={comment}
-								socket={socket}
-							/>
-						))}
+						{comments
+							? comments.map((comment) => (
+									<CommentItem
+										key={comment._id}
+										comment={comment}
+										socket={socket}
+									/>
+							  ))
+							: null}
 					</div>
 					<button ref={pageEnd} style={{ opacity: 0 }}>
 						Load more

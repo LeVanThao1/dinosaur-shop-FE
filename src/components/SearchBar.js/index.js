@@ -2,15 +2,21 @@ import React, { memo, useState } from "react";
 import PropTypes from "prop-types";
 import { SearchOutlined } from "@ant-design/icons";
 import "./index.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { setTextSearchFT } from "../../slice/products.slice";
 
 SearchBar.propTypes = {};
 
 function SearchBar(props) {
-	const [value, setValue] = useState("");
+	const { filter } = useSelector((state) => state.products);
+	const { textSearch } = filter;
+	const dispatch = useDispatch();
+	// const [value, setValue] = useState("");
 
 	const _onChange = (e) => {
 		e.preventDefault();
-		setValue(e.target.value);
+		// setValue(e.target.value);
+		dispatch(setTextSearchFT(e.target.value));
 	};
 	return (
 		<div className="search-content">
@@ -18,7 +24,7 @@ function SearchBar(props) {
 				<input
 					type="text"
 					placeholder="Search"
-					value={value}
+					value={textSearch.split("=")[1]}
 					onChange={_onChange}
 					autoFocus
 				/>
