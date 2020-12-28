@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Collapse, Select } from "antd";
+// import "bootstrap/dist/css/bootstrap.min.css";
+import { Collapse, Select, Input, Button, InputNumber } from "antd";
 
 import "./index.scss";
 import { HeartOutlined, HeartFilled } from "@ant-design/icons";
@@ -27,6 +27,7 @@ function ContentPay(props) {
     material,
     name,
     _id,
+    amount,
   } = productDetail.product;
   const likeList = useSelector((state) => state.likeList);
   const [warning, setWarning] = useState("none");
@@ -37,7 +38,13 @@ function ContentPay(props) {
   const cart = useSelector((state) => state.cart);
   const token = useSelector((state) => state.token);
 
-  const amounts = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  // const amounts = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  const [amountBuy, setAmountBuy] = useState(1);
+
+  const handleChangeMount = (e) => {
+    console.log(e);
+    setAmountBuy(e);
+  };
 
   const handleHeart = (type = true) => {
     if (type) {
@@ -144,10 +151,10 @@ function ContentPay(props) {
               <Select
                 className="size__option"
                 name="size"
-				id="size"
-				labelInValue="Size"
+                id="size"
+                labelInValue="Size"
                 defaultValue={{ value: "size" }}
-                style={{ fontWeight: "normal", width: 130}}
+                style={{ fontWeight: "normal", width: 130 }}
                 ref={refSize}
               >
                 {sizes.map((size, i) => (
@@ -161,25 +168,15 @@ function ContentPay(props) {
           <div className="amount">
             <span>SỐ LƯỢNG</span>
             <div className="size__option">
-              {/* <select
-								className="size__option"
-								name="size"
-								id="size"
-								ref={refAmount}
-							>
-								<option value="1" selected>
-									1
-								</option>
-								<option value="2">{amount}2</option>
-								<option value="3">3</option>
-								<option value="4">4</option>
-								<option value="5">5</option>
-								<option value="6">6</option>
-								<option value="7">7</option>
-								<option value="8">8</option>
-								<option value="9">9</option>
-							</select> */}
-              <Select
+              <InputNumber
+                min={1}
+                max={amount}
+                defaultValue={1}
+                onChange={(e) => handleChangeMount(e)}
+                // placeholder="Số lượng"
+              />
+              {/* <Button onClick={handleRaise}>+</Button>           */}
+              {/* <Select
                 labelInValue="Số lượng"
                 defaultValue={{ value: "số lượng" }}
                 style={{ fontWeight: "normal", width: 130 }}
@@ -190,38 +187,42 @@ function ContentPay(props) {
                     {a}
                   </Option>
                 ))}
-              </Select>
+              </Select> */}
             </div>
           </div>
         </div>
         <div className="btn__addCart__like child__detail list-group-item">
           <div className="btn btn__addCart" onClick={handleCart}>
-            <button className="btn__add">THÊM VÀO GIỎ HÀNG</button>
+            <Button type="primary" className="btn__add">
+              THÊM VÀO GIỎ HÀNG
+            </Button>
           </div>
           <div className="btn btn__like">
             {likeList.some((ll) => ll._id === _id) ? (
-              <button
+              <Button
+                type="primary"
                 className="btn__heart"
                 onClick={() => handleHeart(false)}
                 style={{ color: "#f15e2c" }}
               >
                 <HeartFilled />
-              </button>
+              </Button>
             ) : (
-              <button
+              <Button
+                type="primary"
                 className="btn__heart"
                 onClick={() => handleHeart(true)}
                 style={{ color: "white" }}
               >
                 <HeartFilled />
-              </button>
+              </Button>
             )}
           </div>
         </div>
         <div className="btn btn__payment child__detail list-group-item">
-          <button className="btn__pay" onClick={showWarning}>
+          <Button type="primary" className="btn__pay" onClick={showWarning}>
             THANH TOÁN
-          </button>
+          </Button>
         </div>
         <div className="warning child__detail list-group-item" disabled="true">
           <p className="warning__title" style={{ display: warning }}>

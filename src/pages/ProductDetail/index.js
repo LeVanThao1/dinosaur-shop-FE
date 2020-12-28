@@ -121,7 +121,11 @@ function ProductDetail({ socket }) {
               <SlideRelated />
             </div>
           </div>
-          <FormInput productId={product._id} socket={socket} placeholder="Nhập nội dung bình luận"/>
+          <FormInput
+            productId={product._id}
+            socket={socket}
+            placeholder="Nhập nội dung bình luận"
+          />
           <div className="comments_list">
             {comments
               ? comments.map((comment) => (

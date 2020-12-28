@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import "./index.scss";
 import { Container, Row, Col } from "reactstrap";
 import { DeleteOutlined, HeartOutlined, HeartFilled } from "@ant-design/icons";
-import { Button, Select } from "antd";
+import { Button, Select, InputNumber } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { addLikeList, removeProduct } from "../../../slice/likelist.slice";
 import axios from "axios";
@@ -21,6 +21,12 @@ function CartContent(props) {
   const token = useSelector((state) => state.token);
   const history = useHistory();
 
+  const [amountBy, setAmountBy] = useState(1);
+  const handleChangeMount = (e) => {
+    console.log(e);
+    // setAmountBy(e);
+  };
+
   const handleHeart = (pd, type = true) => {
     if (type) {
       dispatch(addLikeList(pd.productId));
@@ -28,7 +34,6 @@ function CartContent(props) {
       dispatch(removeProduct(pd.productId._id));
     }
   };
- 
 
   const _deleteOne = (pd) => {
     const data = cart.filter((pr) => pr.productId._id !== pd.productId._id);
@@ -87,22 +92,19 @@ function CartContent(props) {
                           </Option>
                         ))}
                       </Select>
-                      {/* <select name="size" id="size">
-                        {pd.productId.sizes.map((size) => (
-                          <option
-                            value={size.sizeId._id}
-                            selected={size.sizeId._id === pd.sizeId}
-                          >
-                            {size.sizeId.name}
-                          </option>
-                        ))}
-                      </select> */}
                     </div>
                     <div className="amount">
                       <div>
                         <span>Số lượng</span>
                       </div>
-                      <Select
+                      <InputNumber
+                        min={1}
+                        max={10}
+                        defaultValue={1}
+                        onChange={(e) => handleChangeMount(e)}
+                        // placeholder="Số lượng"
+                      />
+                      {/* <Select
                         labelInValue="Số lượng"
                         defaultValue={{ value: "số lượng" }}
                         style={{ width: 120, fontWeight: "normal" }}
@@ -115,20 +117,7 @@ function CartContent(props) {
                             {size.sizeId.name}
                           </Option>
                         ))}
-                      </Select>
-                      {/* <select name="size" id="size">
-                        <option value="1" disabled="true">
-                          1
-                        </option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                      </select> */}
+                      </Select> */}
                     </div>
                   </div>
                 </div>
@@ -172,7 +161,6 @@ function CartContent(props) {
         </Container> */}
             </div>
           ))}
-          
         </div>
       ) : (
         <h3>Chưa có sản phẩm nào được thêm vào giỏ hàng</h3>
