@@ -1,7 +1,21 @@
 // * {
 //   box-sizing: border-box;
 // }
-
+.btn-delete-back {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 1.6rem;
+  font-weight: bold;
+  padding: 40px 0;
+  button {
+    width: 14rem;
+    color: #fff;
+    font-size: 1.3rem;
+    height: auto;
+    background-color: rgb(65, 64, 64);
+  }
+}
 @media only screen and (max-width: 950px) {
   .Container {
     font-size: 22vw;

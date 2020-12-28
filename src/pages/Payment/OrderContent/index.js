@@ -4,9 +4,10 @@ import PropTypes from "prop-types";
 import "./index.scss";
 import { Button } from "antd";
 import { Input } from "antd";
+import { useHistory } from "react-router-dom";
 
 function OrderContent(props) {
- ;
+  const history = useHistory();
 
   const { price, promotion } = props;
   return (
@@ -37,7 +38,9 @@ function OrderContent(props) {
             <span>TẠM TÍNH</span>
             <span>500.000 VND</span>
           </div>
-          <Button type="primary">TIẾP TỤC THANH TOÁN</Button>
+          <Button type="primary" onClick={() => history.push("/payment")}>
+            TIẾP TỤC THANH TOÁN
+          </Button>
         </div>
       </div>
     </div>
