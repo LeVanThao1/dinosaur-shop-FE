@@ -5,19 +5,21 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  font-size: 1.6rem;
-  font-weight: bold;
+  // font-size: 1.6rem;
+
   padding: 40px 0;
   button {
-    width: 14rem;
-    color: #fff;
-    font-size: 1.3rem;
+    padding: 15px 35px;
+    width: 45%;
+    color: #111;
+    font-size: 5ch;
+    font-weight: bold;
     height: auto;
-    background-color: rgb(65, 64, 64);
+    background-color: #f1f1f1;
   }
 }
 @media only screen and (max-width: 950px) {
   .Container {
-    font-size: 22vw;
+    // font-size: 22vw;
   }
 }

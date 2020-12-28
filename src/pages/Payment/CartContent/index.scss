@@ -1,12 +1,13 @@
 .container {
   padding: 0;
+  margin-top: 3%;
 }
 
 .cart__pay {
   width: 100%;
   .header__cart {
     width: 100%;
-    background-color: #ddd;
+    background-color: #f1f1f1;
     font-size: 1.5rem;
     font-weight: bold;
     padding: 10px 20px;
@@ -21,10 +22,10 @@
     padding: 40px 0;
     button {
       width: 14rem;
-      color: #fff;
+      color: #111;
       font-size: 1.3rem;
       height: auto;
-      background-color: rgb(65, 64, 64);
+      background-color: #f1f1f1;
     }
   }
 }
@@ -70,20 +71,30 @@
 
       .size-amount {
         display: flex;
+        justify-content: space-between;
+        margin-right: 2%;
         width: 100%;
-        div {
-          width: 100%;
-          div {
-            // font-weight: bold;
-            font-size: 1.1rem;
-          }
-          select {
-            width: 80%;
-            font-size: 1rem;
-            height: auto;
-            font-weight: bold;
+        .size {
+          width: 45%;
+          :last-child {
+            width: 45%;
           }
         }
+        .amount {
+          width: 45%;
+          :last-child {
+            width: 80%;
+          }
+        }
+        //   display: flex;
+        //   width: 100%;
+        //   div {
+        //     width: 100%;
+        //     div {
+        //       // font-weight: bold;
+        //       // font-size: 1.1rem;
+        //     }
+        //   }
       }
     }
   }
@@ -128,8 +139,8 @@
         // }
       }
       .deleteBtn > button {
-        color: #fff;
-        background-color: #303030;
+        color: #111;
+        background-color: #f1f1f1;
         border: 0.5px solid #111;
         opacity: 0.9;
       }
@@ -164,11 +175,11 @@
             font-size: 2.4vw;
           }
         }
-        .size-amount {
-          div {
-            font-size: 2.2vw;
-          }
-        }
+        // .size-amount {
+        //   div {
+        //     font-size: 2.2vw;
+        //   }
+        // }
       }
     }
 
@@ -182,12 +193,12 @@
     }
   }
 
-  .btn-delete-back {
-    width: 100%;
-    button {
-      font-size: 2.5vw;
-      width: 80vw;
-      height: auto;
-    }
-  }
+  // .btn-delete-back {
+  //   width: 100%;
+  //   button {
+  //     font-size: 2.5vw;
+  //     width: 80vw;
+  //     height: auto;
+  //   }
+  // }
 }
