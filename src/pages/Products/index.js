@@ -15,10 +15,12 @@ import {
 import axios from "axios";
 import { Loading } from "../../components";
 import { notifiError } from "../../utils/notification";
+import { setLoading } from "../../slice/loading.slice";
 function ProductList(props) {
 	const dispatch = useDispatch();
-	const [loading, setLoading] = useState(true);
+	// const [loading, setLoading] = useState(true);
 	const productList = useSelector((state) => state.products);
+	const loading = useSelector((state) => state.loading);
 	const { products, pages, currentPage, filter } = productList;
 	const {
 		category,
@@ -32,7 +34,7 @@ function ProductList(props) {
 	const countRef = useRef(0);
 	const ref = useRef(null);
 	useEffect(() => {
-		setLoading(true);
+		dispatch(setLoading(true));
 		countRef.current++;
 		if (ref.current) clearTimeout(ref.current);
 		ref.current = setTimeout(
@@ -46,32 +48,16 @@ function ProductList(props) {
 					.then((res) => {
 						dispatch(setProducts(res.data.products));
 						dispatch(setPages(res.data.query));
-						setLoading(false);
+						dispatch(setLoading(false));
 					})
 					.catch((error) => {
 						notifiError("Error", error.response.data.msg);
 
-						setLoading(false);
+						dispatch(setLoading(false));
 					});
 			},
 			countRef.current > 0 ? 500 : 0
 		);
-		setLoading(false);
-		// if()
-		// axios
-		// 	.get(
-		// 		`http://localhost:3001/api/products?page=${currentPage}&${category}&${material}&${typeProduct}&${style}&${price}`
-		// 	)
-		// 	.then((res) => {
-		// 		dispatch(setProducts(res.data.products));
-		// 		dispatch(setPages(res.data.query));
-		// 		setLoading(false);
-		// 	})
-		// 	.catch((error) => {
-		// 		notifiError("Error", error.response.data.msg);
-
-		// 		setLoading(false);
-		// 	});
 	}, [filter, currentPage]);
 
 	const handleChangePage = (page, pageSize) => {
@@ -83,7 +69,7 @@ function ProductList(props) {
 				<Col xs={24} sm={24} md={6} lg={6} xl={6}>
 					<Filters />
 				</Col>
-				{!loading && products ? (
+				{products && (
 					<Col xs={24} sm={24} md={18} lg={18} xl={18}>
 						<div
 							style={{
@@ -116,8 +102,6 @@ function ProductList(props) {
 							)}
 						</div>
 					</Col>
-				) : (
-					<Loading />
 				)}
 			</Row>
 		</Container>
