@@ -4,13 +4,13 @@
   .header {
     font-weight: bold;
     font-size: 1.5rem;
-    background-color: #ddd;
+    background-color: #f1f1f1;
     padding: 10px 20px;
     margin: 0;
   }
   .info__content {
     padding: 0 20px;
-    background-color: #ddd;
+    background-color: #f1f1f1;
     .promotion {
       div {
         font-size: 1rem;
@@ -73,6 +73,7 @@
         background-color: #f15e2c;
         margin: 20px 0;
       }
+      
     }
   }
   .info__content > div {

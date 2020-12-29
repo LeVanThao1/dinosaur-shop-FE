@@ -18,9 +18,7 @@ function OrderContent(props) {
           <div className="id_Promotion">Nhập mã khuyến mãi</div>
           <div className="promotion__content">
             <Input type="text" />
-            <Button type="primary" className="btn btnOK">
-              ÁP DỤNG
-            </Button>
+            <Button className="btn btnOK">ÁP DỤNG</Button>
           </div>
         </div>
         <div className="orderDetail">

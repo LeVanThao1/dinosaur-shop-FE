@@ -138,7 +138,7 @@ function CartContent(props) {
                         // type="default"
                         onClick={() => handleHeart(pd, false)}
                       >
-                        <HeartFilled style={{ color: "red" }} />
+                        <HeartFilled style={{ color: "#fff" }} />
                       </Button>
                     ) : (
                       <Button

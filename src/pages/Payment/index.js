@@ -49,8 +49,7 @@ function Payment(props) {
           <Col lg="8" sm="12">
             <CartContent />
             <div className="btn btn-delete-back">
-              <Button
-                type="primary"
+              <Button                
                 className="btn__delete"
                 onClick={_deleteCart}
               >
