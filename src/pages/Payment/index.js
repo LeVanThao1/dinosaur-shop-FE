@@ -58,19 +58,13 @@ function Payment(props) {
 
 	return (
 		<>
-			{/* <div className="desktop_payment">
-        <div className="container__pay">
-          <CartContent />
-          <OrderConent />
-        </div>
-      </div> */}
 			<Container>
 				<Row>
 					<Col lg="8" sm="12">
 						<div className="header__cart">GIỎ HÀNG</div>
 						{cart &&
 							cart?.map((pd, i) => (
-								<CartContent pd={pd} key={i} />
+								<CartContent pd={pd} key={pd._id} />
 							))}
 						<div className="btn btn-delete-back">
 							<Button

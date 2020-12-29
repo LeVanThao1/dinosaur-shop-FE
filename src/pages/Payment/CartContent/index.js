@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import "./index.scss";
 import { Container, Row, Col } from "reactstrap";
@@ -25,11 +25,41 @@ function CartContent({ pd }) {
 	const [sizeSelect, setSizeSelect] = useState(
 		pd.productId.sizes.find((size) => size.sizeId._id === pd.sizeId._id)
 	);
-	const de;
-	// const sizeProductCart = cart.productId.sizes.find(size => size.sizeId._id === cart.sizeId)
-	// const
+	const refTimeout = useRef(null);
+
 	const handleChangeMount = (value) => {
 		setQuality(value);
+		if (refTimeout.current) {
+			clearTimeout(refTimeout.current);
+		}
+		refTimeout.current = setTimeout(() => {
+			const data = auth.user.cart.map((pr) => {
+				const tamp = { ...pr };
+				if (
+					pr.productId === pd.productId._id &&
+					pr.sizeId === pd.sizeId._id
+				)
+					tamp.amount = value;
+				return tamp;
+			});
+			if (auth.isLogged) {
+				axios
+					.patch(
+						"http://localhost:3001/user/cart",
+						{ cart: data },
+						{
+							headers: { Authorization: token },
+						}
+					)
+					.then((res) => {
+						dispatch(changeCart(data));
+						notifiSuccess("Notify", res.data.msg);
+					})
+					.catch((err) =>
+						notifiError("Notify", err.response.data.msg)
+					);
+			}
+		}, 500);
 	};
 
 	const handleChangeSize = (select) => {
@@ -39,7 +69,10 @@ function CartContent({ pd }) {
 
 		const cartNew = auth.user.cart.map((cart) => {
 			const tamp = { ...cart };
-			if (cart.productId === pd.productId._id) {
+			if (
+				cart.productId === pd.productId._id &&
+				cart.sizeId === pd.sizeId._id
+			) {
 				tamp.sizeId = select.value;
 				tamp.amount = quality;
 			}
@@ -73,20 +106,29 @@ function CartContent({ pd }) {
 	};
 
 	const _deleteOne = (pd) => {
-		const data = auth.filter((pr) => pr.productId !== cart.productId);
-		axios
-			.patch(
-				"http://localhost:3001/user/cart",
-				{ cart: data },
-				{
-					headers: { Authorization: token },
-				}
+		const data = auth.user.cart.filter((pr) => {
+			if (
+				pr.productId === pd.productId._id &&
+				pr.sizeId === pd.sizeId._id
 			)
-			.then((res) => {
-				dispatch(setCart(data));
-				notifiSuccess("Notify", res.data.msg);
-			})
-			.catch((err) => notifiError("Notify", err.response.data.msg));
+				return false;
+			return true;
+		});
+		if (auth.isLogged) {
+			axios
+				.patch(
+					"http://localhost:3001/user/cart",
+					{ cart: data },
+					{
+						headers: { Authorization: token },
+					}
+				)
+				.then((res) => {
+					dispatch(changeCart(data));
+					notifiSuccess("Notify", res.data.msg);
+				})
+				.catch((err) => notifiError("Notify", err.response.data.msg));
+		}
 	};
 	return (
 		<div className="cart__pay">
@@ -134,22 +176,7 @@ function CartContent({ pd }) {
 										defaultValue={1}
 										onChange={handleChangeMount}
 										value={quality}
-										// placeholder="Số lượng"
 									/>
-									{/* <Select
-                        labelInValue="Số lượng"
-                        defaultValue={{ value: "số lượng" }}
-                        style={{ width: 120, fontWeight: "normal" }}
-                      >
-                        {pd.productId.sizes.map((size) => (
-                          <Option
-                            value={size.sizeId._id}
-                            selected={size.sizeId._id === pd.sizeId}
-                          >
-                            {size.sizeId.name}
-                          </Option>
-                        ))}
-                      </Select> */}
 								</div>
 							</div>
 						</div>

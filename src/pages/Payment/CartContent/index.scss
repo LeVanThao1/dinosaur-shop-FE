@@ -25,7 +25,7 @@
 			color: #111;
 			font-size: 1.3rem;
 			height: auto;
-			background-color: #f1f1f1;
+			background-color: #f15e2c;
 		}
 	}
 }
@@ -131,17 +131,18 @@
 				}
 			}
 			.heartBtn > button {
-				background-color: #fff;
-				border: 0.5px solid #111;
+				color: #fff;
+				background-color: #f15e2c;
+				// border: 0.5px solid #111;
 				// opacity: 0.5;
 				// button > :first-child {
 				//   background-color: #f15e2c;
 				// }
 			}
 			.deleteBtn > button {
-				color: #111;
-				background-color: #f1f1f1;
-				border: 0.5px solid #111;
+				color: #fff;
+				background-color: #f15e2c;
+				// border: 0.5px solid #111;
 				opacity: 0.9;
 			}
 		}
@@ -155,7 +156,7 @@
 	button.ant-btn:visited,
 	button.ant-btn:active,
 	button.ant-btn:focus-within {
-		color: red !important;
+		color: #111 !important;
 	}
 }
 
