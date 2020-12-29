@@ -22,9 +22,12 @@ const auth = createSlice({
 		logout: (state, action) => {
 			return { isLogged: false, user: {}, isAdmin: false };
 		},
+		changeCart: (state, action) => {
+			return { ...state, user: { ...state.user, cart: action.payload } };
+		},
 	},
 });
 
 const { reducer, actions } = auth;
 export default reducer;
-export const { logout, setLogin, setUserInfo } = actions;
+export const { logout, setLogin, setUserInfo, changeCart } = actions;

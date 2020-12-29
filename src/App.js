@@ -52,7 +52,7 @@ function App() {
 		const firstLogin = localStorage.getItem("firstLogin");
 
 		if (firstLogin) {
-			API("user/refresh_token", "POST", null)
+			API("user/refresh_token", "POST")
 				.then((res) => {
 					dispatch(setToken(res.data.access_token));
 				})
@@ -66,10 +66,9 @@ function App() {
 	useEffect(() => {
 		if (token) {
 			dispatch(setLogin());
-			API("user/infor", "GET", null, token)
+			API("user/infor", "GET", token)
 				.then((res) => {
 					dispatch(setUserInfo(res.data));
-					dispatch(setCart(res.data.cart));
 				})
 				.catch((err) => notifiError("Error", err.response.data.msg));
 		}

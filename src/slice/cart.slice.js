@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 const cart = createSlice({
 	name: "cart",
-	initialState: [],
+	initialState: null,
 	reducers: {
 		setCart: (state, action) => {
 			// cookie.save("cart", action.payload);

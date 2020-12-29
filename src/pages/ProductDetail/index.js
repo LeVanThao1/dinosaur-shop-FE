@@ -97,7 +97,7 @@ function ProductDetail({ socket }) {
 	}, [socket, comments]);
 	return (
 		<>
-			{productDetail.product && !loading && (
+			{productDetail.product && (
 				<div className="desktop-detail">
 					<div className="container__product__detail">
 						<div className="header__product__detail">

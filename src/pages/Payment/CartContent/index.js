@@ -10,101 +10,133 @@ import axios from "axios";
 import { setCart } from "../../../slice/cart.slice";
 import { useHistory } from "react-router-dom";
 import { notifiError, notifiSuccess } from "../../../utils/notification";
+import { changeCart } from "../../../slice/auth.slice";
 
 const { Option } = Select;
 
-function CartContent(props) {
-  const [heart, setHeart] = useState("false");
-  const cart = useSelector((state) => state.cart);
-  const likeList = useSelector((state) => state.likeList);
-  const dispatch = useDispatch();
-  const token = useSelector((state) => state.token);
-  const history = useHistory();
+function CartContent({ pd }) {
+	const likeList = useSelector((state) => state.likeList);
+	const dispatch = useDispatch();
+	const auth = useSelector((state) => state.auth);
+	const token = useSelector((state) => state.token);
+	const history = useHistory();
+	const cart = useSelector((state) => state.cart);
+	const [quality, setQuality] = useState(pd.amount);
+	const [sizeSelect, setSizeSelect] = useState(
+		pd.productId.sizes.find((size) => size.sizeId._id === pd.sizeId._id)
+	);
+	const de;
+	// const sizeProductCart = cart.productId.sizes.find(size => size.sizeId._id === cart.sizeId)
+	// const
+	const handleChangeMount = (value) => {
+		setQuality(value);
+	};
 
-  const [amountBy, setAmountBy] = useState(1);
-  const handleChangeMount = (e) => {
-    console.log(e);
-    // setAmountBy(e);
-  };
+	const handleChangeSize = (select) => {
+		setSizeSelect(
+			pd.productId.sizes.find((size) => size.sizeId._id === select.value)
+		);
 
-  const handleHeart = (pd, type = true) => {
-    if (type) {
-      dispatch(addLikeList(pd.productId));
-    } else {
-      dispatch(removeProduct(pd.productId._id));
-    }
-  };
+		const cartNew = auth.user.cart.map((cart) => {
+			const tamp = { ...cart };
+			if (cart.productId === pd.productId._id) {
+				tamp.sizeId = select.value;
+				tamp.amount = quality;
+			}
+			return tamp;
+		});
+		if (auth.isLogged) {
+			axios
+				.patch(
+					"http://localhost:3001/user/cart",
+					{
+						cart: cartNew,
+					},
+					{ headers: { Authorization: token } }
+				)
+				.then((res) => {
+					notifiSuccess("Notify", "Change size success");
+					dispatch(changeCart(cartNew));
+				})
+				.catch((e) => {
+					notifiError("Error", e.response.data.msg);
+				});
+		}
+	};
 
-  const _deleteOne = (pd) => {
-    const data = cart.filter((pr) => pr.productId._id !== pd.productId._id);
-    axios
-      .patch(
-        "http://localhost:3001/user/cart",
-        { cart: data },
-        {
-          headers: { Authorization: token },
-        }
-      )
-      .then((res) => {
-        dispatch(setCart(data));
-        notifiSuccess("Notify", res.data.msg);
-      });
-    // .catch((err) => notifiError("Notify", err.response.data.msg));
-  };
-  return (
-    <div className="cart__pay">
-      <div className="header__cart">GIỎ HÀNG</div>
-      {cart.length > 0 ? (
-        <div className="left__detail">
-          {cart.map((pd, i) => (
-            <div className="details__cart " key={pd.productId._id}>
-              {/* <Container className="container"> */}
-              {/* <Row className="details__cart"> */}
-              {/* <Col className="col" xs="9"> */}
-              <div className="img_detail__cart">
-                <div className="logo">
-                  <img src={pd.productId.images[0]} alt="" />
-                </div>
-                <div className="detail">
-                  <div className="detail__content">
-                    <div className="name">{pd.productId.name}</div>
-                    <div className="price">
-                      <b>Giá: </b>
-                      {pd.productId.salePrice} VND
-                    </div>
-                  </div>
-                  <div className="size-amount">
-                    <div className="size">
-                      <div>
-                        <span>Size</span>
-                      </div>
-                      <Select
-                        labelInValue
-                        defaultValue={{ value: "size" }}
-                        style={{ width: 120 }}
-                      >
-                        {pd.productId.sizes.map((size) => (
-                          <Option
-                            value={size.sizeId._id}
-                            selected={size.sizeId._id === pd.sizeId}
-                          >
-                            {size.sizeId.name}
-                          </Option>
-                        ))}
-                      </Select>
-                    </div>
-                    <div className="amount">
-                      <div>
-                        <span>Số lượng</span>
-                      </div>
-                      <InputNumber
-                        min={1}
-                        max={10}
-                        defaultValue={1}
-                        onChange={(e) => handleChangeMount(e)}
-                        // placeholder="Số lượng"
-                      />
-                      {/* <Select
+	const handleHeart = (pd, type = true) => {
+		if (type) {
+			dispatch(addLikeList(pd.productId));
+		} else {
+			dispatch(removeProduct(pd.productId._id));
+		}
+	};
+
+	const _deleteOne = (pd) => {
+		const data = auth.filter((pr) => pr.productId !== cart.productId);
+		axios
+			.patch(
+				"http://localhost:3001/user/cart",
+				{ cart: data },
+				{
+					headers: { Authorization: token },
+				}
+			)
+			.then((res) => {
+				dispatch(setCart(data));
+				notifiSuccess("Notify", res.data.msg);
+			})
+			.catch((err) => notifiError("Notify", err.response.data.msg));
+	};
+	return (
+		<div className="cart__pay">
+			<div className="left__detail">
+				<div className="details__cart " key={pd.productId._id}>
+					<div className="img_detail__cart">
+						<div className="logo">
+							<img src={pd.productId.images[0]} alt="" />
+						</div>
+						<div className="detail">
+							<div className="detail__content">
+								<div className="name">{pd.productId.name}</div>
+								<div className="price">
+									<b>Giá: </b>
+									{pd.productId.salePrice} VND
+								</div>
+							</div>
+							<div className="size-amount">
+								<div className="size">
+									<div>
+										<span>Size</span>
+									</div>
+									<Select
+										labelInValue
+										defaultValue={{
+											value: pd.sizeId._id,
+										}}
+										style={{ width: 120 }}
+										onChange={handleChangeSize}
+									>
+										{pd.productId.sizes.map((size) => (
+											<Option value={size.sizeId._id}>
+												{size.sizeId.name}
+											</Option>
+										))}
+									</Select>
+								</div>
+								<div className="amount">
+									<div>
+										<span>Số lượng</span>
+									</div>
+									<InputNumber
+										min={1}
+										max={sizeSelect.amount}
+										defaultValue={1}
+										onChange={handleChangeMount}
+										value={quality}
+										// placeholder="Số lượng"
+									/>
+									{/* <Select
                         labelInValue="Số lượng"
                         defaultValue={{ value: "số lượng" }}
                         style={{ width: 120, fontWeight: "normal" }}
@@ -118,55 +150,59 @@ function CartContent(props) {
                           </Option>
                         ))}
                       </Select> */}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/* </Col>
+								</div>
+							</div>
+						</div>
+					</div>
+					{/* </Col>
             <Col> */}
-              <div className="action">
-                <div className="price__status">
-                  <div className="price__action">
-                    {pd.productId.salePrice} VND
-                  </div>
-                  <div className="status">Còn hàng</div>
-                </div>
-                <div className="btnAction">
-                  <div className="heartBtn">
-                    {likeList.some((ll) => ll._id === pd.productId._id) ? (
-                      <Button
-                        // type="default"
-                        onClick={() => handleHeart(pd, false)}
-                      >
-                        <HeartFilled style={{ color: "red" }} />
-                      </Button>
-                    ) : (
-                      <Button
-                        // type="default"
-                        onClick={() => handleHeart(pd, true)}
-                      >
-                        <HeartOutlined />
-                      </Button>
-                    )}
-                  </div>
-                  <div className="deleteBtn">
-                    <Button type="primary" onClick={() => _deleteOne(pd)}>
-                      <DeleteOutlined />
-                    </Button>
-                  </div>
-                </div>
-              </div>
-              {/* </Col>
+					<div className="action">
+						<div className="price__status">
+							<div className="price__action">
+								{pd.productId.salePrice} VND
+							</div>
+							<div className="status">Còn hàng</div>
+						</div>
+						<div className="btnAction">
+							<div className="heartBtn">
+								{likeList.some(
+									(ll) => ll._id === pd.productId._id
+								) ? (
+									<Button
+										// type="default"
+										onClick={() => handleHeart(pd, false)}
+									>
+										<HeartFilled style={{ color: "red" }} />
+									</Button>
+								) : (
+									<Button
+										// type="default"
+										onClick={() => handleHeart(pd, true)}
+									>
+										<HeartOutlined />
+									</Button>
+								)}
+							</div>
+							<div className="deleteBtn">
+								<Button
+									type="primary"
+									onClick={() => _deleteOne(pd)}
+								>
+									<DeleteOutlined />
+								</Button>
+							</div>
+						</div>
+					</div>
+					{/* </Col>
           </Row>
         </Container> */}
-            </div>
-          ))}
-        </div>
-      ) : (
-        <h3>Chưa có sản phẩm nào được thêm vào giỏ hàng</h3>
-      )}
-    </div>
-  );
+				</div>
+				{/* ))} */}
+			</div>
+			{/* ) : (<h3>Chưa có sản phẩm nào được thêm vào giỏ hàng</h3> */}
+			{/* )} */}
+		</div>
+	);
 }
 
 export default CartContent;
