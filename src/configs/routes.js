@@ -198,7 +198,7 @@ export default [
 	{
 		title: "Danh sách đơn hàng|| Shop",
 		component: "Orders",
-		path: "/user/orders",
+		path: "/orders",
 		isProtected: true,
 		exact: true,
 	},
