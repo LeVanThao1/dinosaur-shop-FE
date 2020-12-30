@@ -8,23 +8,23 @@ import ShippingForm from "./ShippingForm";
 import ShippingDetail from "./ShippingDetail";
 
 function Shipping(props) {
-  return (
-    <>
-      {/* <div className="desktop_shipping">
+	return (
+		<>
+			{/* <div className="desktop_shipping">
         <div className="container"></div>
       </div> */}
-      <Container>
-        <Row>
-          <Col xs="12" sm="12" lg="8">
-            <ShippingForm />
-          </Col>
-          <Col xs="12" sm="12" lg="4">
-            <ShippingDetail />
-          </Col>
-        </Row>
-      </Container>
-    </>
-  );
+			<Container>
+				<Row>
+					<Col xs="12" sm="12" lg="8">
+						<ShippingForm />
+					</Col>
+					<Col xs="12" sm="12" lg="4">
+						<ShippingDetail />
+					</Col>
+				</Row>
+			</Container>
+		</>
+	);
 }
 
 export default Shipping;

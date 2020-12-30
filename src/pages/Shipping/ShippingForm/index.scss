@@ -1,75 +1,75 @@
 .info_form {
-  width: 100%;
-  margin-bottom: 30px;
-  position: relative;
-  .header {
-    width: 100%;
-    padding: 10px;
-    background-color: #f1f1f1;
-    margin: 40px 0;
-    font-size: 20px;
-    font-weight: bold;
-  }
+	width: 100%;
+	margin-bottom: 30px;
+	position: relative;
+	.header {
+		width: 100%;
+		padding: 10px;
+		background-color: #f1f1f1;
+		margin: 40px 0;
+		font-size: 20px;
+		font-weight: bold;
+	}
 
-  .text-group {
-    display: flex;
-  }
+	.text-group {
+		display: flex;
+	}
 
-  .text-group > span {
-    margin: auto 5px;
-    font-size: 20px;
-    span {
-      color: green;
-    }
-  }
+	.text-group > span {
+		margin: auto 5px;
+		font-size: 20px;
+		span {
+			color: green;
+		}
+	}
 
-  .form-group {
-    margin: 20px;
-    width: 80%;
-  }
+	.form-group {
+		margin: 20px;
+		width: 80%;
+	}
 
-  .deliveryS {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    margin-left: 0;
-    .delivery_price {
-      font-weight: bold;
-      margin: auto;
-      font-size: 1.2rem;
-    }
-  }
-  .check_info {
-    input {
-      margin-right: 30px;
-      font-size: 120%;
-      -webkit-transform: scale(2); /* Safari and Chrome */
-    }
+	.deliveryS {
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		margin-left: 0;
+		.delivery_price {
+			font-weight: bold;
+			margin: auto;
+			font-size: 1.2rem;
+		}
+	}
+	.check_info {
+		input {
+			margin-right: 30px;
+			font-size: 120%;
+			-webkit-transform: scale(2); /* Safari and Chrome */
+		}
 
-    // .delivery_label {
-    //   display: block;
-    //   padding-left: 30px;
-    //   position: relative;
-    // }
+		// .delivery_label {
+		//   display: block;
+		//   padding-left: 30px;
+		//   position: relative;
+		// }
 
-    // .delivery_label:before {
-    //   position: absolute;
-    //   width: 15px;
-    //   height: 15px;
-    //   content: "";
-    //   border: 1px solid black;
-    //   left: 0;
-    // }
+		// .delivery_label:before {
+		//   position: absolute;
+		//   width: 15px;
+		//   height: 15px;
+		//   content: "";
+		//   border: 1px solid black;
+		//   left: 0;
+		// }
 
-    // .delivery_option:checked + .delivery_label:before {
-    //   content: "x";
-    //   line-height: 15px;
-    //   text-align: center;
-    // }
+		// .delivery_option:checked + .delivery_label:before {
+		//   content: "x";
+		//   line-height: 15px;
+		//   text-align: center;
+		// }
 
-    // .delivery_option {
-    //   position: absolute;
-    //   margin-left: -1000px;
-    // }
-  }
+		// .delivery_option {
+		//   position: absolute;
+		//   margin-left: -1000px;
+		// }
+	}
 }

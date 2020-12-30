@@ -1,15 +1,26 @@
 import React, { Fragment, memo } from "react";
-import { useHistory } from "react-router-dom";
+import { Redirect, useHistory, useLocation } from "react-router-dom";
 
 function PrivateRouter(props) {
 	const history = useHistory();
-
+	const location = useLocation();
 	document.title = props.title;
 	if (!props.isAuthenticated) history.push("/login");
 	return (
-		<Fragment>
-			<div>{props.children}</div>
-		</Fragment>
+		<>
+			{props.isAuthenticated ? (
+				<Fragment>
+					<div>{props.children}</div>
+				</Fragment>
+			) : (
+				<Redirect
+					to={{
+						pathname: "/login",
+						state: { from: location },
+					}}
+				/>
+			)}
+		</>
 	);
 }
 

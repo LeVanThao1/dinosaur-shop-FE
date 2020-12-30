@@ -188,4 +188,18 @@ export default [
 		isProtected: true,
 		exact: true,
 	},
+	{
+		title: "Tracking Order || Shop",
+		component: "TrackingOrder",
+		path: "/tracking-orders",
+		isProtected: true,
+		exact: true,
+	},
+	{
+		title: "Danh sách đơn hàng|| Shop",
+		component: "Orders",
+		path: "/user/orders",
+		isProtected: true,
+		exact: true,
+	},
 ];

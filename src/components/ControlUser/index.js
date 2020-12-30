@@ -48,7 +48,13 @@ function ControlUser(props) {
 						</Button>
 					</Link>
 				)}
-				<Link to="/shipping">
+				<Link to="/orders">
+					<Button className="btn_control">
+						<DropboxOutlined className="icon" />
+						<span>Danh sách đơn hàng</span>
+					</Button>
+				</Link>
+				<Link to="/tracking-orders">
 					<Button className="btn_control">
 						<DropboxOutlined className="icon" />
 						<span>Tra cứu đơn hàng</span>
@@ -60,8 +66,7 @@ function ControlUser(props) {
 						<span>Tìm cửa hàng</span>
 					</Button>
 				</Link>
-				<Link to="/">
-					{" "}
+				<Link to="/shipping">
 					<Button className="btn_control">
 						<HeartOutlined className="icon" />
 						<span>Yêu thích</span>
