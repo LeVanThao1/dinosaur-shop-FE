@@ -22,14 +22,22 @@ function ShippingForm(props) {
     price,
     reduction,
     pay_price,
+    note,
   } = props;
+
+  const [form] = Form.useForm();
+
+  const onFinish = (values) => {
+    console.log("Received values of form: ", values);
+  };
 
   const { Option } = Select;
 
   const total = +price - +reduction + +delivery_price + +pay_price;
   const [shipBy, setShipBy] = useState(1);
+
   const handleChangeShip = (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setShipBy(e.target.value);
   };
 
@@ -58,8 +66,6 @@ function ShippingForm(props) {
   const [district, setDistrict] = useState("");
   const [ward, setWawrd] = useState("");
 
-  console.log(sub.getProvinces());
-  console.log(sub.getDistricts());
   const handleChangeSelect = (e) => {
     setProvince(e);
   };
@@ -76,26 +82,31 @@ function ShippingForm(props) {
   const validateName = () => {
     validateMessages ? setInput("success") : setInput("warning");
   };
-
+  const _onChange = () => {
+    console.log(form.getFieldValue("name"));
+  };
   return (
     <div className="info_form">
       <div className="header">THÔNG TIN GIAO HÀNG</div>
       <Form
+        form={form}
         {...layout}
         name="nest-messages"
         validateMessages={validateMessages}
+        onChange={_onChange}
+        scrollToFirstError
       >
         <Form.Item
           onChange={validateName}
           label="Họ tên"
-          name={["user", "name"]}
+          name={"name"}
           hasFeedback
           rules={[{ required: true, message: "Vui lòng nhập họ tên" }]}
         >
           <Input
             className="form-control"
             type="text"
-            placeholder="Họ tên"
+            placeholder="Nhập đầy đủ họ và tên"
             name="name"
             value={name}
             id="success"
@@ -103,19 +114,19 @@ function ShippingForm(props) {
         </Form.Item>
         <Form.Item
           label="Số điện thoại"
-          name={["user", "phoneNumber"]}
+          name={"phoneNumber"}
           hasFeedback
           rules={[{ required: true, types: true }]}
         >
           <Input
             className="form-control"
-            placeholder="Số điện thoại"
+            placeholder="Số điện thoại người nhận"
             name="phone_number"
             value={phone_number}
             id="phone_number"
           />
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           label="Email"
           name={["user", "email"]}
           hasFeedback
@@ -129,20 +140,20 @@ function ShippingForm(props) {
             value={email}
             id="success"
           />
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item
           label="Tỉnh/ Thành phố"
-          name={["user", "provinces"]}
+          name={"provinces"}
           hasFeedback
           rules={[{ required: true, message: "Tỉnh thành phố bắt buộc" }]}
-          placeholder="Vui lòng chọn Tỉnh/ Thành phố"
         >
           <Select
             allowClear
             id="city"
             name="city"
             onChange={handleChangeSelect}
+            placeholder="Vui lòng chọn Tỉnh/ Thành phố"
           >
             {sub.getProvinces().map((option, index) => (
               <Option
@@ -158,7 +169,7 @@ function ShippingForm(props) {
         <Form.Item
           label="Quận/ Huyện"
           hasFeedback
-          name={["user", "district"]}
+          name={"district"}
           rules={[{ required: true }]}
         >
           <Select
@@ -177,7 +188,12 @@ function ShippingForm(props) {
               ))}
           </Select>
         </Form.Item>
-        <Form.Item label="Phường/ Xã" hasFeedback name={["user", "ward"]}>
+        <Form.Item
+          label="Phường/ Xã"
+          hasFeedback
+          name={"ward"}
+          rules={[{ required: true }]}
+        >
           <Select
             allowClear
             id="ward"
@@ -197,7 +213,7 @@ function ShippingForm(props) {
         <Form.Item
           label="Địa chỉ cụ thể"
           hasFeedback
-          name={["user", "address"]}
+          name={"address"}
           rules={[{ required: true, message: "Địa chỉ bắt buộc" }]}
         >
           <Input
@@ -207,6 +223,21 @@ function ShippingForm(props) {
             name="address"
             value={address}
             id="success"
+          />
+        </Form.Item>
+        <Form.Item
+          label="Ghi chú"
+          hasFeedback
+          name={"note"}
+          rules={[{ required: false }]}
+        >
+          <Input.TextArea
+            placeholder="Thêm ghi chú"
+            name="note"
+            maxLength={200}
+            showCount={true}
+            autoSize={true}
+            value={""}
           />
         </Form.Item>
         <Checkbox checked="true" style={{ padding: "20px" }} />
@@ -275,7 +306,6 @@ function ShippingForm(props) {
           rules={[
             { required: true, message: "Phương thức thanh toán bắt buộc" },
           ]}
-          
         >
           <Select
             allowClear
@@ -283,8 +313,8 @@ function ShippingForm(props) {
             name="paymethod"
             //   disabled={district ? false : true}
             //   onChange={handleChangeWard}
-			placeholder="Vui lòng chọn phương thức thanh toán"
-			style={{ color: "#f15e2c"}}
+            placeholder="Vui lòng chọn phương thức thanh toán"
+            style={{ color: "#f15e2c" }}
           >
             <label className="delivery_label" value="deli">
               Thanh toán trực tiếp khi giao hàng

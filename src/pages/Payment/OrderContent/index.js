@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import "./index.scss";
 import { Button } from "antd";
 import { Input } from "antd";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-function OrderContent(props) {
+function OrderContent({ total, promotion }) {
   const history = useHistory();
-
-  const { price, promotion } = props;
   return (
     <div className="info__pay .col-6 .col-sm-4">
       <div className="header">ĐƠN HÀNG</div>
@@ -24,19 +23,19 @@ function OrderContent(props) {
         <div className="orderDetail">
           <div className="cost">
             <span>Đơn hàng</span>
-            <span>{price}500.000 VND</span>
+            <span>{total} VND</span>
           </div>
           <div className="reduction">
-            <p>Giảm</p>
-            <p>{promotion}0 VND</p>
+            <p>Giảm ({promotion} %)</p>
+            <p>{(total * promotion) / 100} VND</p>
           </div>
         </div>
         <div className="tempCacul">
           <div className="child__tempCacul">
             <span>TẠM TÍNH</span>
-            <span>500.000 VND</span>
+            <span>{(total * (100 - promotion)) / 100} VND</span>
           </div>
-          <Button type="primary" onClick={() => history.push("/payment")}>
+          <Button type="primary" onClick={() => history("/shipping")}>
             TIẾP TỤC THANH TOÁN
           </Button>
         </div>
