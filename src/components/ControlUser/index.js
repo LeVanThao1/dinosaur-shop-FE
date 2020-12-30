@@ -48,7 +48,7 @@ function ControlUser(props) {
 						</Button>
 					</Link>
 				)}
-				<Link to="/">
+				<Link to="/shipping">
 					<Button className="btn_control">
 						<DropboxOutlined className="icon" />
 						<span>Tra cứu đơn hàng</span>

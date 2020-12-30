@@ -5,21 +5,29 @@ const cart = createSlice({
 	reducers: {
 		setCart: (state, action) => {
 			// cookie.save("cart", action.payload);
-			localStorage.setItem("cart", JSON.stringify(action.payload));
-			return action.payload;
+			if (!action.payload.type)
+				localStorage.setItem(
+					"cart",
+					JSON.stringify(action.payload.cart)
+				);
+			return action.payload.cart;
 		},
 		addCart: (state, action) => {
 			// cookie.save("cart", [...state, action.payload]);
-			localStorage.setItem(
-				"cart",
-				JSON.stringify([...state, action.payload])
-			);
+			if (!action.payload.type)
+				localStorage.setItem(
+					"cart",
+					JSON.stringify([...state, action.payload.product])
+				);
 			return [...state, action.payload];
 		},
 		removeProduct: (state, action) => {
-			const data = state.filter((st) => st.productId !== action.payload);
+			const data = state.filter(
+				(st) => st.productId !== action.payload.product
+			);
 			// cookie.save("cart", data);
-			localStorage.setItem("cart", JSON.stringify(data));
+			if (!action.payload.type)
+				localStorage.setItem("cart", JSON.stringify(data));
 			return data;
 		},
 	},

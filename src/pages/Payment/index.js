@@ -29,7 +29,7 @@ function Payment(props) {
 			dispatch(setLoading(true));
 			API("user/cart", "GET", token)
 				.then((res) => {
-					dispatch(setCart(res.data.cart));
+					dispatch(setCart({ cart: res.data.cart, type: true }));
 					dispatch(setLoading(false));
 				})
 				.catch((err) => {
@@ -39,21 +39,25 @@ function Payment(props) {
 		}
 	}, [auth.user.cart]);
 	const _deleteCart = () => {
-		axios
-			.patch(
-				"http://localhost:3001/user/cart",
-				{ cart: [] },
-				{
-					headers: { Authorization: token },
-				}
-			)
-			.then((res) => {
-				dispatch(setCart([]));
-				notifiSuccess("Notify", res.data.msg);
-			})
-			.catch((err) => {
-				notifiError("Notify", err.response.data.msg);
-			});
+		if (auth.isLogged) {
+			axios
+				.patch(
+					"http://localhost:3001/user/cart",
+					{ cart: [] },
+					{
+						headers: { Authorization: token },
+					}
+				)
+				.then((res) => {
+					dispatch(setCart({ cart: [], type: true }));
+					notifiSuccess("Notify", res.data.msg);
+				})
+				.catch((err) => {
+					notifiError("Notify", err.response.data.msg);
+				});
+		} else {
+			dispatch(setCart({ cart: [], type: false }));
+		}
 	};
 
 	return (

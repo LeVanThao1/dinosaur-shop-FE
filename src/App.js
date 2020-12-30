@@ -59,7 +59,7 @@ function App() {
 				.catch((err) => notifiError("Error", err.response.data.msg));
 		} else {
 			const cart = JSON.parse(localStorage.getItem("cart"));
-			dispatch(setCart(cart ? cart : []));
+			dispatch(setCart({ cart: cart ? cart : [], type: false }));
 		}
 	}, [auth.isLogged, dispatch]);
 

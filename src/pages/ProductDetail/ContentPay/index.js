@@ -7,7 +7,7 @@ import { HeartOutlined, HeartFilled } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { addLikeList, removeProduct } from "../../../slice/likelist.slice";
 import { changeCart } from "../../../slice/auth.slice";
-import { addCart } from "../../../slice/cart.slice";
+import { setCart } from "../../../slice/cart.slice";
 import axios from "axios";
 import { notifiSuccess, notifiError } from "../../../utils/notification";
 const { Panel } = Collapse;
@@ -39,7 +39,7 @@ function ContentPay(props) {
 	const [quality, setQuality] = useState(1);
 	const auth = useSelector((state) => state.auth);
 	const token = useSelector((state) => state.token);
-
+	const cart = useSelector((state) => state.cart);
 	const handleHeart = (type = true) => {
 		if (type) {
 			dispatch(addLikeList(productDetail.product));
@@ -61,43 +61,79 @@ function ContentPay(props) {
 		setQuality(value);
 	}
 	const handleCart = () => {
-		const isTrue = auth.user.cart.some(
-			(c) => c.sizeId === refSize.current && c.productId === _id
-		);
-		let cartNew = [];
-		if (isTrue) {
-			cartNew = auth.user.cart.map((c) => {
-				const tamp = { ...c };
-				if (c.sizeId === refSize.current && c.productId === _id) {
-					tamp.amount += +quality;
-				}
-				return tamp;
-			});
+		if (auth.isLogged) {
+			const isTrue = auth.user.cart.some(
+				(c) => c.sizeId === refSize.current && c.productId === _id
+			);
+			let cartNew = [];
+			if (isTrue) {
+				cartNew = auth.user.cart.map((c) => {
+					const tamp = { ...c };
+					if (c.sizeId === refSize.current && c.productId === _id) {
+						tamp.amount += +quality;
+					}
+					return tamp;
+				});
+			} else {
+				cartNew = [
+					...auth.user.cart,
+					{
+						productId: _id,
+						amount: +quality,
+						sizeId: refSize.current,
+					},
+				];
+			}
+			axios
+				.patch(
+					"http://localhost:3001/user/cart",
+					{
+						cart: cartNew,
+					},
+					{ headers: { Authorization: token } }
+				)
+				.then((res) => {
+					notifiSuccess("Notify", "Add cart success");
+					dispatch(changeCart(cartNew));
+				})
+				.catch((e) => {
+					notifiError("Error", e.response.data.msg);
+				});
 		} else {
-			cartNew = [
-				...auth.user.cart,
-				{
-					productId: _id,
-					amount: +quality,
-					sizeId: refSize.current,
-				},
-			];
+			// try {
+			const isTrue = cart.some(
+				(c) =>
+					c.sizeId._id === refSize.current && c.productId._id === _id
+			);
+			let cartNew = [];
+			if (isTrue) {
+				cartNew = cart.map((c) => {
+					const tamp = { ...c };
+					if (
+						c.sizeId._id === refSize.current &&
+						c.productId._id === _id
+					) {
+						tamp.amount += +quality;
+					}
+					return tamp;
+				});
+			} else {
+				cartNew = [
+					...cart,
+					{
+						productId: productDetail.product,
+						amount: +quality,
+						sizeId: sizeSelect.sizeId,
+					},
+				];
+			}
+			// dispatch(setCart({ cart: cartNew, type: false }));
+
+			// notifiSuccess("Notify", "Add cart success");
+			// } catch (e) {
+			// 	notifiSuccess("Error", "Add cart fail");
+			// }
 		}
-		axios
-			.patch(
-				"http://localhost:3001/user/cart",
-				{
-					cart: cartNew,
-				},
-				{ headers: { Authorization: token } }
-			)
-			.then((res) => {
-				notifiSuccess("Notify", "Add cart success");
-				dispatch(changeCart(cartNew));
-			})
-			.catch((e) => {
-				notifiError("Error", e.response.data.msg);
-			});
 	};
 
 	return (

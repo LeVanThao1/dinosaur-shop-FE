@@ -29,7 +29,7 @@ function ResultPayment({ socket }) {
 				.then((res) => {
 					const { products } = res.data;
 					if (cart.toString() === products.toString()) {
-						dispatch(setCart([]));
+						dispatch(setCart({ cart: [], type: true }));
 					} else {
 						const newCart = cart.filter((ca) => {
 							return products.some((p) => p._id === ca._id);
@@ -43,7 +43,9 @@ function ResultPayment({ socket }) {
 								{ headers: { Authorization: token } }
 							)
 							.then((res) => {
-								dispatch(setCart(newCart));
+								dispatch(
+									setCart({ cart: newCart, type: true })
+								);
 							});
 					}
 					history.push("/order");

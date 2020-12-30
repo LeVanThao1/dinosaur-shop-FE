@@ -106,15 +106,15 @@ function CartContent({ pd }) {
 	};
 
 	const _deleteOne = (pd) => {
-		const data = auth.user.cart.filter((pr) => {
-			if (
-				pr.productId === pd.productId._id &&
-				pr.sizeId === pd.sizeId._id
-			)
-				return false;
-			return true;
-		});
 		if (auth.isLogged) {
+			const data = auth.user.cart.filter((pr) => {
+				if (
+					pr.productId === pd.productId._id &&
+					pr.sizeId === pd.sizeId._id
+				)
+					return false;
+				return true;
+			});
 			axios
 				.patch(
 					"http://localhost:3001/user/cart",
