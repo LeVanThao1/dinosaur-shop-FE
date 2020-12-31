@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import FacebookLogin from "react-facebook-login";
 import { GoogleLogin } from "react-google-login";
 // import { useDispatch } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
 // import { dispatchLogin } from "../../redux/action/authAction";
 import {
 	notifiError,
@@ -27,7 +27,9 @@ const initialState = {
 
 function Login(props) {
 	const history = useHistory();
-
+	const location = useLocation();
+	const {from} = location.state || {from: {pathname: "/"}}
+	console.log(from, location)
 	const auth = useSelector((state) => state.auth);
 
 	if (auth.isLogged) {
@@ -48,7 +50,8 @@ function Login(props) {
 			localStorage.setItem("firstLogin", true);
 			const action = setLogin();
 			dispatch(action);
-			history.push("/");
+			history.push(from.pathname);
+			// <Redirect to={from} />
 		} catch (err) {
 			err.response.data.msg &&
 				notifiError("Error", err.response.data.msg);
@@ -70,7 +73,8 @@ function Login(props) {
 			localStorage.setItem("firstLogin", true);
 			dispatch(setLogin());
 			notifiSuccess("Notify", res);
-			history.push("/");
+			// history.push("/");
+			<Redirect to={from} />
 		} catch (err) {
 			err.response.data.msg &&
 				notifiError("Error", err.response.data.msg);

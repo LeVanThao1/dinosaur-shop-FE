@@ -27,13 +27,13 @@ export default [
 		isProtected: false,
 		exact: true,
 	},
-	{
-		title: "Edit Profile Page || Shop",
-		component: "EditProfile",
-		path: "/edit_user/:id",
-		isProtected: true,
-		exact: true,
-	},
+	// {
+	// 	title: "Edit Profile Page || Shop",
+	// 	component: "EditProfile",
+	// 	path: "/edit_user/:id",
+	// 	isProtected: true,
+	// 	exact: true,
+	// },
 	{
 		title: "Profile Page || Shop",
 		component: "Profile",

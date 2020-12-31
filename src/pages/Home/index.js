@@ -8,6 +8,11 @@ import { useSelector } from "react-redux";
 Home.propTypes = {};
 
 function Home(props) {
+	const auth = useSelector(state => state.auth)
+	console.log(auth.user)
+	// vd t làm ở đây thôi nge..
+	// sau khi đăng nhập rồi ak
+
 	return (
 		<div>
 			<SliderSale />
