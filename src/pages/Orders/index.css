@@ -1,0 +1,16 @@
+.Orders_page {
+	margin: 30px 0 20px 0;
+	padding: 0px 5%;
+}
+.Orders_page-heading {
+	text-align: center;
+	font-size: 28px;
+	font-weight: 700;
+	color: #000;
+	margin-bottom: 20px;
+}
+.order_img {
+	width: 50%;
+	height: 50%;
+	border-radius: 50%;
+}
