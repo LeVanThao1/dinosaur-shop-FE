@@ -35,7 +35,7 @@ function ControlUser(props) {
 		<>
 			<section className="control_user">
 				{isLogged && (
-					<Link to="/profile">
+					<Link to="/">
 						<Button className="btn_control">
 							<img
 								src={user.avatar}

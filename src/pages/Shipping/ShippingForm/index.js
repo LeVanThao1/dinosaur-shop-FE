@@ -7,7 +7,7 @@ import "./index.scss";
 import sub from "sub-vn";
 
 import { Button, Form, Input, Select, Checkbox, Radio, message } from "antd";
-
+const { Option } = Select;
 ShippingForm.propTypes = {};
 
 function ShippingForm(props) {
@@ -31,13 +31,9 @@ function ShippingForm(props) {
 		console.log("Received values of form: ", values);
 	};
 
-	const { Option } = Select;
-
-	const total = +price - +reduction + +delivery_price + +pay_price;
 	const [shipBy, setShipBy] = useState(1);
 
 	const handleChangeShip = (e) => {
-		// console.log(e.target.value);
 		setShipBy(e.target.value);
 	};
 
@@ -85,6 +81,9 @@ function ShippingForm(props) {
 	const _onChange = () => {
 		console.log(form.getFieldValue("name"));
 	};
+	const _onFinish = () => {
+		console.log("submit");
+	};
 	return (
 		<div className="info_form">
 			<div className="header">THÔNG TIN GIAO HÀNG</div>
@@ -94,6 +93,7 @@ function ShippingForm(props) {
 				name="nest-messages"
 				validateMessages={validateMessages}
 				onChange={_onChange}
+				onFinish={_onFinish}
 				scrollToFirstError
 			>
 				<Form.Item
@@ -128,21 +128,6 @@ function ShippingForm(props) {
 						id="phone_number"
 					/>
 				</Form.Item>
-				{/* <Form.Item
-          label="Email"
-          name={["user", "email"]}
-          hasFeedback
-          rules={[{ required: true, type: "email" }]}
-        >
-          <Input
-            className="form-control"
-            type="text"
-            placeholder="Email"
-            name="email"
-            value={email}
-            id="success"
-          />
-        </Form.Item> */}
 
 				<Form.Item
 					label="Tỉnh/ Thành phố"
@@ -260,57 +245,14 @@ function ShippingForm(props) {
 						<label style={{ fontSize: "1.2rem" }}>
 							Tốc độ tiêu chuẩn (từ 2 - 5 ngày làm việc)
 						</label>
-						{/* <img
-              src={Image.question}
-              style={{
-                width: "20px",
-                height: "20px",
-                margin: "0 30px",
-              }}
-            /> */}
 					</div>
-					<div className="delivery_price">{delivery_price}0 VND</div>
+					<div className="delivery_price">{32000} VND</div>
 				</div>
 				<div className="header">PHƯƠNG THỨC THANH TOÁN</div>
-				{/* <Radio.Group
-          onChange={handleChangeShip}
-          value={shipBy}
-          style={{ display: "inline-block" }}
-          size="small"
-        >
-          <Radio style={(radioStyle, { padding: "5px" })} value={1}>
-            <label className="delivery_label">
-              Thanh toán trực tiếp khi giao hàng
-            </label>
-            <img
-              src={Image.question}
-              style={{
-                width: "20px",
-                height: "20px",
-                margin: "0 30px",
-              }}
-            />
-            <img src={Image.cod} style={{ width: "40px", height: "40px" }} />
-          </Radio>
-          <Radio style={(radioStyle, { padding: "5px" })} value={2}>
-            <label className="delivery_label">
-              Thanh toán bằng thẻ nội địa (ATM)
-            </label>
-            <img
-              src={Image.question}
-              style={{
-                width: "20px",
-                height: "20px",
-                margin: "0 30px",
-              }}
-            />
-            <img src={Image.atm} style={{ width: "50px", height: "50px" }} />
-          </Radio> */}
-
 				<Form.Item
 					label="Phương thức"
 					hasFeedback
-					name={["user", "paymethod"]}
+					name={"paymethod"}
 					rules={[
 						{
 							required: true,
@@ -322,17 +264,15 @@ function ShippingForm(props) {
 						allowClear
 						id="paymethod"
 						name="paymethod"
-						//   disabled={district ? false : true}
-						//   onChange={handleChangeWard}
-						placeholder="Vui lòng chọn phương thức thanh toán"
+						defaultValue={0}
 						style={{ color: "#f15e2c" }}
 					>
-						<label className="delivery_label" value="deli">
+						<Option className="delivery_label" value={0}>
 							Thanh toán trực tiếp khi giao hàng
-						</label>
-						<label className="delivery_label" value="online">
+						</Option>
+						<Option className="delivery_label" value={1}>
 							Thanh toán bằng thẻ trực tuyến
-						</label>
+						</Option>
 					</Select>
 				</Form.Item>
 				{/* </Radio.Group> */}

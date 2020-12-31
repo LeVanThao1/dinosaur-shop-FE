@@ -16,87 +16,92 @@ import API from "../../axios";
 Payment.propTypes = {};
 
 function Payment(props) {
-  // const { price } = props;
-  const dispatch = useDispatch();
-  const token = useSelector((state) => state.token);
-  const history = useHistory();
-  const cart = useSelector((state) => state.cart);
-  const auth = useSelector((state) => state.auth);
-  const loading = useSelector((state) => state.loading);
-  const [total, setTotal] = useState(0);
-  useEffect(() => {
-    if (auth.isLogged) {
-      dispatch(setLoading(true));
-      API("user/cart", "GET", token)
-        .then((res) => {
-          dispatch(setCart({ cart: res.data.cart, type: true }));
-          dispatch(setLoading(false));
-        })
-        .catch((err) => {
-          dispatch(setLoading(false));
-          console.error(err);
-        });
-    }
-  }, [auth.user.cart]);
-  const _deleteCart = () => {
-    if (auth.isLogged) {
-      axios
-        .patch(
-          "http://localhost:3001/user/cart",
-          { cart: [] },
-          {
-            headers: { Authorization: token },
-          }
-        )
-        .then((res) => {
-          dispatch(setCart({ cart: [], type: true }));
-          notifiSuccess("Notify", res.data.msg);
-        })
-        .catch((err) => {
-          notifiError("Notify", err.response.data.msg);
-        });
-    } else {
-      dispatch(setCart({ cart: [], type: false }));
-    }
-  };
-  useEffect(() => {
-    setTotal(
-      cart.reduce((a, b) => {
-        return a + b.productId.salePrice * b.amount;
-      }, 0)
-    );
-  }, [cart]);
+	// const { price } = props;
+	const dispatch = useDispatch();
+	const token = useSelector((state) => state.token);
+	const history = useHistory();
+	const cart = useSelector((state) => state.cart);
+	const auth = useSelector((state) => state.auth);
+	const loading = useSelector((state) => state.loading);
+	const [total, setTotal] = useState(0);
+	useEffect(() => {
+		if (auth.isLogged) {
+			dispatch(setLoading(true));
+			API("user/cart", "GET", token)
+				.then((res) => {
+					dispatch(setCart({ cart: res.data.cart, type: true }));
+					dispatch(setLoading(false));
+				})
+				.catch((err) => {
+					dispatch(setLoading(false));
+					console.error(err);
+				});
+		}
+	}, [auth.user.cart]);
+	const _deleteCart = () => {
+		if (auth.isLogged) {
+			axios
+				.patch(
+					"http://localhost:3001/user/cart",
+					{ cart: [] },
+					{
+						headers: { Authorization: token },
+					}
+				)
+				.then((res) => {
+					dispatch(setCart({ cart: [], type: true }));
+					notifiSuccess("Notify", res.data.msg);
+				})
+				.catch((err) => {
+					notifiError("Notify", err.response.data.msg);
+				});
+		} else {
+			dispatch(setCart({ cart: [], type: false }));
+		}
+	};
+	useEffect(() => {
+		if (cart) {
+			setTotal(
+				cart.reduce((a, b) => {
+					return a + b.productId.salePrice * b.amount;
+				}, 0)
+			);
+		}
+	}, [cart]);
 
-  return (
-    <>
-      <Container>
-        <Row>
-          <Col lg="8" sm="12">
-            <div className="header__cart">GIỎ HÀNG</div>
-            {cart && cart?.map((pd, i) => <CartContent pd={pd} key={pd._id} />)}
-            <div className="btn btn-delete-back">
-              <Button
-                type="primary"
-                className="btn__delete"
-                onClick={_deleteCart}
-              >
-                XOÁ HẾT
-              </Button>
-              <Button
-                className="btn__back"
-                onClick={() => history.push("/products")}
-              >
-                QUAY LẠI MUA HÀNG
-              </Button>
-            </div>
-          </Col>
-          <Col lg="4" sm="12">
-            <OrderConent total={total} promotion={0} />
-          </Col>
-        </Row>
-      </Container>
-    </>
-  );
+	return (
+		<>
+			<Container className="container_cart">
+				<Row>
+					<Col lg="8" sm="12">
+						<div className="header__cart">GIỎ HÀNG</div>
+						{cart &&
+							cart?.map((pd, i) => (
+								<CartContent pd={pd} key={pd._id} />
+							))}
+						<div className="btn btn-delete-back">
+							<Button
+								type="primary"
+								className="btn__delete"
+								onClick={_deleteCart}
+							>
+								XOÁ HẾT
+							</Button>
+							<Button
+								className="btn__back"
+								onClick={() => history.push("/products")}
+							>
+								QUAY LẠI MUA HÀNG
+							</Button>
+						</div>
+					</Col>
+					<Col lg="4" sm="12">
+						<OrderConent total={total} promotion={0} />
+					</Col>
+				</Row>
+			</Container>
+		</>
+	);
 }
 
 export default memo(Payment);

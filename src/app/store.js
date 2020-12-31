@@ -10,6 +10,7 @@ import cartReducer from "../slice/cart.slice";
 import seenListReducer from "../slice/seenlist.slice";
 import menuReducer from "../slice/menu.slice";
 import loadingReducer from "../slice/loading.slice";
+import orderReducer from "../slice/order.slice";
 
 const rootReducer = {
 	users: usersReducer,
@@ -23,6 +24,7 @@ const rootReducer = {
 	seenlist: seenListReducer,
 	menu: menuReducer,
 	loading: loadingReducer,
+	orders: orderReducer,
 };
 
 const store = configureStore({
