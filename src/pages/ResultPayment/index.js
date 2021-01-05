@@ -5,6 +5,7 @@ import queryString from "query-string";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setCart } from "../../slice/cart.slice";
+import { changeCart } from "../../slice/auth.slice";
 ResultPayment.propTypes = {};
 
 function ResultPayment({ socket }) {
@@ -27,36 +28,27 @@ function ResultPayment({ socket }) {
 					{ headers: { Authorization: token } }
 				)
 				.then((res) => {
-					const { products } = res.data;
-					if (cart.toString() === products.toString()) {
-						dispatch(setCart({ cart: [], type: true }));
-					} else {
-						const newCart = cart.filter((ca) => {
-							return products.some((p) => p._id === ca._id);
-						});
-						axios
-							.patch(
-								"http://localhost:3001/user/cart",
-								{
-									cart: newCart,
-								},
-								{ headers: { Authorization: token } }
-							)
-							.then((res) => {
-								dispatch(
-									setCart({ cart: newCart, type: true })
-								);
-							});
-					}
-					history.push("/order");
-				})
-				.catch((e) => history.push("/cart"));
+					axios
+						.put(
+							"http://localhost:3001/user/cart",
+							{
+								cart: [],
+							},
+							{ headers: { Authorization: token } }
+						)
+						.then((res) => {
+							dispatch(setCart({ cart: [], type: true }));
+							dispatch(changeCart([]));
+							history.push("/orders");
+						})
+						.catch((e) => history.push("/cart"));
+				});
 		} catch (e) {
-			console.log(e);
+			history.push("/cart");
 		}
 		setLoading(false);
 	}, []);
-	return <div>thanh toán</div>;
+	return <></>;
 }
 
 export default ResultPayment;

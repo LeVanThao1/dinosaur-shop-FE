@@ -5,7 +5,8 @@ function PrivateRouter(props) {
 	const history = useHistory();
 	const location = useLocation();
 	document.title = props.title;
-	if (!props.isAuthenticated) history.push("/login");
+	console.log(location);
+	// if (!props.isAuthenticated) history.push("/login");
 	return (
 		<>
 			{props.isAuthenticated ? (

@@ -1,47 +1,29 @@
+import { Checkbox, Form, Input, Select } from "antd";
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-
-import { CheckCircleOutlined } from "@ant-design/icons";
-import Image from "../../../constant/image";
-import "./index.scss";
+import { useSelector } from "react-redux";
+import { Redirect, useHistory } from "react-router-dom";
 import sub from "sub-vn";
+import API from "../../../axios";
+import { notifiError, notifiSuccess } from "../../../utils/notification";
+import "./index.scss";
 
-import { Button, Form, Input, Select, Checkbox, Radio, message } from "antd";
 const { Option } = Select;
 ShippingForm.propTypes = {};
 
-function ShippingForm(props) {
-	const {
-		name,
-		phone_number,
-		email,
-		address,
-		delivery_price,
-		size,
-		amount,
-		price,
-		reduction,
-		pay_price,
-		note,
-	} = props;
+function ShippingForm({ form }) {
+	const { creatingOrder } = useSelector((state) => state.orders);
+	const { user } = useSelector((state) => state.auth);
+	const token = useSelector((state) => state.token);
+	const history = useHistory();
 
-	const [form] = Form.useForm();
-
-	const onFinish = (values) => {
-		console.log("Received values of form: ", values);
-	};
-
-	const [shipBy, setShipBy] = useState(1);
-
-	const handleChangeShip = (e) => {
-		setShipBy(e.target.value);
-	};
-
-	const radioStyle = {
-		display: "block",
-		height: "30px",
-		lineHeight: "30px",
-	};
+	useEffect(() => {
+		form.setFieldsValue({
+			name: user.name,
+			phone: user.phone,
+			address: user.address,
+			typePayment: 0,
+		});
+	}, []);
 
 	const layout = {
 		labelCol: { span: 4 },
@@ -83,6 +65,44 @@ function ShippingForm(props) {
 	};
 	const _onFinish = () => {
 		console.log("submit");
+
+		const {
+			name,
+			address,
+			phone,
+			note,
+			typePayment,
+			ward,
+			provinces,
+			district,
+		} = form.getFieldsValue();
+		const dataOrder = {
+			recipientName: name,
+			recipientPhone: phone,
+			note,
+			typePayment,
+			address: `${address}, ${ward[0]}, ${district[0]}, ${provinces[0]}`,
+			shipMoney: 32000,
+			...creatingOrder,
+		};
+		console.log(dataOrder);
+		if (typePayment === 0) {
+			API("api/orders", "POST", token, dataOrder)
+				.then((res) => {
+					notifiSuccess(res.data.msg);
+					history.push("/orders");
+				})
+				.catch((err) => notifiError(err.response.data.msg));
+		} else {
+			API("api/create_payment_url", "POST", token, dataOrder)
+				.then((res) => {
+					// notifiSuccess(res.data.msg);
+					// history.push("/orders");
+					// <Redirect to={res.data.url} />;
+					window.location.href = res.data.url;
+				})
+				.catch((err) => notifiError(err.response.data.msg));
+		}
 	};
 	return (
 		<div className="info_form">
@@ -90,7 +110,7 @@ function ShippingForm(props) {
 			<Form
 				form={form}
 				{...layout}
-				name="nest-messages"
+				name="form"
 				validateMessages={validateMessages}
 				onChange={_onChange}
 				onFinish={_onFinish}
@@ -110,13 +130,15 @@ function ShippingForm(props) {
 						type="text"
 						placeholder="Nhập đầy đủ họ và tên"
 						name="name"
-						value={name}
+						initialValue={user.name}
+						defaultValue={user.name}
+						value={user.name}
 						id="success"
 					/>
 				</Form.Item>
 				<Form.Item
 					label="Số điện thoại"
-					name={"phoneNumber"}
+					name={"phone"}
 					hasFeedback
 					rules={[{ required: true, types: true }]}
 				>
@@ -124,7 +146,9 @@ function ShippingForm(props) {
 						className="form-control"
 						placeholder="Số điện thoại người nhận"
 						name="phone_number"
-						value={phone_number}
+						initialValue={user.phone}
+						defaultValue={user.phone}
+						value={user.phone}
 						id="phone_number"
 					/>
 				</Form.Item>
@@ -138,6 +162,7 @@ function ShippingForm(props) {
 					]}
 				>
 					<Select
+						showSearch
 						allowClear
 						id="city"
 						name="city"
@@ -147,7 +172,7 @@ function ShippingForm(props) {
 						{sub.getProvinces().map((option, index) => (
 							<Option
 								key={index}
-								value={option.code}
+								value={[option.name, option.code]}
 								selected={option.code === province}
 							>
 								{option.name}
@@ -162,6 +187,7 @@ function ShippingForm(props) {
 					rules={[{ required: true }]}
 				>
 					<Select
+						showSearch
 						allowClear
 						id="district"
 						name="district"
@@ -171,9 +197,12 @@ function ShippingForm(props) {
 					>
 						{province &&
 							sub
-								.getDistrictsByProvinceCode(province)
+								.getDistrictsByProvinceCode(province[1])
 								.map((dis, i) => (
-									<Option key={i} value={dis.code}>
+									<Option
+										key={i}
+										value={[dis.name, dis.code]}
+									>
 										{dis.name}
 									</Option>
 								))}
@@ -186,6 +215,7 @@ function ShippingForm(props) {
 					rules={[{ required: true }]}
 				>
 					<Select
+						showSearch
 						allowClear
 						id="ward"
 						name="ward"
@@ -195,9 +225,12 @@ function ShippingForm(props) {
 					>
 						{district &&
 							sub
-								.getWardsByDistrictCode(district)
+								.getWardsByDistrictCode(district[1])
 								.map((ward, i) => (
-									<Option key={i} value={ward.code}>
+									<Option
+										key={i}
+										value={[ward.name, ward.code]}
+									>
 										{ward.name}
 									</Option>
 								))}
@@ -214,7 +247,9 @@ function ShippingForm(props) {
 						type="text"
 						placeholder="Nhập địa chỉ"
 						name="address"
-						value={address}
+						initialValue={user.address}
+						defaultValue={user.address}
+						value={user.address}
 						id="success"
 					/>
 				</Form.Item>
@@ -252,7 +287,7 @@ function ShippingForm(props) {
 				<Form.Item
 					label="Phương thức"
 					hasFeedback
-					name={"paymethod"}
+					name={"typePayment"}
 					rules={[
 						{
 							required: true,

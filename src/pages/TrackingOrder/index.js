@@ -29,7 +29,7 @@ function TrackingOrder() {
 		if (input === "") errorRef.current.style.display = "block";
 		else {
 			setLoading(true);
-			API("api/orders/" + input, "GET", null, token)
+			API("api/orders/" + input, "GET", token)
 				.then((res) => {
 					// console.log(res.data)
 					setOrder(res.data);
@@ -44,7 +44,7 @@ function TrackingOrder() {
 	};
 	const searchOrderAll = () => {
 		setLoading(true);
-		API("api/orders", "GET", null, token)
+		API("api/orders", "GET", token)
 			.then((res) => {
 				console.log(res.data);
 				setOrder(res.data);

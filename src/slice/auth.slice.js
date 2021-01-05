@@ -25,9 +25,18 @@ const auth = createSlice({
 		changeCart: (state, action) => {
 			return { ...state, user: { ...state.user, cart: action.payload } };
 		},
+		updateUser: (state, action) => {
+			return { ...state, user: { ...state.user, ...action.payload } };
+		},
 	},
 });
 
 const { reducer, actions } = auth;
 export default reducer;
-export const { logout, setLogin, setUserInfo, changeCart } = actions;
+export const {
+	logout,
+	setLogin,
+	setUserInfo,
+	changeCart,
+	updateUser,
+} = actions;

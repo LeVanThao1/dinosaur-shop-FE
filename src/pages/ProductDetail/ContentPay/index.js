@@ -85,7 +85,7 @@ function ContentPay(props) {
 				];
 			}
 			axios
-				.patch(
+				.put(
 					"http://localhost:3001/user/cart",
 					{
 						cart: cartNew,

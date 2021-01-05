@@ -1,29 +1,36 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-
+import { Button } from "antd";
 import "./index.scss";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 const ship = 32000;
-function ShippingDetail(props) {
-	const cart = useSelector((state) => state.cart);
+function ShippingDetail({ form }) {
+	const { creatingOrder } = useSelector((state) => state.orders);
+	// const { promotion, products } = creatingOrder
 	const [total, setTotal] = useState(0);
 
 	useEffect(() => {
-		if (cart) {
+		if (creatingOrder) {
 			setTotal(
-				cart.reduce((a, b) => a + b.productId.salePrice * b.amount, 0)
+				creatingOrder.products.reduce(
+					(a, b) => a + b.productId.salePrice * b.amount,
+					0
+				)
 			);
+		} else {
+			<Redirect to="/products" />;
 		}
-	}, [cart]);
+	}, [creatingOrder]);
+
 	return (
 		<>
-			{cart ? (
+			{creatingOrder ? (
 				<div className="detail_shipping">
 					<div className="list-group">
 						<div className="list-group-item header">ĐƠN HÀNG</div>
 						<div className="list-group-item line"></div>
-						{cart.map((pd, i) => (
+						{creatingOrder.products.map((pd, i) => (
 							<>
 								<div className="list-group-item text-1">
 									<span className="text-3 text-3-1">
@@ -52,7 +59,12 @@ function ShippingDetail(props) {
 						</div>
 						<div className="list-group-item text-1 group-2">
 							<span className="text-3 text-3-1">Giảm </span>
-							<span className="text-3-3 text-3-1">- 0 VND</span>
+							<span className="text-3-3 text-3-1">
+								-
+								{(total * creatingOrder?.promotion?.percent ||
+									0) / 100}{" "}
+								VND
+							</span>
 						</div>
 						<div className="list-group-item text-1-1 group-2">
 							<span className="text-3">Phí vận chuyển </span>
@@ -66,17 +78,24 @@ function ShippingDetail(props) {
 						<div className="list-group-item text-1-1 text-4">
 							<span className="text-3 text-4-1">TỔNG CỘNG </span>
 							<span className="text-3 text-4-2">
-								{total + ship} VND
+								{total *
+									(1 -
+										(creatingOrder.promotion?.percent ||
+											0) /
+											100) +
+									ship}{" "}
+								VND
 							</span>
 						</div>
 						<div className="list-group-item btnComplete">
-							<button
+							<Button
 								className="btn btn-cart btn-complete-detail"
-								// onClick={}
-								htmpType
+								// onClick={() => form.onFinish()}
+								form="form"
+								htmlType="submit"
 							>
 								HOÀN TẤT ĐẶT HÀNG
-							</button>
+							</Button>
 						</div>
 					</div>
 				</div>

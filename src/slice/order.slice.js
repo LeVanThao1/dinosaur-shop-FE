@@ -5,7 +5,7 @@ const orders = createSlice({
 	initialState: {
 		listOrder: null,
 		currentOrder: null,
-		ordering: null,
+		creatingOrder: null,
 	},
 	reducers: {
 		setListOrder: (state, action) => {
@@ -15,7 +15,7 @@ const orders = createSlice({
 			return { ...state, currentOrder: action.payload };
 		},
 		setOrdering: (state, action) => {
-			return { ...state, ordering: action.payload };
+			return { ...state, creatingOrder: {...action.payload} };
 		},
 	},
 });

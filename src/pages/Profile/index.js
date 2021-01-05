@@ -1,8 +1,9 @@
-import React, { memo, useState, useRef } from "react";
+import React, { memo, useState, useRef, useEffect } from "react";
 import sub from "sub-vn";
 import { CameraOutlined } from "@ant-design/icons";
-
+import { updateUser } from "../../slice/auth.slice";
 import "./index.css";
+import axios from "axios";
 import {
 	Form,
 	Input,
@@ -18,8 +19,26 @@ import {
 	message,
 } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { notifiError, notifiSuccess } from "../../utils/notification";
+import API from "../../axios";
+
+const { Option } = Select;
 function Profile() {
-	const { Option } = Select;
+	const { user } = useSelector((state) => state.auth);
+	const [formProfile] = Form.useForm();
+	const [formPassword] = Form.useForm();
+	const [image, setImage] = useState(user.avatar);
+	const token = useSelector((state) => state.token);
+	const dispatch = useDispatch();
+	useEffect(() => {
+		formProfile.setFieldsValue({
+			name: user.name,
+			phone: user.phone,
+			address: user.address,
+			email: user.email,
+		});
+	}, []);
 	const radioStyle = {
 		display: "block",
 		height: "30px",
@@ -47,8 +66,6 @@ function Profile() {
 	const inputFileRef = useRef(null);
 	const [changePass, setchangePass] = useState(false);
 
-	console.log(sub.getProvinces());
-	console.log(sub.getDistricts());
 	const handleChangeSelect = (e) => {
 		setProvince(e);
 	};
@@ -68,10 +85,89 @@ function Profile() {
 		setchangePass(!changePass);
 		console.log(changePass);
 	};
+	const _onFinishPassword = () => {
+		console.log("Asd");
+		const oldPassword = formPassword.getFieldValue("oldPassword");
+		const newPassword = formPassword.getFieldValue("newPassword");
+		API("user/reset", "POST", token, {
+			newPassword: newPassword,
+			oldPassword: oldPassword,
+		})
+			.then((res) => {
+				formPassword.resetFields();
+				notifiSuccess(res.data.msg);
+			})
+			.catch((err) => notifiError(err.response.data.msg));
+	};
+	const _onFinishProfile = () => {
+		const {
+			name,
+			email,
+			phone,
+			provinces,
+			ward,
+			district,
+			address,
+		} = formProfile.getFieldsValue();
+		const dataUpdate = {
+			name,
+			email,
+			phone,
+			provincial: provinces[0],
+			wards: ward[0],
+			district: district[0],
+			address,
+			avatar: image,
+		};
 
+		API("user/update", "PUT", token, dataUpdate)
+			.then((res) => {
+				formProfile.resetFields();
+				dispatch(updateUser(dataUpdate));
+				notifiSuccess("Cập nhật thành công");
+			})
+			.catch((err) => {
+				notifiError("Cập nhật thất bại");
+			});
+	};
 	const [input, setInput] = useState("warning");
 	const validateName = () => {
 		validateMessages ? setInput("success") : setInput("warning");
+	};
+
+	const _onChangeImage = async (e) => {
+		e.preventDefault();
+		try {
+			const file = e.target.files[0];
+
+			if (!file) return notifiError("No files were uploaded.");
+
+			if (file.size > 1024 * 1024) return notifiError("Size too large.");
+
+			if (file.type !== "image/jpeg" && file.type !== "image/png")
+				return notifiError("File format is incorrect.");
+
+			let formData = new FormData();
+			formData.append("file", file);
+
+			// dispatch(setLoading(true))
+			const res = await axios.post(
+				"http://localhost:3001/api/upload_avatar",
+				formData,
+				{
+					headers: {
+						"content-type": "multipart/form-data",
+						Authorization: token,
+					},
+				}
+			);
+
+			setImage(res.data.url);
+
+			// dispatch(setLoading(false))
+		} catch (err) {
+			notifiError(err.response.data.msg);
+		}
 	};
 	return (
 		<div className="Profile_page">
@@ -83,28 +179,25 @@ function Profile() {
 				</span>
 			</div>
 			<div className="profile_page-content">
-				{changePass === false && (
+				{!changePass && user && (
 					<Form
+						form={formProfile}
 						{...layout}
-						name="nest-messages"
+						name="profile"
+						onFinish={_onFinishProfile}
 						validateMessages={validateMessages}
 						className="profile_form"
 					>
 						<div className="profile_img">
 							<div className="avatar">
-								<img
-									src={
-										"https://upload.wikimedia.org/wikipedia/commons/1/17/OK-button_-_Macro_photography_of_a_remote_control.jpg"
-									}
-									alt="avt"
-								/>
+								<img src={image} alt="avt" />
 								<span className="avatar_change">
 									<CameraOutlined className="profile_img-icon" />
 									<input
 										type="file"
 										name="file"
 										id="file"
-										onChange={() => console.log("ad")}
+										onChange={_onChangeImage}
 									/>
 								</span>
 							</div>
@@ -116,7 +209,7 @@ function Profile() {
 							<Form.Item
 								onChange={validateName}
 								label="Họ tên"
-								name={["user", "name"]}
+								name={"name"}
 								hasFeedback
 								rules={[
 									{
@@ -130,13 +223,15 @@ function Profile() {
 									type="text"
 									placeholder="Họ tên"
 									name="name"
-									// value={name}
+									defaultValue={user.name}
+									initialValue={user.name}
+									value={user.name}
 									id="success"
 								/>
 							</Form.Item>
 							<Form.Item
 								label="Số điện thoại"
-								name={["user", "phoneNumber"]}
+								name={"phone"}
 								hasFeedback
 								rules={[
 									{
@@ -150,15 +245,17 @@ function Profile() {
 									className="form-control"
 									placeholder="Số điện thoại"
 									name="phone_number"
+									initialValue={user.phone}
 									// value={phone_number}
+									defaultValue={user.phone}
 									id="phone_number"
 								/>
 							</Form.Item>
 							<Form.Item
 								label="Email"
-								name={["user", "email"]}
+								name={"email"}
 								hasFeedback
-								rules={[{ required: true, type: "email" }]}
+								rules={[{ required: false, type: "email" }]}
 							>
 								<Input
 									className="form-control"
@@ -166,6 +263,8 @@ function Profile() {
 									placeholder="Email"
 									name="email"
 									disabled
+									initialValue={user.email}
+									defaultValue={user.email}
 									// value={email}
 									id="success"
 								/>
@@ -173,7 +272,7 @@ function Profile() {
 
 							<Form.Item
 								label="Tỉnh/ Thành phố"
-								name={["user", "provinces"]}
+								name={"provinces"}
 								hasFeedback
 								rules={[
 									{
@@ -184,15 +283,17 @@ function Profile() {
 								placeholder="Vui lòng chọn Tỉnh/ Thành phố"
 							>
 								<Select
+									showSearch
 									allowClear
 									id="city"
 									name="city"
 									onChange={handleChangeSelect}
+									placeholder="Vui lòng chọn Tỉnh/ Thành phố"
 								>
 									{sub.getProvinces().map((option, index) => (
 										<Option
 											key={index}
-											value={option.code}
+											value={[option.name, option.code]}
 											selected={option.code === province}
 										>
 											{option.name}
@@ -203,7 +304,7 @@ function Profile() {
 							<Form.Item
 								label="Quận/ Huyện"
 								hasFeedback
-								name={["user", "district"]}
+								name={"district"}
 								rules={[
 									{
 										required: true,
@@ -212,6 +313,7 @@ function Profile() {
 								]}
 							>
 								<Select
+									showSearch
 									allowClear
 									id="district"
 									name="district"
@@ -222,12 +324,12 @@ function Profile() {
 									{province &&
 										sub
 											.getDistrictsByProvinceCode(
-												province
+												province[1]
 											)
 											.map((dis, i) => (
 												<Option
 													key={i}
-													value={dis.code}
+													value={[dis.name, dis.code]}
 												>
 													{dis.name}
 												</Option>
@@ -237,7 +339,7 @@ function Profile() {
 							<Form.Item
 								label="Phường/ Xã"
 								hasFeedback
-								name={["user", "ward"]}
+								name={"ward"}
 								rules={[
 									{
 										required: true,
@@ -246,6 +348,7 @@ function Profile() {
 								]}
 							>
 								<Select
+									showSearch
 									allowClear
 									id="ward"
 									name="ward"
@@ -255,11 +358,14 @@ function Profile() {
 								>
 									{district &&
 										sub
-											.getWardsByDistrictCode(district)
+											.getWardsByDistrictCode(district[1])
 											.map((ward, i) => (
 												<Option
 													key={i}
-													value={ward.code}
+													value={[
+														ward.name,
+														ward.code,
+													]}
 												>
 													{ward.name}
 												</Option>
@@ -269,7 +375,7 @@ function Profile() {
 							<Form.Item
 								label="Số nhà/đường"
 								hasFeedback
-								name={["user", "address"]}
+								name={"address"}
 								rules={[
 									{
 										required: true,
@@ -283,6 +389,8 @@ function Profile() {
 									placeholder="Nhập địa chỉ"
 									name="address"
 									// value={address}
+									defaultValue={user.address}
+									initialValue={user.address}
 									id="success"
 								/>
 							</Form.Item>
@@ -290,6 +398,7 @@ function Profile() {
 								<Button
 									className="profile_submit"
 									type="primary"
+									form="profile"
 									htmlType="submit"
 								>
 									CẬP NHẬT
@@ -298,10 +407,12 @@ function Profile() {
 						</div>
 					</Form>
 				)}
-				{changePass === true && (
+				{changePass && (
 					<Form
 						{...layout}
-						name="change_password"
+						onFinish={_onFinishPassword}
+						form={formPassword}
+						name="changePassword"
 						className="profile_form"
 						scrollToFirstError
 					>
@@ -317,7 +428,7 @@ function Profile() {
 						</div>
 						<div className="profile_text">
 							<Form.Item
-								name="oldpassword"
+								name="oldPassword"
 								label="Mật khẩu cũ"
 								rules={[
 									{
@@ -326,10 +437,10 @@ function Profile() {
 									},
 								]}
 							>
-								<Input />
+								<Input.Password />
 							</Form.Item>
 							<Form.Item
-								name="password"
+								name="newPassword"
 								label="Mật khẩu mới"
 								rules={[
 									{
@@ -345,7 +456,7 @@ function Profile() {
 							<Form.Item
 								name="confirm"
 								label="Xác nhận mật khẩu"
-								dependencies={["password"]}
+								dependencies={["newPassword"]}
 								hasFeedback
 								rules={[
 									{
@@ -357,7 +468,7 @@ function Profile() {
 										validator(rule, value) {
 											if (
 												!value ||
-												getFieldValue("password") ===
+												getFieldValue("newPassword") ===
 													value
 											) {
 												return Promise.resolve();
@@ -376,6 +487,7 @@ function Profile() {
 								<Button
 									className="profile_submit"
 									type="primary"
+									form="changePassword"
 									htmlType="submit"
 								>
 									CẬP NHẬT

@@ -41,7 +41,7 @@ function Payment(props) {
 	const _deleteCart = () => {
 		if (auth.isLogged) {
 			axios
-				.patch(
+				.put(
 					"http://localhost:3001/user/cart",
 					{ cart: [] },
 					{
@@ -75,15 +75,23 @@ function Payment(props) {
 				<Row>
 					<Col lg="8" sm="12">
 						<div className="header__cart">GIỎ HÀNG</div>
-						{cart &&
+						{cart && cart.length > 0 ? (
 							cart?.map((pd, i) => (
 								<CartContent pd={pd} key={pd._id} />
-							))}
+							))
+						) : (
+							<h4 style={{ textAlign: "center" }}>
+								Giỏ hàng đang trống
+							</h4>
+						)}
 						<div className="btn btn-delete-back">
 							<Button
 								type="primary"
 								className="btn__delete"
 								onClick={_deleteCart}
+								disabled={
+									cart && cart.length > 0 ? false : true
+								}
 							>
 								XOÁ HẾT
 							</Button>

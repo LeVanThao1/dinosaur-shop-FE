@@ -1,7 +1,7 @@
 import { React, memo, useState, useRef, useEffect } from "react";
 import { Table, Tag, Space } from "antd";
 import API from "../../axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as moment from "moment";
 import { Link } from "react-router-dom";
 
@@ -13,6 +13,7 @@ import {
 	showSuccessMsg,
 } from "../../utils/notification";
 import "./index.css";
+import { setLoading } from "../../slice/loading.slice";
 const columns = [
 	{
 		title: "Đơn hàng",
@@ -66,11 +67,13 @@ const columns = [
 
 function Orders() {
 	const token = useSelector((state) => state.token);
-	const [loading, setLoading] = useState(true);
+	// const [loading, setLoading] = useState(true);
+	const loading = useSelector((state) => state.loading);
 	const [orders, setOrders] = useState([]);
+	const dispatch = useDispatch();
 	useEffect(() => {
-		setLoading(true);
-		API("api/orders", "GET", null, token)
+		dispatch(setLoading(true));
+		API("api/orders", "GET", token)
 			.then((res) => {
 				let temp = res.data;
 				let result = [];
@@ -106,20 +109,22 @@ function Orders() {
 				}
 				console.log("alo", result);
 				setOrders(result);
-				setLoading(false);
+				dispatch(setLoading(false));
 			})
 			.catch((err) => {
 				notifiError(err.response.data.msg);
-				setLoading(false);
+				dispatch(setLoading(false));
 			});
 	}, []);
 	return (
 		<div className="Orders_page">
 			<h2 className="Orders_page-heading">DANH SÁCH ĐƠN HÀNG</h2>
-			<div className="Orders_page_content">
-				<Table columns={columns} dataSource={orders} />
-				{/* <Table columns={columns}  /> */}
-			</div>
+			{!loading && (
+				<div className="Orders_page_content">
+					<Table columns={columns} dataSource={orders} />
+					{/* <Table columns={columns}  /> */}
+				</div>
+			)}
 		</div>
 	);
 }

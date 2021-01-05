@@ -5,16 +5,42 @@ import "./index.scss";
 import { Button } from "antd";
 import { Input } from "antd";
 import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import API from "../../../axios";
+import { showErrMsg } from "../../../utils/notification";
 import { setOrdering } from "../../../slice/order.slice";
 
-function OrderContent({ total, promotion }) {
+function OrderContent({ total }) {
 	const history = useHistory();
+	const [text, setText] = useState("");
+	const [promotion, setPromotion] = useState(null);
+	const [error, setError] = useState(null);
+	const dispatch = useDispatch();
+	const cart = useSelector((state) => state.cart);
 
 	const handlePayment = () => {
-		// dispatch(setOrdering(cart))
+		const products = cart.map((cc) => {
+			const tamp = { ...cc };
+			tamp.price = cc.productId.salePrice;
+			return tamp;
+		});
+		dispatch(setOrdering({ promotion: promotion, products }));
 		history.push("/shipping");
 	};
+
+	const _onChange = (e) => {
+		setText(e.target.value);
+	};
+
+	const _onClick = () => {
+		API("api/check/promotions/" + text, "GET")
+			.then((res) => {
+				setError(null);
+				setPromotion(res.data);
+			})
+			.catch((e) => setError(e.response.data.msg));
+	};
+
 	return (
 		<div className="info__pay .col-6 .col-sm-4">
 			<div className="header">ĐƠN HÀNG</div>
@@ -22,9 +48,12 @@ function OrderContent({ total, promotion }) {
 				<div className="promotion">
 					<div className="id_Promotion">Nhập mã khuyến mãi</div>
 					<div className="promotion__content">
-						<Input type="text" />
-						<Button className="btn btnOK">ÁP DỤNG</Button>
+						<Input type="text" value={text} onChange={_onChange} />
+						<Button className="btn btnOK" onClick={_onClick}>
+							ÁP DỤNG
+						</Button>
 					</div>
+					{error && showErrMsg(error)}
 				</div>
 				<div className="orderDetail">
 					<div className="cost">
@@ -32,14 +61,23 @@ function OrderContent({ total, promotion }) {
 						<span>{total} VND</span>
 					</div>
 					<div className="reduction">
-						<p>Giảm ({promotion} %)</p>
-						<p>{(total * promotion) / 100} VND</p>
+						<p>Giảm {promotion ? promotion.percent : 0}%</p>
+						<p>
+							{(total * (promotion ? promotion?.percent : 0)) /
+								100}
+							VND
+						</p>
 					</div>
 				</div>
 				<div className="tempCacul">
 					<div className="child__tempCacul">
 						<span>TẠM TÍNH</span>
-						<span>{(total * (100 - promotion)) / 100} VND</span>
+						<span>
+							{promotion
+								? total * (1 - promotion.percent / 100)
+								: total}
+							VND
+						</span>
 					</div>
 					<Button type="primary" onClick={handlePayment}>
 						TIẾP TỤC THANH TOÁN

@@ -32,7 +32,10 @@ function Login(props) {
 	const auth = useSelector((state) => state.auth);
 
 	if (auth.isLogged) {
-		history.push("/");
+		if (from.pathname !== "/") history.push(from);
+		else {
+			history.push("/");
+		}
 	}
 
 	const [user, setUser] = useState(initialState);
