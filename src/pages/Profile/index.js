@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import sub from "sub-vn";
 import API from "../../axios";
 import { updateUser } from "../../slice/auth.slice";
+import { setLoading } from "../../slice/loading.slice";
 import { notifiError, notifiSuccess } from "../../utils/notification";
 import "./index.css";
 
@@ -17,17 +18,37 @@ function Profile() {
 	const [image, setImage] = useState(user.avatar);
 	const token = useSelector((state) => state.token);
 	const dispatch = useDispatch();
+	const [province, setProvince] = useState("");
+	const [district, setDistrict] = useState("");
+	const [ward, setWawrd] = useState("");
+	const inputFileRef = useRef(null);
+	const [changePass, setchangePass] = useState(false);
+	const loading = useSelector((state) => state.loading);
 	useEffect(() => {
+		dispatch(setLoading(true));
+		const province = sub
+			.getProvinces()
+			.find((province) => province.name === user.provincial);
+		setProvince([province.name, province.code]);
+		const district = sub
+			.getDistrictsByProvinceCode(province.code)
+			.find((district) => district.name === user.district);
+		setDistrict([district.name, district.code]);
+		const ward = sub
+			.getWardsByDistrictCode(district.code)
+			.find((ward) => ward.name === user.wards);
+		setWawrd([ward.name, ward.code]);
 		formProfile.setFieldsValue({
 			name: user.name,
 			phone: user.phone,
 			address: user.address,
 			email: user.email,
-			provinces: user.provincial,
-			district: user.district,
-			ward: user.wards,
+			provinces: [user.provincial, province.code],
+			district: [user.district, district.code],
+			ward: [user.wards, ward.code],
 		});
-	}, []);
+		dispatch(setLoading(false));
+	}, [user]);
 	const radioStyle = {
 		display: "block",
 		height: "30px",
@@ -49,11 +70,6 @@ function Profile() {
 			range: "${label} must be between ${min} and ${max}",
 		},
 	};
-	const [province, setProvince] = useState("");
-	const [district, setDistrict] = useState("");
-	const [ward, setWawrd] = useState("");
-	const inputFileRef = useRef(null);
-	const [changePass, setchangePass] = useState(false);
 
 	const handleChangeSelect = (e) => {
 		setProvince(e);
@@ -166,339 +182,359 @@ function Profile() {
 					quá trình sử dụng.
 				</span>
 			</div>
-			<div className="profile_page-content">
-				{!changePass && user && (
-					<Form
-						form={formProfile}
-						{...layout}
-						name="profile"
-						onFinish={_onFinishProfile}
-						validateMessages={validateMessages}
-						className="profile_form"
-					>
-						<div className="profile_img">
-							<div className="avatar">
-								<img src={image} alt="avt" />
-								<span className="avatar_change">
-									<CameraOutlined className="profile_img-icon" />
-									<input
-										type="file"
-										name="file"
-										id="file"
-										onChange={_onChangeImage}
-									/>
+			{!loading && (
+				<div className="profile_page-content">
+					{!changePass && user && (
+						<Form
+							form={formProfile}
+							{...layout}
+							name="profile"
+							onFinish={_onFinishProfile}
+							validateMessages={validateMessages}
+							className="profile_form"
+						>
+							<div className="profile_img">
+								<div className="avatar">
+									<img src={image} alt="avt" />
+									<span className="avatar_change">
+										<CameraOutlined className="profile_img-icon" />
+										<input
+											type="file"
+											name="file"
+											id="file"
+											onChange={_onChangeImage}
+										/>
+									</span>
+								</div>
+								<span className="profile_description">
+									Ảnh đại diện
 								</span>
 							</div>
-							<span className="profile_description">
-								Ảnh đại diện
-							</span>
-						</div>
-						<div className="profile_text">
-							<Form.Item
-								onChange={validateName}
-								label="Họ tên"
-								name={"name"}
-								hasFeedback
-								rules={[
-									{
-										required: true,
-										message: "Vui lòng nhập họ tên",
-									},
-								]}
-							>
-								<Input
-									className="form-control"
-									type="text"
-									placeholder="Họ tên"
-									name="name"
-									defaultValue={user.name}
-									initialValue={user.name}
-									value={user.name}
-									id="success"
-								/>
-							</Form.Item>
-							<Form.Item
-								label="Số điện thoại"
-								name={"phone"}
-								hasFeedback
-								rules={[
-									{
-										required: true,
-										message: "Vui lòng số điện thoại",
-										types: true,
-									},
-								]}
-							>
-								<Input
-									className="form-control"
-									placeholder="Số điện thoại"
-									name="phone_number"
-									initialValue={user.phone}
-									// value={phone_number}
-									defaultValue={user.phone}
-									id="phone_number"
-								/>
-							</Form.Item>
-							<Form.Item
-								label="Email"
-								name={"email"}
-								hasFeedback
-								rules={[{ required: false, type: "email" }]}
-							>
-								<Input
-									className="form-control"
-									type="text"
-									placeholder="Email"
-									name="email"
-									disabled
-									initialValue={user.email}
-									defaultValue={user.email}
-									// value={email}
-									id="success"
-								/>
-							</Form.Item>
+							<div className="profile_text">
+								<Form.Item
+									onChange={validateName}
+									label="Họ tên"
+									name={"name"}
+									hasFeedback
+									rules={[
+										{
+											required: true,
+											message: "Vui lòng nhập họ tên",
+										},
+									]}
+								>
+									<Input
+										className="form-control"
+										type="text"
+										placeholder="Họ tên"
+										name="name"
+										defaultValue={user.name}
+										initialValue={user.name}
+										value={user.name}
+										id="success"
+									/>
+								</Form.Item>
+								<Form.Item
+									label="Số điện thoại"
+									name={"phone"}
+									hasFeedback
+									rules={[
+										{
+											required: true,
+											message: "Vui lòng số điện thoại",
+											types: true,
+										},
+									]}
+								>
+									<Input
+										className="form-control"
+										placeholder="Số điện thoại"
+										name="phone_number"
+										initialValue={user.phone}
+										// value={phone_number}
+										defaultValue={user.phone}
+										id="phone_number"
+									/>
+								</Form.Item>
+								<Form.Item
+									label="Email"
+									name={"email"}
+									hasFeedback
+									rules={[{ required: false, type: "email" }]}
+								>
+									<Input
+										className="form-control"
+										type="text"
+										placeholder="Email"
+										name="email"
+										disabled
+										initialValue={user.email}
+										defaultValue={user.email}
+										// value={email}
+										id="success"
+									/>
+								</Form.Item>
 
-							<Form.Item
-								label="Tỉnh/ Thành phố"
-								name={"provinces"}
-								hasFeedback
-								rules={[
-									{
-										required: true,
-										message: "Vui lòng chọn tỉnh/thành phố",
-									},
-								]}
-								placeholder="Vui lòng chọn Tỉnh/ Thành phố"
-							>
-								<Select
-									showSearch
-									allowClear
-									id="city"
-									name="city"
-									onChange={handleChangeSelect}
+								<Form.Item
+									label="Tỉnh/ Thành phố"
+									name={"provinces"}
+									hasFeedback
+									rules={[
+										{
+											required: true,
+											message:
+												"Vui lòng chọn tỉnh/thành phố",
+										},
+									]}
 									placeholder="Vui lòng chọn Tỉnh/ Thành phố"
 								>
-									{sub.getProvinces().map((option, index) => (
-										<Option
-											key={index}
-											value={[option.name, option.code]}
-											// selected={option.code === province}
-										>
-											{option.name}
-										</Option>
-									))}
-								</Select>
-							</Form.Item>
-							<Form.Item
-								label="Quận/ Huyện"
-								hasFeedback
-								name={"district"}
-								rules={[
-									{
-										required: true,
-										message: "Vui lòng chọn quận/huyện",
-									},
-								]}
-							>
-								<Select
-									showSearch
-									allowClear
-									id="district"
-									name="district"
-									onChange={handleSelectDistrict}
-									disabled={
-										province || user.district ? false : true
-									}
-									placeholder="Vui lòng chọn Quận/ Huyện"
-								>
-									{province &&
-										sub
-											.getDistrictsByProvinceCode(
-												province[1]
-											)
-											.map((dis, i) => (
+									<Select
+										showSearch
+										allowClear
+										id="city"
+										name="city"
+										onChange={handleChangeSelect}
+										placeholder="Vui lòng chọn Tỉnh/ Thành phố"
+									>
+										{sub
+											.getProvinces()
+											.map((option, index) => (
 												<Option
-													key={i}
-													value={[dis.name, dis.code]}
-												>
-													{dis.name}
-												</Option>
-											))}
-								</Select>
-							</Form.Item>
-							<Form.Item
-								label="Phường/ Xã"
-								hasFeedback
-								name={"ward"}
-								rules={[
-									{
-										required: true,
-										message: "Vui lòng chọn xã/phường",
-									},
-								]}
-							>
-								<Select
-									showSearch
-									allowClear
-									id="ward"
-									name="ward"
-									disabled={
-										district || user.wards ? false : true
-									}
-									onChange={handleChangeWard}
-									placeholder="Vui lòng chọn Xã/ Phường"
-								>
-									{district &&
-										sub
-											.getWardsByDistrictCode(district[1])
-											.map((ward, i) => (
-												<Option
-													key={i}
+													key={index}
 													value={[
-														ward.name,
-														ward.code,
+														option.name,
+														option.code,
 													]}
+													// selected={option.code === province}
 												>
-													{ward.name}
+													{option.name}
 												</Option>
 											))}
-								</Select>
-							</Form.Item>
-							<Form.Item
-								label="Số nhà/đường"
-								hasFeedback
-								name={"address"}
-								rules={[
-									{
-										required: true,
-										message: "Vui lòng thêm địa chỉ",
-									},
-								]}
-							>
-								<Input
-									className="form-control"
-									type="text"
-									placeholder="Nhập địa chỉ"
-									name="address"
-									// value={address}
-									defaultValue={user.address}
-									initialValue={user.address}
-									id="success"
-								/>
-							</Form.Item>
-							<Form.Item>
-								<Button
-									className="profile_submit"
-									type="primary"
-									form="profile"
-									htmlType="submit"
-								>
-									CẬP NHẬT
-								</Button>
-							</Form.Item>
-						</div>
-					</Form>
-				)}
-				{changePass && (
-					<Form
-						{...layout}
-						onFinish={_onFinishPassword}
-						form={formPassword}
-						name="changePassword"
-						className="profile_form"
-						scrollToFirstError
-					>
-						<div className="profile_img">
-							<div className="avatar">
-								<img src={user.avatar} alt="avt" />
-							</div>
-						</div>
-						<div className="profile_text">
-							<Form.Item
-								name="oldPassword"
-								label="Mật khẩu cũ"
-								rules={[
-									{
-										required: true,
-										message: "Vui lòng nhập mật khẩu cũ",
-									},
-								]}
-							>
-								<Input.Password />
-							</Form.Item>
-							<Form.Item
-								name="newPassword"
-								label="Mật khẩu mới"
-								rules={[
-									{
-										required: true,
-										message: "Vui lòng nhập mật khẩu mới",
-									},
-								]}
-								hasFeedback
-							>
-								<Input.Password />
-							</Form.Item>
-
-							<Form.Item
-								name="confirm"
-								label="Xác nhận mật khẩu"
-								dependencies={["newPassword"]}
-								hasFeedback
-								rules={[
-									{
-										required: true,
-										message:
-											"Vui lòng xác nhận mật khẩu mới",
-									},
-									({ getFieldValue }) => ({
-										validator(rule, value) {
-											if (
-												!value ||
-												getFieldValue("newPassword") ===
-													value
-											) {
-												return Promise.resolve();
-											}
-
-											return Promise.reject(
-												"Mật khẩu không trùng khớp, hãy thử lại !!!"
-											);
+									</Select>
+								</Form.Item>
+								<Form.Item
+									label="Quận/ Huyện"
+									hasFeedback
+									name={"district"}
+									rules={[
+										{
+											required: true,
+											message: "Vui lòng chọn quận/huyện",
 										},
-									}),
-								]}
-							>
-								<Input.Password />
-							</Form.Item>
-							<Form.Item>
-								<Button
-									className="profile_submit"
-									type="primary"
-									form="changePassword"
-									htmlType="submit"
+									]}
 								>
-									CẬP NHẬT
-								</Button>
-							</Form.Item>
-						</div>
-					</Form>
-				)}
-				<div
-					className={`profile_control ${
-						changePass ? "profile_toggle-active" : ""
-					}`}
-				>
-					<button
-						onClick={handleChangePass}
-						className="profile_toggle"
-						type="button"
+									<Select
+										showSearch
+										allowClear
+										id="district"
+										name="district"
+										onChange={handleSelectDistrict}
+										disabled={
+											province || user.district
+												? false
+												: true
+										}
+										placeholder="Vui lòng chọn Quận/ Huyện"
+									>
+										{province &&
+											sub
+												.getDistrictsByProvinceCode(
+													province[1]
+												)
+												.map((dis, i) => (
+													<Option
+														key={i}
+														value={[
+															dis.name,
+															dis.code,
+														]}
+													>
+														{dis.name}
+													</Option>
+												))}
+									</Select>
+								</Form.Item>
+								<Form.Item
+									label="Phường/ Xã"
+									hasFeedback
+									name={"ward"}
+									rules={[
+										{
+											required: true,
+											message: "Vui lòng chọn xã/phường",
+										},
+									]}
+								>
+									<Select
+										showSearch
+										allowClear
+										id="ward"
+										name="ward"
+										disabled={
+											district || user.wards
+												? false
+												: true
+										}
+										onChange={handleChangeWard}
+										placeholder="Vui lòng chọn Xã/ Phường"
+									>
+										{district &&
+											sub
+												.getWardsByDistrictCode(
+													district[1]
+												)
+												.map((ward, i) => (
+													<Option
+														key={i}
+														value={[
+															ward.name,
+															ward.code,
+														]}
+													>
+														{ward.name}
+													</Option>
+												))}
+									</Select>
+								</Form.Item>
+								<Form.Item
+									label="Số nhà/đường"
+									hasFeedback
+									name={"address"}
+									rules={[
+										{
+											required: true,
+											message: "Vui lòng thêm địa chỉ",
+										},
+									]}
+								>
+									<Input
+										className="form-control"
+										type="text"
+										placeholder="Nhập địa chỉ"
+										name="address"
+										// value={address}
+										defaultValue={user.address}
+										initialValue={user.address}
+										id="success"
+									/>
+								</Form.Item>
+								<Form.Item>
+									<Button
+										className="profile_submit"
+										type="primary"
+										form="profile"
+										htmlType="submit"
+									>
+										CẬP NHẬT
+									</Button>
+								</Form.Item>
+							</div>
+						</Form>
+					)}
+					{changePass && (
+						<Form
+							{...layout}
+							onFinish={_onFinishPassword}
+							form={formPassword}
+							name="changePassword"
+							className="profile_form"
+							scrollToFirstError
+						>
+							<div className="profile_img">
+								<div className="avatar">
+									<img src={user.avatar} alt="avt" />
+								</div>
+							</div>
+							<div className="profile_text">
+								<Form.Item
+									name="oldPassword"
+									label="Mật khẩu cũ"
+									rules={[
+										{
+											required: true,
+											message:
+												"Vui lòng nhập mật khẩu cũ",
+										},
+									]}
+								>
+									<Input.Password />
+								</Form.Item>
+								<Form.Item
+									name="newPassword"
+									label="Mật khẩu mới"
+									rules={[
+										{
+											required: true,
+											message:
+												"Vui lòng nhập mật khẩu mới",
+										},
+									]}
+									hasFeedback
+								>
+									<Input.Password />
+								</Form.Item>
+
+								<Form.Item
+									name="confirm"
+									label="Xác nhận mật khẩu"
+									dependencies={["newPassword"]}
+									hasFeedback
+									rules={[
+										{
+											required: true,
+											message:
+												"Vui lòng xác nhận mật khẩu mới",
+										},
+										({ getFieldValue }) => ({
+											validator(rule, value) {
+												if (
+													!value ||
+													getFieldValue(
+														"newPassword"
+													) === value
+												) {
+													return Promise.resolve();
+												}
+
+												return Promise.reject(
+													"Mật khẩu không trùng khớp, hãy thử lại !!!"
+												);
+											},
+										}),
+									]}
+								>
+									<Input.Password />
+								</Form.Item>
+								<Form.Item>
+									<Button
+										className="profile_submit"
+										type="primary"
+										form="changePassword"
+										htmlType="submit"
+									>
+										CẬP NHẬT
+									</Button>
+								</Form.Item>
+							</div>
+						</Form>
+					)}
+					<div
+						className={`profile_control ${
+							changePass ? "profile_toggle-active" : ""
+						}`}
 					>
-						{changePass
-							? "CHỈNH SỬA THÔNG TIN"
-							: "THAY ĐỔI MẬT KHẨU"}
-					</button>
+						<button
+							onClick={handleChangePass}
+							className="profile_toggle"
+							type="button"
+						>
+							{changePass
+								? "CHỈNH SỬA THÔNG TIN"
+								: "THAY ĐỔI MẬT KHẨU"}
+						</button>
+					</div>
 				</div>
-			</div>
+			)}
 		</div>
 	);
 }
