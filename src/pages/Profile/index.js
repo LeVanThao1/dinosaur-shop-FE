@@ -410,12 +410,7 @@ function Profile() {
 					>
 						<div className="profile_img">
 							<div className="avatar">
-								<img
-									src={
-										"https://upload.wikimedia.org/wikipedia/commons/1/17/OK-button_-_Macro_photography_of_a_remote_control.jpg"
-									}
-									alt="avt"
-								/>
+								<img src={user.avatar} alt="avt" />
 							</div>
 						</div>
 						<div className="profile_text">
