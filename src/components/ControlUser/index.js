@@ -1,6 +1,7 @@
-import React, { memo } from "react";
+import React, { memo, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Button } from "antd";
+import { Badge } from "antd";
 import {
 	DropboxOutlined,
 	HeartOutlined,
@@ -20,7 +21,15 @@ function ControlUser(props) {
 	const dispatch = useDispatch();
 	const auth = useSelector((state) => state.auth);
 	const { user, isLogged } = auth;
-
+	const cart = useSelector((state) => state.cart);
+	const [count, setCount] = useState(0);
+	useEffect(() => {
+		if (auth.isLogged) {
+			setCount(user.cart ? user.cart.length : 0);
+		} else {
+			setCount(cart ? cart.length : 0);
+		}
+	}, [auth, cart]);
 	const _onLogOut = async () => {
 		try {
 			await userApi.logout();
@@ -82,8 +91,13 @@ function ControlUser(props) {
 				)}
 				<Link to="/cart">
 					<Button className="btn_control">
-						<ShoppingCartOutlined className="icon" />
-						<span>Giỏ hàng</span>
+						<Badge count={count} showZero>
+							<ShoppingCartOutlined
+								className="icon"
+								style={{ color: "white" }}
+							/>
+						</Badge>
+						<span> Giỏ hàng</span>
 					</Button>
 				</Link>
 				{isLogged && (

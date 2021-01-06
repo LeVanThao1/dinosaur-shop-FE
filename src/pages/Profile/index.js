@@ -1,27 +1,13 @@
-import React, { memo, useState, useRef, useEffect } from "react";
-import sub from "sub-vn";
 import { CameraOutlined } from "@ant-design/icons";
-import { updateUser } from "../../slice/auth.slice";
-import "./index.css";
+import { Button, Form, Input, Select } from "antd";
 import axios from "axios";
-import {
-	Form,
-	Input,
-	Tooltip,
-	Cascader,
-	Select,
-	Row,
-	Col,
-	Checkbox,
-	Button,
-	AutoComplete,
-	Radio,
-	message,
-} from "antd";
-import { QuestionCircleOutlined } from "@ant-design/icons";
+import React, { memo, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { notifiError, notifiSuccess } from "../../utils/notification";
+import sub from "sub-vn";
 import API from "../../axios";
+import { updateUser } from "../../slice/auth.slice";
+import { notifiError, notifiSuccess } from "../../utils/notification";
+import "./index.css";
 
 const { Option } = Select;
 function Profile() {
@@ -37,6 +23,9 @@ function Profile() {
 			phone: user.phone,
 			address: user.address,
 			email: user.email,
+			provinces: user.provincial,
+			district: user.district,
+			ward: user.wards,
 		});
 	}, []);
 	const radioStyle = {
@@ -86,7 +75,6 @@ function Profile() {
 		console.log(changePass);
 	};
 	const _onFinishPassword = () => {
-		console.log("Asd");
 		const oldPassword = formPassword.getFieldValue("oldPassword");
 		const newPassword = formPassword.getFieldValue("newPassword");
 		API("user/reset", "POST", token, {
@@ -294,7 +282,7 @@ function Profile() {
 										<Option
 											key={index}
 											value={[option.name, option.code]}
-											selected={option.code === province}
+											// selected={option.code === province}
 										>
 											{option.name}
 										</Option>
@@ -318,7 +306,9 @@ function Profile() {
 									id="district"
 									name="district"
 									onChange={handleSelectDistrict}
-									disabled={province ? false : true}
+									disabled={
+										province || user.district ? false : true
+									}
 									placeholder="Vui lòng chọn Quận/ Huyện"
 								>
 									{province &&
@@ -352,7 +342,9 @@ function Profile() {
 									allowClear
 									id="ward"
 									name="ward"
-									disabled={district ? false : true}
+									disabled={
+										district || user.wards ? false : true
+									}
 									onChange={handleChangeWard}
 									placeholder="Vui lòng chọn Xã/ Phường"
 								>
