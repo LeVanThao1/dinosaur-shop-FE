@@ -20,7 +20,7 @@ import { setLikeList } from "./slice/likelist.slice";
 import { setSeenList } from "./slice/seenlist.slice";
 import { setToken } from "./slice/token.slice";
 import { notifiError } from "./utils/notification";
-
+import InfiniteCarousel from 'react-leaf-carousel';
 const Components = {};
 
 for (const c of routes) {
