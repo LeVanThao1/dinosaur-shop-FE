@@ -45,8 +45,8 @@ function ViewedProduct(props) {
   // 		});
   // }, []);
   return (
-    <div className="container">
-      <div className="header">
+    <div className="container_viewed">
+      <div className="header_viewed">
         <span>SẢN PHẨM ĐÃ XEM</span>
       </div>
       <div className="view_produtct list-group-1">

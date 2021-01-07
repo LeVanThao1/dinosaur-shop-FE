@@ -13,11 +13,11 @@ function RelatedProduct(props) {
   const token = useSelector((state) => state.token);
 
   return (
-    <div className="container">
-      <div className="header">
+    <div className="container_related">
+      <div className="header_related">
         <span>SẢN PHẨM LIÊN QUAN</span>
       </div>
-      <div className="view_produtct list-group-1">
+      <div className="related_produtct list-group-1">
         <InfiniteCarousel
           breakpoints={[
             {
@@ -30,33 +30,34 @@ function RelatedProduct(props) {
             {
               breakpoint: 768,
               settings: {
-                slidesToShow: 3,
-                slidesToScroll: 3,
+                slidesToShow: 2,
+                slidesToScroll: 2,
               },
             },
           ]}
           dots={true}
           showSides={true}
-          sidesOpacity={1}
+          sidesOpacity={0.5}
           sideSize={1}
-          slidesToScroll={4}
-          slidesToShow={4}
-          //   scrollOnDevice={true}
-          responsive={false}
+          slidesToScroll={3}
+          slidesToShow={3}
+          scrollOnDevice={true}
+          increme
           className="carousel"
         >
           <div>
-            <img alt="" src={Images.LOGO} />
+            <img alt="" src={Images.cat} />
           </div>
           <div>
-            <img alt="" src={Images.LOGO} />
+            <img alt="" src={Images.cat} />
           </div>
           <div>
-            <img alt="" src={Images.LOGO} />
+            <img alt="" src={Images.cat} />
           </div>
           <div>
-            <img alt="" src={Images.LOGO} />
+            <img alt="" src={Images.cat} />
           </div>
+
           {/* {relatedlist.length > 0 &&
             relatedlist.map((ss, i) => (
               <div

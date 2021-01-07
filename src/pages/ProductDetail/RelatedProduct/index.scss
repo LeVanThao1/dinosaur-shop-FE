@@ -1,10 +1,10 @@
 * {
   box-sizing: border-box;
 }
-.container {
+.container_related {
   width: 100%;
-  margin: 3% auto 3% auto;
-  .header {
+  margin: 5% auto 3% auto;
+  .header_related {
     width: 100%;
     font-size: 25px;
     font-weight: bold;
@@ -14,18 +14,31 @@
     align-items: center;
     justify-content: center;
   }
-  .view_produtct {
-    width: 80%;
+  .related_produtct {
+    width: inherit;
     height: auto;
-    // margin: auto;
+    margin: 2% auto;
     display: flex;
     .list--item {
-      margin: 5% 3%;
+      //   margin: 5% 3%;
       cursor: pointer;
       img {
         width: 16vw;
         height: auto;
       }
     }
+    img {
+      width: 80%;
+      height: auto;
+    }
+    .carousel {
+      width: inherit;
+    }
+    .InfiniteCarousel {
+      width: -webkit-fill-available;
+    }
+  }
+  .view_produtct:last-child {
+    width: -webkit-fill-available;
   }
 }
