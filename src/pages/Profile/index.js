@@ -305,7 +305,11 @@ function Profile() {
 														option.name,
 														option.code,
 													]}
+<<<<<<< HEAD
 												// selected={option.code === province}
+=======
+													// selected={option.code === province}
+>>>>>>> a2b740c8447233a6224ad93f8715a05f0ef34a26
 												>
 													{option.name}
 												</Option>
@@ -519,8 +523,14 @@ function Profile() {
 						</Form>
 					)}
 					<div
+<<<<<<< HEAD
 						className={`profile_control ${changePass ? "profile_toggle-active" : ""
 							}`}
+=======
+						className={`profile_control ${
+							changePass ? "profile_toggle-active" : ""
+						}`}
+>>>>>>> a2b740c8447233a6224ad93f8715a05f0ef34a26
 					>
 						<button
 							onClick={handleChangePass}
