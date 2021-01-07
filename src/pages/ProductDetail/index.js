@@ -93,67 +93,6 @@ function ProductDetail({ socket }) {
         console.log("msg", msg);
       });
 
-<<<<<<< HEAD
-			return () => socket.off("sendReplyCommentToClient");
-		}
-	}, [socket, comments]);
-	return (
-		<>
-			{productDetail.product && (
-				<div className="desktop-detail">
-					<div className="container__product__detail">
-						<div className="header__product__detail">
-							<div className="header__detail">
-								<div className="child__detail">Shoes</div>
-								<div className="child__detail">
-									{product.type.name}
-								</div>
-								<div className="child__detail">
-									{product.name}
-								</div>
-							</div>
-						</div>
-						<div className="content__detail">
-							<ContentLogo socket={socket} />
-							<div className="dashed"></div>
-							<ContentPay />
-						</div>
-						<div className="viewed">
-							<div className="header__viewed">
-								<ViewedProduct />
-							</div>
-						</div>
-						<div className="related">
-							<div className="header__realated">
-								<span>SẢN PHẨM LIÊN QUAN</span>
-							</div>
-							<SlideRelated />
-						</div>
-					</div>
-					<FormInput
-						productId={product._id}
-						socket={socket}
-						placeholder="Nhập nội dung bình luận"
-					/>
-					<div className="comments_list">
-						{comments
-							? comments.map((comment) => (
-								<CommentItem
-									key={comment._id}
-									comment={comment}
-									socket={socket}
-								/>
-							))
-							: null}
-					</div>
-					<button ref={pageEnd} style={{ opacity: 0 }}>
-						Load more
-					</button>
-				</div>
-			)}
-		</>
-	);
-=======
       return () => socket.off("sendReplyCommentToClient");
     }
   }, [socket, comments]);
@@ -195,12 +134,12 @@ function ProductDetail({ socket }) {
           <div className="comments_list">
             {comments
               ? comments.map((comment) => (
-                  <CommentItem
-                    key={comment._id}
-                    comment={comment}
-                    socket={socket}
-                  />
-                ))
+                <CommentItem
+                  key={comment._id}
+                  comment={comment}
+                  socket={socket}
+                />
+              ))
               : null}
           </div>
           <button ref={pageEnd} style={{ opacity: 0 }}>
@@ -210,7 +149,6 @@ function ProductDetail({ socket }) {
       )}
     </>
   );
->>>>>>> a2b740c8447233a6224ad93f8715a05f0ef34a26
 }
 
 export default ProductDetail;
