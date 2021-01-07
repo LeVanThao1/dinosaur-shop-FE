@@ -202,4 +202,11 @@ export default [
 		isProtected: true,
 		exact: true,
 	},
+	{
+		title: "Order Detail Page || Shop",
+		component: "OrderDetail",
+		path: "/order-detail/:id",
+		isProtected: true,
+		exact: true,
+	}
 ];

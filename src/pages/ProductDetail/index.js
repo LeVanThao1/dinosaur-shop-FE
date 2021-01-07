@@ -136,12 +136,12 @@ function ProductDetail({ socket }) {
 					<div className="comments_list">
 						{comments
 							? comments.map((comment) => (
-									<CommentItem
-										key={comment._id}
-										comment={comment}
-										socket={socket}
-									/>
-							  ))
+								<CommentItem
+									key={comment._id}
+									comment={comment}
+									socket={socket}
+								/>
+							))
 							: null}
 					</div>
 					<button ref={pageEnd} style={{ opacity: 0 }}>

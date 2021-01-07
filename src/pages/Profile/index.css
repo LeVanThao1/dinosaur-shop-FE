@@ -64,6 +64,9 @@
 .profile_submit {
 	width: 30%;
 	margin: 0 45%;
+	font-weight: 500;
+	padding: 8px 0;
+	line-height: normal;
 }
 .avatar {
 	position: relative;
@@ -155,6 +158,7 @@
 	outline: none;
 	color: #fff;
 	font-size: 14px;
+	font-weight: 500;
 }
 
 .profile_toggle:focus {

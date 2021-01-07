@@ -3,7 +3,7 @@ import { Table, Tag, Space } from "antd";
 import API from "../../axios";
 import { useDispatch, useSelector } from "react-redux";
 import * as moment from "moment";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import { Loading } from "../../components";
 import {
@@ -14,6 +14,7 @@ import {
 } from "../../utils/notification";
 import "./index.css";
 import { setLoading } from "../../slice/loading.slice";
+import { setCurrentOrder, setListOrder } from "../../slice/order.slice";
 const columns = [
 	{
 		title: "Đơn hàng",
@@ -70,7 +71,9 @@ function Orders() {
 	// const [loading, setLoading] = useState(true);
 	const loading = useSelector((state) => state.loading);
 	const [orders, setOrders] = useState([]);
+	const { listOrder } = useSelector(state => state.orders)
 	const dispatch = useDispatch();
+	const history = useHistory()
 	useEffect(() => {
 		dispatch(setLoading(true));
 		API("api/orders", "GET", token)
@@ -79,9 +82,10 @@ function Orders() {
 				let result = [];
 				console.log("orders: ", temp);
 				console.log("alo", result);
-
+				dispatch(setListOrder(res.data))
 				for (let i = 0; i < temp.length; i++) {
 					console.log("loop");
+					// onclick cho nao DynamicsCompressorNode. nãy t hỏi m đó. bữa dùng table của ant không có <tr> the doi xi
 					let obj = {};
 					// obj["img"] = temp[i].products
 					obj["id"] = temp[i]._id;
@@ -95,10 +99,10 @@ function Orders() {
 						temp[i].status === 0
 							? "đang chờ lấy hàng"
 							: temp[i].state === 1
-							? "đang giao"
-							: temp[i].status === 2
-							? "đã giao"
-							: "chờ xác nhận";
+								? "đang giao"
+								: temp[i].status === 2
+									? "đã giao"
+									: "chờ xác nhận";
 					obj["pay"] =
 						temp[i].status === 2 || temp[i].typePayment === 1
 							? "đã thanh toán"
@@ -116,12 +120,19 @@ function Orders() {
 				dispatch(setLoading(false));
 			});
 	}, []);
+
+	const _onRow = (record, index) => {
+		dispatch(setCurrentOrder(listOrder[index]))
+		history.push('order-detail/' + record.id)
+	}
 	return (
 		<div className="Orders_page">
 			<h2 className="Orders_page-heading">DANH SÁCH ĐƠN HÀNG</h2>
 			{!loading && (
 				<div className="Orders_page_content">
-					<Table columns={columns} dataSource={orders} />
+					<Table columns={columns} dataSource={orders} onRow={(r, i) => ({
+						onClick: () => _onRow(r, i)
+					})} />
 					{/* <Table columns={columns}  /> */}
 				</div>
 			)}
