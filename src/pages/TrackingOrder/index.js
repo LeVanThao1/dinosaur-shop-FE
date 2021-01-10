@@ -12,6 +12,7 @@ import {
 	showSuccessMsg,
 } from "../../utils/notification";
 import { Link } from "react-router-dom";
+import { formatMoney } from "../../utils/format";
 function TrackingOrder() {
 	const token = useSelector((state) => state.token);
 	const [order, setOrder] = useState(null);
@@ -271,9 +272,9 @@ function TrackingOrder() {
 															<h5>
 																Giá:
 																<span>
-																	{
+																	{formatMoney(
 																		product.price
-																	}
+																	)}
 																</span>
 															</h5>
 															<h5>
@@ -295,8 +296,10 @@ function TrackingOrder() {
 																</span>
 															</h5>
 															<h5>
-																{product.price *
-																	product.amount}
+																{formatMoney(
+																	product.price *
+																		product.amount
+																)}
 															</h5>
 														</div>
 													</div>
@@ -356,27 +359,42 @@ function TrackingOrder() {
 										<div className="detail_order-fee">
 											<div className="detail_order-fee-wrapp">
 												<span>Trị giá đơn hàng:</span>
-												<h5>{order.total}</h5>
+												<h5>
+													{formatMoney(order.total)}
+												</h5>
 											</div>
 											<div className="detail_order-fee-wrapp">
 												<span>Giảm giá:</span>
-												<h5>0</h5>
+												<h5>
+													{formatMoney(
+														(order.promotion
+															.percent *
+															order.intoMoney) /
+															100
+													)}
+												</h5>
 											</div>
 											<div className="detail_order-fee-wrapp">
 												<span>Phí giao hàng:</span>
-												<h5>{order.shipMoney}</h5>
+												<h5>
+													{formatMoney(
+														order.shipMoney
+													)}
+												</h5>
 											</div>
 											<div className="detail_order-fee-wrapp">
 												<span>Phí thanh toán:</span>
-												<h5>0</h5>
+												<h5>{formatMoney(0)} VND</h5>
 											</div>
 										</div>
 										<div className="detail_order-total-price">
 											<div className="detail_order-fee-wrapp">
 												<h5>Tổng thanh toán:</h5>
 												<h5>
-													{order.total -
-														order.shipMoney}
+													{formatMoney(
+														order.total -
+															order.shipMoney
+													)}
 												</h5>
 											</div>
 										</div>

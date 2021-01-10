@@ -73,7 +73,7 @@ function Login(props) {
 			setUser({ ...user, error: "", success: res.data.msg });
 			localStorage.setItem("firstLogin", true);
 			dispatch(setLogin());
-			notifiSuccess("Notify", res.msg);
+			notifiSuccess("Notify", res.data.msg);
 			history.push(from);
 		} catch (err) {
 			err.response.data.msg &&
@@ -90,7 +90,7 @@ function Login(props) {
 				const res = await userApi.loginFB(accessToken, userID);
 				setUser({ ...user, error: "", success: res.data.msg });
 				localStorage.setItem("firstLogin", true);
-				notifiSuccess("Notify", res.msg);
+				notifiSuccess("Notify", res.data.msg);
 				dispatch(setLogin());
 				history.push(from);
 			}

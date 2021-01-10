@@ -70,7 +70,7 @@ function ContentLogo({ socket }) {
 		<div className="content__logo list-group">
 			{/* col-xs-12 col-sm-12 col-md-7 col-lg-7 */}
 			<div className="main__logo list-group-item">
-				<img src={product.images[index]} alt="image" />
+				<img src={product.images[index]} alt="image" loading="lazy" />
 			</div>
 			<div className="child__detail child__logo list-group-item">
 				<div className="child-side">

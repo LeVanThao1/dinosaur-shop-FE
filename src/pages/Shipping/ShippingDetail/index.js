@@ -4,6 +4,7 @@ import { Button } from "antd";
 import "./index.scss";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
+import { formatMoney } from "../../../utils/format";
 const ship = 32000;
 function ShippingDetail({ form }) {
 	const { creatingOrder } = useSelector((state) => state.orders);
@@ -37,7 +38,8 @@ function ShippingDetail({ form }) {
 										{pd.productId.name}
 									</span>
 									<span className="text-3-3">
-										{pd.productId.salePrice} VND
+										{formatMoney(pd.productId.salePrice)}{" "}
+										VND
 									</span>
 								</div>
 								<div className="list-group-item text-2">
@@ -45,7 +47,7 @@ function ShippingDetail({ form }) {
 										Size: {pd.sizeId.name}{" "}
 									</span>
 									<span className="text-4-4">
-										x{pd.amount}
+										x {pd.amount}
 									</span>
 								</div>
 							</>
@@ -54,36 +56,45 @@ function ShippingDetail({ form }) {
 						<div className="list-group-item text-1 group-2">
 							<span className="text-3 text-3-1">Đơn hàng </span>
 							<span className="text-3-3 text-3-1-1">
-								{total} VND
+								{formatMoney(total)} VND
 							</span>
 						</div>
 						<div className="list-group-item text-1 group-2">
 							<span className="text-3 text-3-1">Giảm </span>
 							<span className="text-3-3 text-3-1">
 								-
-								{(total * creatingOrder?.promotion?.percent ||
-									0) / 100}{" "}
+								{formatMoney(
+									(total *
+										creatingOrder?.promotion?.percent ||
+										0) / 100
+								)}
 								VND
 							</span>
 						</div>
 						<div className="list-group-item text-1-1 group-2">
 							<span className="text-3">Phí vận chuyển </span>
-							<span className="text-3-3">{ship} VND</span>
+							<span className="text-3-3">
+								{formatMoney(ship)} VND
+							</span>
 						</div>
 						<div className="list-group-item text-1-1">
 							<span className="text-3">Phí thanh toán </span>
-							<span className="text-3-3">0 VND</span>
+							<span className="text-3-3">
+								{formatMoney(0)} VND
+							</span>
 						</div>
 						<div className="list-group-item dash"></div>
 						<div className="list-group-item text-1-1 text-4">
 							<span className="text-3 text-4-1">TỔNG CỘNG </span>
 							<span className="text-3 text-4-2">
-								{total *
-									(1 -
-										(creatingOrder.promotion?.percent ||
-											0) /
-											100) +
-									ship}{" "}
+								{formatMoney(
+									total *
+										(1 -
+											(creatingOrder.promotion?.percent ||
+												0) /
+												100) +
+										ship
+								)}
 								VND
 							</span>
 						</div>

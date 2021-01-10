@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import API from "../../../axios";
 import { showErrMsg } from "../../../utils/notification";
 import { setOrdering } from "../../../slice/order.slice";
+import { formatMoney } from "../../../utils/format";
 
 function OrderContent({ total }) {
 	const history = useHistory();
@@ -58,13 +59,15 @@ function OrderContent({ total }) {
 				<div className="orderDetail">
 					<div className="cost">
 						<span>Đơn hàng</span>
-						<span>{total} VND</span>
+						<span>{formatMoney(total)} VND</span>
 					</div>
 					<div className="reduction">
 						<p>Giảm {promotion ? promotion.percent : 0}%</p>
 						<p>
-							{(total * (promotion ? promotion?.percent : 0)) /
-								100}
+							{formatMoney(
+								(total * (promotion ? promotion?.percent : 0)) /
+									100
+							)}
 							VND
 						</p>
 					</div>
@@ -73,9 +76,11 @@ function OrderContent({ total }) {
 					<div className="child__tempCacul">
 						<span>TẠM TÍNH</span>
 						<span>
-							{promotion
-								? total * (1 - promotion.percent / 100)
-								: total}
+							{formatMoney(
+								promotion
+									? total * (1 - promotion.percent / 100)
+									: total
+							)}
 							VND
 						</span>
 					</div>

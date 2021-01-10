@@ -1,9 +1,11 @@
 import { Checkbox, Form, Input, Select } from "antd";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Redirect, useHistory } from "react-router-dom";
 import sub from "sub-vn";
 import API from "../../../axios";
+import { changeCart } from "../../../slice/auth.slice";
+import { setCart } from "../../../slice/cart.slice";
 import { notifiError, notifiSuccess } from "../../../utils/notification";
 import "./index.scss";
 
@@ -15,7 +17,7 @@ function ShippingForm({ form }) {
 	const { user } = useSelector((state) => state.auth);
 	const token = useSelector((state) => state.token);
 	const history = useHistory();
-
+	const dispatch = useDispatch();
 	useEffect(() => {
 		form.setFieldsValue({
 			name: user.name,
@@ -90,6 +92,8 @@ function ShippingForm({ form }) {
 			API("api/orders", "POST", token, dataOrder)
 				.then((res) => {
 					notifiSuccess(res.data.msg);
+					dispatch(setCart({ cart: [], type: true }));
+					dispatch(changeCart([]));
 					history.push("/orders");
 				})
 				.catch((err) => notifiError(err.response.data.msg));

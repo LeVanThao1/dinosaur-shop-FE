@@ -6,6 +6,7 @@ import "./style.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { addLikeList, removeProduct } from "../../slice/likelist.slice";
 // const { Meta } = Card;
+import { formatMoney } from "../../utils/format";
 const { Title } = Typography;
 
 const styleLike = {
@@ -79,7 +80,7 @@ export default function ProductCard({ product }) {
 					</Link>
 				</Title>
 				<Title className="text-center" level={5}>
-					{product.salePrice} VND
+					{formatMoney(product.salePrice)} VND
 				</Title>
 			</Card>
 		</div>

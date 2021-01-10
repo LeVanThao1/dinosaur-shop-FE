@@ -43,7 +43,7 @@ function ProductList(props) {
 				setLoading(true);
 				axios
 					.get(
-						`http://localhost:3001/api/products?page=${currentPage}&${category}&${material}&${typeProduct}&${style}&${price}&${textSearch}&${sortPrice}`
+						`http://localhost:3001/api/products?page=${currentPage}&${category}&${material}&${typeProduct}&${style}&${price}&${textSearch}&${sortPrice}&limit=9`
 					)
 					.then((res) => {
 						dispatch(setProducts(res.data.products));

@@ -12,7 +12,7 @@ import { useHistory } from "react-router-dom";
 import { notifiError, notifiSuccess } from "../../../utils/notification";
 import { changeCart } from "../../../slice/auth.slice";
 import API from "../../../axios";
-
+import { formatMoney } from "../../../utils/format";
 const { Option } = Select;
 
 function CartContent({ pd }) {
@@ -239,7 +239,10 @@ function CartContent({ pd }) {
 					<div className="action">
 						<div className="price__status">
 							<div className="price__action">
-								{pd.productId.salePrice * pd.amount} VND
+								{formatMoney(
+									pd.productId.salePrice * pd.amount
+								)}{" "}
+								VND
 							</div>
 							<div className="status">
 								{sizeSelect.amount === 0
