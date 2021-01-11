@@ -60,18 +60,48 @@ function OrderDetail(props) {
 								<div className="status_order-content">
 									<div className="status_order-content--box">
 										<div className="status_order-content--title">
-											<span>ĐẶT HÀNG THÀNH CÔNG</span>
+											<span
+												className={
+													currentOrder.status === -1
+														? "active-status"
+														: ""
+												}
+											>
+												ĐANG XÁC NHẬN
+											</span>
 											<i class="arrow right"></i>
 										</div>
 										<div className="status_order-content--title">
-											<span>CHUYỂN QUA GIAO NHẬN</span>
+											<span
+												className={
+													currentOrder.status === 0
+														? "active-status"
+														: ""
+												}
+											>
+												CHUYỂN QUA GIAO NHẬN
+											</span>
 											<i class="arrow right"></i>
 										</div>
 										<div className="status_order-content--title">
-											<span>ĐANG GIAO HÀNG</span>
+											<span
+												className={
+													currentOrder.status === 1
+														? "active-status"
+														: ""
+												}
+											>
+												ĐANG GIAO HÀNG
+											</span>
 											<i class="arrow right"></i>
 										</div>
-										<div className="status_order-content--title">
+										<div
+											className={`status_order-content--title ${
+												currentOrder.status === 2
+													? "active-status"
+													: ""
+											}`}
+										>
 											GIAO HÀNG THÀNH CÔNG
 										</div>
 									</div>
@@ -279,7 +309,14 @@ function OrderDetail(props) {
 												<span>Trị giá đơn hàng:</span>
 												<h5>
 													{formatMoney(
-														currentOrder.total
+														(currentOrder.intoMoney /
+															(100 -
+																(currentOrder.promotion
+																	? currentOrder
+																			.promotion
+																			.percent
+																	: 0))) *
+															100
 													)}
 												</h5>
 											</div>
@@ -287,11 +324,18 @@ function OrderDetail(props) {
 												<span>Giảm giá:</span>
 												<h5>
 													{formatMoney(
-														(currentOrder.promotion
-															.percent *
-															currentOrder.intoMoney) /
+														(currentOrder?.promotion
+															?.percent || 0) *
+															(currentOrder.intoMoney /
+																(100 -
+																	(currentOrder.promotion
+																		? currentOrder
+																				.promotion
+																				.percent
+																		: 0))) *
 															100
-													)}
+													)}{" "}
+													VND
 												</h5>
 											</div>
 											<div className="detail_order-fee-wrapp">
@@ -312,8 +356,7 @@ function OrderDetail(props) {
 												<h5>Tổng thanh toán:</h5>
 												<h5>
 													{formatMoney(
-														currentOrder.total -
-															currentOrder.shipMoney
+														currentOrder.total
 													)}
 												</h5>
 											</div>

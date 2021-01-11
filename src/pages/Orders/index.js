@@ -20,7 +20,15 @@ const columns = [
 		title: "Đơn hàng",
 		dataIndex: "img",
 		key: "img",
-		render: (url) => <img className="order_img" alt="" src={url} />,
+		render: (url) => (
+			<img
+				className="order_img"
+				alt=""
+				src={url}
+				width="100px"
+				height="100px"
+			/>
+		),
 	},
 	{
 		title: "Mã đơn hàng",

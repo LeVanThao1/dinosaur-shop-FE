@@ -90,8 +90,8 @@ function ShippingDetail({ form }) {
 								{formatMoney(
 									total *
 										(1 -
-											(creatingOrder.promotion?.percent ||
-												0) /
+											(creatingOrder?.promotion
+												?.percent || 0) /
 												100) +
 										ship
 								)}

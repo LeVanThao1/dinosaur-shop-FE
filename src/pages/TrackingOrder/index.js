@@ -114,18 +114,48 @@ function TrackingOrder() {
 								<div className="status_order-content">
 									<div className="status_order-content--box">
 										<div className="status_order-content--title">
-											<span>ĐẶT HÀNG THÀNH CÔNG</span>
+											<span
+												className={
+													order.status === -1
+														? "active-status"
+														: ""
+												}
+											>
+												ĐANG XÁC NHẬN
+											</span>
 											<i class="arrow right"></i>
 										</div>
 										<div className="status_order-content--title">
-											<span>CHUYỂN QUA GIAO NHẬN</span>
+											<span
+												className={
+													order.status === 0
+														? "active-status"
+														: ""
+												}
+											>
+												CHUYỂN QUA GIAO NHẬN
+											</span>
 											<i class="arrow right"></i>
 										</div>
 										<div className="status_order-content--title">
-											<span>ĐANG GIAO HÀNG</span>
+											<span
+												className={
+													order.status === 1
+														? "active-status"
+														: ""
+												}
+											>
+												ĐANG GIAO HÀNG
+											</span>
 											<i class="arrow right"></i>
 										</div>
-										<div className="status_order-content--title">
+										<div
+											className={`status_order-content--title ${
+												order.status === 2
+													? "active-status"
+													: ""
+											}`}
+										>
 											GIAO HÀNG THÀNH CÔNG
 										</div>
 									</div>
@@ -360,18 +390,34 @@ function TrackingOrder() {
 											<div className="detail_order-fee-wrapp">
 												<span>Trị giá đơn hàng:</span>
 												<h5>
-													{formatMoney(order.total)}
+													{formatMoney(
+														(order.intoMoney /
+															(100 -
+																(order.promotion
+																	? order
+																			.promotion
+																			.percent
+																	: 0))) *
+															100
+													)}
 												</h5>
 											</div>
 											<div className="detail_order-fee-wrapp">
 												<span>Giảm giá:</span>
 												<h5>
 													{formatMoney(
-														(order.promotion
-															.percent *
-															order.intoMoney) /
+														(order?.promotion
+															?.percent || 0) *
+															(order.intoMoney /
+																(100 -
+																	(order.promotion
+																		? order
+																				.promotion
+																				.percent
+																		: 0))) *
 															100
-													)}
+													)}{" "}
+													VND
 												</h5>
 											</div>
 											<div className="detail_order-fee-wrapp">
@@ -391,10 +437,7 @@ function TrackingOrder() {
 											<div className="detail_order-fee-wrapp">
 												<h5>Tổng thanh toán:</h5>
 												<h5>
-													{formatMoney(
-														order.total -
-															order.shipMoney
-													)}
+													{formatMoney(order.total)}
 												</h5>
 											</div>
 										</div>
