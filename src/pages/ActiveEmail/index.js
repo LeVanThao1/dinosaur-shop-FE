@@ -12,7 +12,7 @@ function ActivationEmail() {
 			const activationEmail = async () => {
 				try {
 					const res = await userApi.activeEmail(activation_token);
-					notifiSuccess("Notify", res);
+					notifiSuccess("Notify", res.data.msg);
 
 					setTimeout(() => {
 						history.push("/login");

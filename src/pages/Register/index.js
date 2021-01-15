@@ -65,7 +65,7 @@ function Register(props) {
 			});
 		try {
 			const res = await userApi.register(name, email, password);
-			notifiSuccess("Notify", res);
+			notifiSuccess("Notify", res.data.msg);
 			setUser({ ...user, err: "", success: res.data.msg });
 		} catch (err) {
 			err.response.data.msg &&

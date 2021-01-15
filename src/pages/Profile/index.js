@@ -26,26 +26,29 @@ function Profile() {
 	const loading = useSelector((state) => state.loading);
 	useEffect(() => {
 		dispatch(setLoading(true));
-		const province = sub
-			.getProvinces()
-			.find((province) => province.name === user.provincial);
-		setProvince([province.name, province.code]);
-		const district = sub
-			.getDistrictsByProvinceCode(province.code)
-			.find((district) => district.name === user.district);
-		setDistrict([district.name, district.code]);
-		const ward = sub
-			.getWardsByDistrictCode(district.code)
-			.find((ward) => ward.name === user.wards);
-		setWawrd([ward.name, ward.code]);
+		let province, district, ward;
+		if (user.provincial && user.district && user.wards) {
+			province = sub
+				.getProvinces()
+				.find((province) => province.name === user.provincial);
+			setProvince([province.name, province.code]);
+			district = sub
+				.getDistrictsByProvinceCode(province.code)
+				.find((district) => district.name === user.district);
+			setDistrict([district.name, district.code]);
+			ward = sub
+				.getWardsByDistrictCode(district.code)
+				.find((ward) => ward.name === user.wards);
+			setWawrd([ward.name, ward.code]);
+		}
 		formProfile.setFieldsValue({
 			name: user.name,
 			phone: user.phone,
 			address: user.address,
 			email: user.email,
-			provinces: [user.provincial, province.code],
-			district: [user.district, district.code],
-			ward: [user.wards, ward.code],
+			provinces: user.provincial && [user.provincial, province.code],
+			district: user.district && [user.district, district.code],
+			ward: user.wards && [user.wards, ward.code],
 		});
 		dispatch(setLoading(false));
 	}, [user]);
