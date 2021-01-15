@@ -1,11 +1,11 @@
-import React from "react";
+import React, { memo } from "react";
 import { Collapse } from "antd";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setStyles } from "../../../slice/menu.slice";
 import { setStyleFT } from "../../../slice/products.slice";
 
-export default function StyleFilter(props) {
+function StyleFilter(props) {
 	/*
     @state = {[key]: {name, state}}
   */
@@ -25,7 +25,7 @@ export default function StyleFilter(props) {
 
 	const handleClick = (e) => {
 		let key = e.target.id;
-		dispatch(setStyleFT(key === style.split("=")[1] ? "" : key));
+		dispatch(setStyleFT(key === style ? "" : key));
 	};
 
 	return (
@@ -35,9 +35,7 @@ export default function StyleFilter(props) {
 					{styles.map((st, i) => (
 						<li
 							className={
-								st._id === style.split("=")[1]
-									? "item current"
-									: "item"
+								st._id === style ? "item current" : "item"
 							}
 							key={i}
 							id={st._id}
@@ -52,3 +50,4 @@ export default function StyleFilter(props) {
 		</Collapse>
 	);
 }
+export default memo(StyleFilter);

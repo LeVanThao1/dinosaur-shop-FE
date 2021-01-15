@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Collapse } from "antd";
 
@@ -89,4 +89,4 @@ function ContentLogo({ socket }) {
 	);
 }
 
-export default ContentLogo;
+export default memo(ContentLogo);

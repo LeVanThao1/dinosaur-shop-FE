@@ -20,7 +20,8 @@ import { setLikeList } from "./slice/likelist.slice";
 import { setSeenList } from "./slice/seenlist.slice";
 import { setToken } from "./slice/token.slice";
 import { notifiError } from "./utils/notification";
-import InfiniteCarousel from 'react-leaf-carousel';
+import InfiniteCarousel from "react-leaf-carousel";
+import ReactGa from "react-ga";
 const Components = {};
 
 for (const c of routes) {
@@ -35,6 +36,12 @@ function App() {
 	const token = useSelector((state) => state.token);
 	const [socket, setSocket] = useState(null);
 	const loading = useSelector((state) => state.loading);
+
+	useEffect(() => {
+		ReactGa.initialize("G-5FV85HQS7Z");
+		ReactGa.pageview(window.location.pathname);
+	}, []);
+
 	useEffect(() => {
 		const seenList = JSON.parse(localStorage.getItem("seenList"));
 		const likeList = JSON.parse(localStorage.getItem("likeList"));

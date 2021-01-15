@@ -1,0 +1,18 @@
+.fg_pass {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	.row-password {
+		.password {
+			padding: 20px 0px;
+		}
+		.cf-password {
+			padding-bottom: 20px;
+		}
+		.button-pw {
+			display: flex;
+			justify-content: flex-end;
+			padding-bottom: 30px;
+		}
+	}
+}

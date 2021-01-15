@@ -1,11 +1,11 @@
-import React from "react";
+import React, { memo } from "react";
 import { Collapse } from "antd";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setMaterialFT } from "../../../slice/products.slice";
 import { setMaterials } from "../../../slice/menu.slice";
 
-export default function MaterialFilter(props) {
+function MaterialFilter(props) {
 	/*
     @state = {key: {name, state}}
   */
@@ -25,7 +25,7 @@ export default function MaterialFilter(props) {
 
 	const handleClick = (e) => {
 		let key = e.target.id;
-		dispatch(setMaterialFT(key === material.split("=")[1] ? "" : key));
+		dispatch(setMaterialFT(key === material ? "" : key));
 	};
 
 	return (
@@ -35,9 +35,7 @@ export default function MaterialFilter(props) {
 					{materials.map((mt, i) => (
 						<li
 							className={
-								mt._id === material.split("=")[1]
-									? "item current"
-									: "item"
+								mt._id === material ? "item current" : "item"
 							}
 							key={i}
 							id={mt._id}
@@ -52,3 +50,4 @@ export default function MaterialFilter(props) {
 		</Collapse>
 	);
 }
+export default memo(MaterialFilter);

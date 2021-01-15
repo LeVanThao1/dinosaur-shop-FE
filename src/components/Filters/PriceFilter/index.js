@@ -1,9 +1,9 @@
-import React, { useRef } from "react";
+import React, { memo, useRef } from "react";
 import { Slider, InputNumber, Row, Col } from "antd";
 import { setPriceFT } from "../../../slice/products.slice";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function PriceFilter(props) {
+function PriceFilter(props) {
 	const dispatch = useDispatch();
 	const { filter } = useSelector((state) => state.products);
 	const ref = useRef(null);
@@ -93,3 +93,4 @@ export default function PriceFilter(props) {
 		</div>
 	);
 }
+export default memo(PriceFilter);

@@ -11,6 +11,9 @@ import {
 	setPages,
 	setProducts,
 	setCurrentPage,
+	setProductsFilter,
+	setIsFilter,
+	setData,
 } from "../../slice/products.slice";
 import axios from "axios";
 import { Loading } from "../../components";
@@ -21,7 +24,14 @@ function ProductList(props) {
 	// const [loading, setLoading] = useState(true);
 	const productList = useSelector((state) => state.products);
 	const loading = useSelector((state) => state.loading);
-	const { products, pages, currentPage, filter } = productList;
+	const {
+		products,
+		pages,
+		currentPage,
+		filter,
+		isFilter,
+		data,
+	} = productList;
 	const {
 		category,
 		material,
@@ -30,46 +40,90 @@ function ProductList(props) {
 		price,
 		textSearch,
 		sortPrice,
+		productsFilter,
+		min,
+		max,
 	} = filter;
-	const countRef = useRef(0);
 	const ref = useRef(null);
+
+	const checkFilter = () =>
+		min !== 0 ||
+		max !== 1000000 ||
+		style ||
+		category ||
+		material ||
+		typeProduct ||
+		textSearch ||
+		sortPrice
+			? true
+			: false;
+
 	useEffect(() => {
 		dispatch(setLoading(true));
-		countRef.current++;
-		if (ref.current) clearTimeout(ref.current);
-		ref.current = setTimeout(
-			() => {
-				console.log("Ad");
-				setLoading(true);
-				axios
-					.get(
-						`http://localhost:3001/api/products?page=${currentPage}&${category}&${material}&${typeProduct}&${style}&${price}&${textSearch}&${sortPrice}&limit=9`
-					)
-					.then((res) => {
-						dispatch(setProducts(res.data.products));
-						dispatch(setPages(res.data.query));
-						dispatch(setLoading(false));
-					})
-					.catch((error) => {
-						notifiError("Error", error.response.data.msg);
+		axios
+			.get(`http://localhost:3001/api/products`)
+			.then((res) => {
+				dispatch(setProducts(res.data));
+				dispatch(setPages(Math.ceil(res.data.length / 9)));
+				dispatch(setLoading(false));
+			})
+			.catch((error) => {
+				console.log(error);
+				notifiError("Error", error.response.data.msg);
+				dispatch(setLoading(false));
+			});
+	}, []);
 
-						dispatch(setLoading(false));
-					});
-			},
-			countRef.current > 0 ? 500 : 0
-		);
-	}, [filter, currentPage]);
+	useEffect(() => {
+		if (checkFilter() && products) {
+			// dispatch(setLoading(true));
+			if (ref.current) clearTimeout(ref.current);
+			ref.current = setTimeout(() => {
+				const tamp = [...products];
+				let filterProducts = tamp.filter(
+					(product) =>
+						product.salePrice >= min &&
+						product.salePrice <= max &&
+						(style ? product.style._id === style : true) &&
+						(category ? product.category._id === category : true) &&
+						(material ? product.material._id === material : true) &&
+						(typeProduct
+							? product.type._id === typeProduct
+							: true) &&
+						product.name
+							.toLowerCase()
+							.includes(textSearch.toLowerCase())
+				);
+				if (sortPrice) {
+					filterProducts.sort((a, b) =>
+						sortPrice == "des"
+							? b.salePrice - a.salePrice
+							: a.salePrice - b.salePrice
+					);
+				}
 
+				dispatch(setProductsFilter(filterProducts));
+				dispatch(setPages(Math.ceil(filterProducts.length / 9)));
+				// dispatch(setLoading(false));
+			}, 300);
+		} else {
+			if (products) dispatch(setData());
+			dispatch(setIsFilter(false));
+		}
+	}, [filter]);
 	const handleChangePage = (page, pageSize) => {
 		dispatch(setCurrentPage(page));
+		// dispatch(setData(filterProducts));
+		window.scrollTo(0, 0);
 	};
+
 	return (
 		<Container>
 			<Row>
 				<Col xs={24} sm={24} md={6} lg={6} xl={6}>
 					<Filters />
 				</Col>
-				{products && (
+				{!loading && (
 					<Col xs={24} sm={24} md={18} lg={18} xl={18}>
 						<div
 							style={{
@@ -78,23 +132,13 @@ function ProductList(props) {
 								marginBottom: "16px",
 							}}
 						>
-							<Row justify="space-around">
-								{products.length > 0 ? (
-									products.map((product, i) => (
-										<ProductCard
-											product={product}
-											key={i}
-										/>
-									))
-								) : (
-									<h4>Hiện tại chưa có sản phẩm sản phẩm</h4>
-								)}
-							</Row>
-							{pages > 0 && (
+							<ListProduct data={data} />
+							{data && (
 								<Row justify="center">
 									<Pagination
 										defaultCurrent={currentPage}
 										defaultPageSize={1}
+										current={currentPage}
 										total={pages}
 										onChange={handleChangePage}
 									/>
@@ -108,3 +152,18 @@ function ProductList(props) {
 	);
 }
 export default memo(ProductList);
+const ListProduct = ({ data }) => {
+	return (
+		<>
+			{data && data.length > 0 ? (
+				<Row justify="space-around">
+					{data.map((product, i) => {
+						return <ProductCard product={product} key={i} />;
+					})}
+				</Row>
+			) : (
+				<h4>Hiện tại chưa có sản phẩm</h4>
+			)}
+		</>
+	);
+};

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 
 import { Row, Col, Divider } from "antd";
 import "./style.scss";
@@ -13,7 +13,7 @@ import HightLow from "./HightLow";
 
 // const dividerStyles = { borderTop: "2px solid grey" };
 
-export default function Filters(props) {
+function Filters(props) {
 	return (
 		<>
 			<Row>
@@ -55,3 +55,4 @@ export default function Filters(props) {
 		</>
 	);
 }
+export default memo(Filters);

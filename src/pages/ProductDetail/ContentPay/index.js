@@ -208,12 +208,13 @@ function ContentPay(props) {
 					];
 				}
 				dispatch(setCart({ cart: cartNew, type: false }));
-				history.push("/cart");
 				// notifiSuccess("Notify", "Add cart success");
 			} catch (e) {
 				// notifiSuccess("Error", "Add cart fail");
 			}
 		}
+
+		history.push("/cart");
 	};
 
 	return (

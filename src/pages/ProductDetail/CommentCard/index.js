@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import PropTypes from "prop-types";
 import "./index.scss";
 
@@ -16,4 +16,4 @@ const CommentCart = ({ children, comment }) => {
 
 CommentCart.propTypes = {};
 
-export default CommentCart;
+export default memo(CommentCart);

@@ -1,11 +1,11 @@
-import React from "react";
+import React, { memo } from "react";
 import { Collapse } from "antd";
 import axios from "axios";
 import { setCategogyFT } from "../../../slice/products.slice";
 import { useDispatch, useSelector } from "react-redux";
 import { setCategories } from "../../../slice/menu.slice";
 
-export default function CategoryFilter(props) {
+function CategoryFilter(props) {
 	/*
     @state = {[key]: {name, state}}
   */
@@ -24,7 +24,7 @@ export default function CategoryFilter(props) {
 
 	const handleClick = (e) => {
 		let key = e.target.id;
-		dispatch(setCategogyFT(key === category.split("=")[1] ? "" : key));
+		dispatch(setCategogyFT(key === category ? "" : key));
 	};
 
 	return (
@@ -34,9 +34,7 @@ export default function CategoryFilter(props) {
 					{categories.map((ct, i) => (
 						<li
 							className={
-								ct._id === category.split("=")[1]
-									? "item current"
-									: "item"
+								ct._id === category ? "item current" : "item"
 							}
 							key={i}
 							id={ct._id}
@@ -51,3 +49,4 @@ export default function CategoryFilter(props) {
 		</Collapse>
 	);
 }
+export default memo(CategoryFilter);

@@ -1,11 +1,11 @@
-import React from "react";
+import React, { memo } from "react";
 import { Collapse } from "antd";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setTypeProducts } from "../../../slice/menu.slice";
 import { setTypeProductFT } from "../../../slice/products.slice";
 
-export default function TypeFilter(props) {
+function TypeFilter(props) {
 	/*
     @state = {key: {name, state}}
   */
@@ -25,9 +25,7 @@ export default function TypeFilter(props) {
 
 	const handleClick = (e) => {
 		let key = e.target.id;
-		dispatch(
-			setTypeProductFT(key === typeProduct.split("=")[1] ? "" : key)
-		);
+		dispatch(setTypeProductFT(key === typeProduct ? "" : key));
 	};
 
 	return (
@@ -37,7 +35,7 @@ export default function TypeFilter(props) {
 					{typeProducts.map((td, i) => (
 						<li
 							className={
-								td._id === typeProduct.split("=")[1]
+								td._id === typeProduct
 									? "item current"
 									: "item "
 							}
@@ -54,3 +52,4 @@ export default function TypeFilter(props) {
 		</Collapse>
 	);
 }
+export default memo(TypeFilter);

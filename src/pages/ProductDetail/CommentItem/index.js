@@ -1,4 +1,4 @@
-import React, { createElement, useState } from "react";
+import React, { createElement, memo, useState } from "react";
 import PropTypes from "prop-types";
 import CommentCart from "../CommentCard";
 import FormInput from "../FormInput";
@@ -102,4 +102,4 @@ function CommentItem({ socket, comment }) {
 	);
 }
 
-export default CommentItem;
+export default memo(CommentItem);

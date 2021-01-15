@@ -4,8 +4,9 @@ const products = createSlice({
 	name: "products",
 	initialState: {
 		products: null,
-		pages: 1,
 		currentPage: 1,
+		isFilter: false,
+		pages: 1,
 		filter: {
 			category: "",
 			typeProduct: "",
@@ -17,17 +18,31 @@ const products = createSlice({
 			price: "",
 			sortPrice: "",
 		},
+		productsFilter: null,
+		data: null,
 	},
 	reducers: {
 		setProducts: (state, action) => {
 			return {
 				...state,
 				products: action.payload,
-				// pages: Math.ceil(action.payload.length / 9),
+				data: action.payload.slice(0, 9),
 			};
 		},
 		setCurrentPage: (state, action) => {
-			return { ...state, currentPage: action.payload };
+			return {
+				...state,
+				currentPage: action.payload,
+				data: state.isFilter
+					? state.productsFilter.slice(
+							(action.payload - 1) * 9,
+							action.payload * 9
+					  )
+					: state.products.slice(
+							(action.payload - 1) * 9,
+							action.payload * 9
+					  ),
+			};
 		},
 		setStyleFT: (state, action) => {
 			return {
@@ -35,7 +50,7 @@ const products = createSlice({
 				currentPage: 1,
 				filter: {
 					...state.filter,
-					style: action.payload ? `style=${action.payload}` : "",
+					style: action.payload,
 				},
 			};
 		},
@@ -45,9 +60,7 @@ const products = createSlice({
 				currentPage: 1,
 				filter: {
 					...state.filter,
-					category: action.payload
-						? `category=${action.payload}`
-						: "",
+					category: action.payload,
 				},
 			};
 		},
@@ -57,10 +70,23 @@ const products = createSlice({
 				currentPage: 1,
 				filter: {
 					...state.filter,
-					typeProduct: action.payload
-						? `type_product=${action.payload}`
-						: "",
+					typeProduct: action.payload,
 				},
+			};
+		},
+		setProductsFilter: (state, action) => {
+			return {
+				...state,
+				currentPage: 1,
+				productsFilter: action.payload,
+				isFilter: true,
+				data: action.payload.slice(0, 9),
+			};
+		},
+		setIsFilter: (state, action) => {
+			return {
+				...state,
+				isFilter: action.payload,
 			};
 		},
 		setMaterialFT: (state, action) => {
@@ -69,16 +95,14 @@ const products = createSlice({
 				currentPage: 1,
 				filter: {
 					...state.filter,
-					material: action.payload
-						? `material=${action.payload}`
-						: "",
+					material: action.payload,
 				},
 			};
 		},
 		setPages: (state, action) => {
 			return {
 				...state,
-				pages: Math.ceil(action.payload.total / action.payload.limit),
+				pages: action.payload,
 			};
 		},
 		setPriceFT: (state, action) => {
@@ -89,7 +113,6 @@ const products = createSlice({
 					...state.filter,
 					min: action.payload.min,
 					max: action.payload.max,
-					price: `salePrice[gte]=${action.payload.min}&salePrice[lte]=${action.payload.max}`,
 				},
 			};
 		},
@@ -99,9 +122,7 @@ const products = createSlice({
 				currentPage: 1,
 				filter: {
 					...state.filter,
-					textSearch: action.payload
-						? `name[regex]=${action.payload}`
-						: "",
+					textSearch: action.payload,
 				},
 			};
 		},
@@ -111,8 +132,16 @@ const products = createSlice({
 				currentPage: 1,
 				filter: {
 					...state.filter,
-					sortPrice: action.payload ? `sort=${action.payload}` : "",
+					sortPrice: action.payload,
 				},
+			};
+		},
+		setData: (state, action) => {
+			return {
+				...state,
+				currentPage: 1,
+				pages: Math.ceil(state.products.length / 9),
+				data: state.products.slice(0, 9),
 			};
 		},
 	},
@@ -131,4 +160,7 @@ export const {
 	setPriceFT,
 	setTextSearchFT,
 	setSortPrice,
+	setProductsFilter,
+	setIsFilter,
+	setData,
 } = actions;

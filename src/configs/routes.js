@@ -43,8 +43,8 @@ export default [
 	},
 	{
 		title: "Forgot Password Page || Shop",
-		component: "ForgotPassword",
-		path: "/forgot",
+		component: "ForgetPassword",
+		path: "/forgot_password",
 		isProtected: false,
 		exact: true,
 	},
@@ -94,7 +94,7 @@ export default [
 		title: "Shipping Page || Shop",
 		component: "Shipping",
 		path: "/shipping",
-		isProtected: false,
+		isProtected: true,
 		exact: true,
 	},
 	{
@@ -208,5 +208,5 @@ export default [
 		path: "/order-detail/:id",
 		isProtected: true,
 		exact: true,
-	}
+	},
 ];

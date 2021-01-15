@@ -1,9 +1,9 @@
-import React from "react";
+import React, { memo } from "react";
 import { Collapse } from "antd";
 
 import axios from "axios";
 
-export default function StateFilter() {
+function StateFilter() {
 	/*
     @state = {[key]: {name, state}}
   */
@@ -64,3 +64,5 @@ export default function StateFilter() {
 		</Collapse>
 	);
 }
+
+export default memo(StateFilter);

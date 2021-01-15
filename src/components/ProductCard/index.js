@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Card, Typography } from "antd";
 import { HeartFilled, HeartOutlined } from "@ant-design/icons";
@@ -18,10 +18,14 @@ const styleLike = {
 	zIndex: 999,
 };
 
-export default function ProductCard({ product }) {
+function ProductCard({ product }) {
 	const [image, setImage] = React.useState(product.images[0]);
 	const likeList = useSelector((state) => state.likeList);
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		setImage(product.images[0]);
+	}, [product]);
 
 	const history = useHistory();
 
@@ -86,3 +90,4 @@ export default function ProductCard({ product }) {
 		</div>
 	);
 }
+export default memo(ProductCard);

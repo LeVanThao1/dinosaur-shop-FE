@@ -1,10 +1,10 @@
-import React from "react";
+import React, { memo } from "react";
 import { Collapse } from "antd";
 import axios from "axios";
 import { setSortPrice } from "../../../slice/products.slice";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function HightLow(props) {
+function HightLow(props) {
 	/*
     @state = {[key]: {name, state}}
   */
@@ -14,7 +14,7 @@ export default function HightLow(props) {
 
 	const handleClick = (e) => {
 		let key = e.target.id;
-		dispatch(setSortPrice(key === sortPrice.split("=")[1] ? "" : key));
+		dispatch(setSortPrice(key === sortPrice ? "" : key));
 	};
 
 	return (
@@ -23,22 +23,18 @@ export default function HightLow(props) {
 				<ul>
 					<li
 						className={
-							"salePrice" === sortPrice.split("=")[1]
-								? "item current"
-								: "item"
+							"asc" === sortPrice ? "item current" : "item"
 						}
-						id={"salePrice"}
+						id={"asc"}
 						onClick={(e) => handleClick(e)}
 					>
 						Low Hight
 					</li>
 					<li
 						className={
-							"-salePrice" === sortPrice.split("=")[1]
-								? "item current"
-								: "item"
+							"des" === sortPrice ? "item current" : "item"
 						}
-						id={"-salePrice"}
+						id={"des"}
 						onClick={(e) => handleClick(e)}
 					>
 						Hight Low
@@ -48,3 +44,4 @@ export default function HightLow(props) {
 		</Collapse>
 	);
 }
+export default memo(HightLow);
