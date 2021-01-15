@@ -67,7 +67,7 @@ function TrackingOrder() {
 							value={input}
 							onChange={handleChangeInput}
 							type="text"
-							class="tracking_form-input"
+							className="tracking_form-input"
 							placeholder="MÃ ĐƠN HÀNG"
 						/>
 					</div>
@@ -81,7 +81,7 @@ function TrackingOrder() {
 					<div className="tracking_form-group">
 						<button
 							onClick={searchOrder}
-							class="tracking_form-button"
+							className="tracking_form-button"
 						>
 							TRA CỨU ĐƠN HÀNG
 						</button>
@@ -123,7 +123,7 @@ function TrackingOrder() {
 											>
 												ĐANG XÁC NHẬN
 											</span>
-											<i class="arrow right"></i>
+											<i className="arrow right"></i>
 										</div>
 										<div className="status_order-content--title">
 											<span
@@ -135,7 +135,7 @@ function TrackingOrder() {
 											>
 												CHUYỂN QUA GIAO NHẬN
 											</span>
-											<i class="arrow right"></i>
+											<i className="arrow right"></i>
 										</div>
 										<div className="status_order-content--title">
 											<span
@@ -147,7 +147,7 @@ function TrackingOrder() {
 											>
 												ĐANG GIAO HÀNG
 											</span>
-											<i class="arrow right"></i>
+											<i className="arrow right"></i>
 										</div>
 										<div
 											className={`status_order-content--title ${
