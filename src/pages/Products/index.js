@@ -19,9 +19,12 @@ import axios from "axios";
 import { Loading } from "../../components";
 import { notifiError } from "../../utils/notification";
 import { setLoading } from "../../slice/loading.slice";
+import { useLocation } from "react-router-dom";
 function ProductList(props) {
 	const dispatch = useDispatch();
 	// const [loading, setLoading] = useState(true);
+	const location = useLocation();
+	console.log(location);
 	const productList = useSelector((state) => state.products);
 	const loading = useSelector((state) => state.loading);
 	const {
@@ -59,19 +62,21 @@ function ProductList(props) {
 			: false;
 
 	useEffect(() => {
-		dispatch(setLoading(true));
-		axios
-			.get(`http://localhost:3001/api/products`)
-			.then((res) => {
-				dispatch(setProducts(res.data));
-				dispatch(setPages(Math.ceil(res.data.length / 9)));
-				dispatch(setLoading(false));
-			})
-			.catch((error) => {
-				console.log(error);
-				notifiError("Error", error.response.data.msg);
-				dispatch(setLoading(false));
-			});
+		if (!products) {
+			dispatch(setLoading(true));
+			axios
+				.get(`http://localhost:3001/api/products`)
+				.then((res) => {
+					dispatch(setProducts(res.data));
+					dispatch(setPages(Math.ceil(res.data.length / 9)));
+					dispatch(setLoading(false));
+				})
+				.catch((error) => {
+					console.log(error);
+					notifiError("Error", error.response.data.msg);
+					dispatch(setLoading(false));
+				});
+		}
 	}, []);
 
 	useEffect(() => {

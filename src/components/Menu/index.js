@@ -1,6 +1,7 @@
 import { Collapse } from "antd";
 import React, { memo } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import Images from "../../constant/image";
 import "./index.scss";
 const { Panel } = Collapse;
@@ -8,10 +9,19 @@ Menu.propTypes = {};
 
 function Menu(props) {
 	const history = useHistory();
+	const { filter } = useSelector((state) => state.products);
+	const location = useLocation();
 	return (
 		<>
 			<ul className="menu_desktop">
-				<li onClick={() => history.push("/products")}>
+				<li
+					className={
+						location.pathname === "/products" &&
+						!location.search &&
+						"liactive"
+					}
+					onClick={() => history.push("/products")}
+				>
 					Sản phẩm
 					<div className="container_drop">
 						<div className="menu_drop">
@@ -58,11 +68,23 @@ function Menu(props) {
 						</div>
 					</div>
 				</li>
-				<li>
-					<Link to="/products">Nam</Link>
+				<li
+					className={
+						location.pathname === "/products" &&
+						location.search === "category=nam" &&
+						"liactive"
+					}
+				>
+					<Link to="/products?caterogy=nam">Nam</Link>
 				</li>
-				<li>
-					<Link to="/products">Nữ</Link>
+				<li
+					className={
+						location.pathname === "/products" &&
+						location.search === "category=nu" &&
+						"liactive"
+					}
+				>
+					<Link to="/products?category=nu">Nữ</Link>
 				</li>
 				<li>
 					<Link to="/products">Sale off</Link>

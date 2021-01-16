@@ -75,7 +75,7 @@ function ControlUser(props) {
 						<span>Tìm cửa hàng</span>
 					</Button>
 				</Link>
-				<Link to="/shipping">
+				<Link to="/like-products">
 					<Button className="btn_control">
 						<HeartOutlined className="icon" />
 						<span>Yêu thích</span>

@@ -209,4 +209,11 @@ export default [
 		isProtected: true,
 		exact: true,
 	},
+	{
+		title: "Like Products Page || Shop",
+		component: "LikeProduct",
+		path: "/like-products",
+		isProtected: false,
+		exact: true,
+	},
 ];
