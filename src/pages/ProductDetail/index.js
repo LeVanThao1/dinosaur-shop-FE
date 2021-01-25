@@ -50,10 +50,6 @@ function ProductDetail({ socket }) {
 		getProduct();
 	}, [dispatch, id]);
 
-	const getCM = async () => {
-		const data = await productApi.getComment(id);
-		dispatch(setComment(data));
-	};
 	useEffect(() => {
 		dispatch(setLoading(true));
 		const getCM = async () => {
@@ -160,7 +156,6 @@ function ProductDetail({ socket }) {
 														key={comment._id}
 														comment={comment}
 														socket={socket}
-														getCM={getCM}
 													/>
 												))
 										: null}

@@ -8,7 +8,7 @@ import CommentCart from "../CommentCard";
 import "./index.scss";
 CommentItem.propTypes = {};
 
-function CommentItem({ socket, comment, getCM }) {
+function CommentItem({ socket, comment }) {
 	const token = useSelector((state) => state.token);
 	const { user } = useSelector((state) => state.auth);
 	const dispatch = useDispatch();
@@ -23,7 +23,6 @@ function CommentItem({ socket, comment, getCM }) {
 				? [...comment.like.filter((id) => id !== user._id)]
 				: [];
 			dispatch(setLike({ id: comment._id, like, disLike }));
-			// getCM();
 		} catch (err) {
 			console.log(err);
 			notifiError(err?.response?.data?.msg || "Have error");
@@ -41,7 +40,6 @@ function CommentItem({ socket, comment, getCM }) {
 				? [...comment.like.filter((id) => id !== user._id)]
 				: [];
 			dispatch(setLike({ id: comment._id, like, disLike }));
-			// getCM();
 		} catch (err) {
 			console.log(err);
 			notifiError(err?.response?.data?.msg || "Have error");
