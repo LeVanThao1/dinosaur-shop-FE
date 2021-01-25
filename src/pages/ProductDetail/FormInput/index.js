@@ -1,13 +1,18 @@
-import React, { useEffect, useRef } from "react";
+import { Input, Button } from "antd";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import API from "../../../axios";
+import { notifiError, notifiSuccess } from "../../../utils/notification";
 
-function FormInput({ id, socket, send, name, setReply, productId }) {
+const { TextArea } = Input;
+function FormInput({ id, socket, send, name, productId }) {
 	// const nameRef = useRef();
 	const contentRef = useRef();
 	const auth = useSelector((state) => state.auth);
 	const history = useHistory();
-
+	const [value, setValue] = useState("");
+	const token = useSelector((state) => state.token);
 	useEffect(() => {
 		if (name) {
 			contentRef.current.innerHTML = `
@@ -20,38 +25,42 @@ function FormInput({ id, socket, send, name, setReply, productId }) {
 		}
 	}, [name]);
 
-	const commentSubmit = () => {
+	const commentSubmit = async () => {
 		if (!auth.isLogged) {
 			return history.push("/login");
 		}
 		// const username = nameRef.current.value;
-		const content = contentRef.current.innerHTML;
 		// if (!username.trim()) return alert("Not Empty!");
 
-		socket.emit("createComment", {
-			userId: auth.user._id,
-			username: auth.user?.name,
-			content,
-			productId: productId,
-			send,
-			id: id,
-		});
+		// socket.emit("createComment", {
+		// 	userId: auth.user._id,
+		// 	content: value,
+		// 	productId: productId,
+		// 	send,
+		// 	id: id,
+		// });
+		try {
+			await API("api/comments", "POST", token, {
+				content: value,
+				productId: productId,
+			});
 
+			setValue("");
+			notifiSuccess("Vui lòng đợi hệ thống phê duyệt");
+		} catch (err) {
+			notifiError("Have Error");
+		}
 		// if (rating && rating !== 0) {
 		// 	patchData(`/api/products/${id}`, { rating });
 		// }
-
-		contentRef.current.innerHTML = "";
-
-		if (setReply) setReply(false);
 	};
 
 	return (
 		<div className="rep_comment">
-			<label>
+			{/* <label>
 				{auth.isLogged ? auth.user.name : "Người dùng ẩn danh"}
-			</label>
-			<div
+			</label> */}
+			{/* <div
 				ref={contentRef}
 				contentEditable="true"
 				style={{
@@ -60,18 +69,28 @@ function FormInput({ id, socket, send, name, setReply, productId }) {
 					padding: "5px 10px",
 					outline: "none",
 				}}
-			/>
-			<button
-				onClick={commentSubmit}
-				style={{
-					backgroundColor: "rgb(32, 120, 244)",
-					padding: 5,
-					width: 120,
-					margin: "1%",
+			/> */}
+			<TextArea
+				placeholder="Nhập nội dung bình luận"
+				allowClear
+				onChange={(e) => {
+					console.log(e.target.value);
+					setValue(e.target.value);
 				}}
-			>
-				Send
-			</button>
+				onPressEnter={commentSubmit}
+				value={value}
+			/>
+			<div style={{ margin: "15px 0px" }}>
+				<Button
+					onClick={commentSubmit}
+					style={{
+						backgroundColor: "#f15e2c",
+						color: "#fff",
+					}}
+				>
+					Nhận xét
+				</Button>
+			</div>
 		</div>
 	);
 }
