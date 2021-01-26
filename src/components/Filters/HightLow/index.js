@@ -28,7 +28,7 @@ function HightLow(props) {
 						id={"asc"}
 						onClick={(e) => handleClick(e)}
 					>
-						Low Hight
+						Low High
 					</li>
 					<li
 						className={
@@ -37,7 +37,7 @@ function HightLow(props) {
 						id={"des"}
 						onClick={(e) => handleClick(e)}
 					>
-						Hight Low
+						High Low
 					</li>
 				</ul>
 			</Collapse.Panel>

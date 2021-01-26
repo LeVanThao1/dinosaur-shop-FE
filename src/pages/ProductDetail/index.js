@@ -8,27 +8,33 @@ import ContentLogo from "./ContentLogo";
 import ViewedProduct from "./ViewedProducts";
 import productApi from "../../api/productApi";
 import { useDispatch, useSelector } from "react-redux";
-import { setProduct, setComment } from "../../slice/productdetail.slice";
+import {
+	setProduct,
+	setComment,
+	setEvalute,
+	setValue,
+} from "../../slice/productdetail.slice";
 import { addSeenList } from "../../slice/seenlist.slice";
 import CommentItem from "./CommentItem";
 import FormInput from "./FormInput";
 import { setLoading } from "../../slice/loading.slice";
 import RelatedProduct from "./RelatedProduct";
-import { Pagination, Rate, Tabs } from "antd";
+import { Pagination, Rate, Tabs, Progress } from "antd";
+import API from "../../axios";
+import { notifiError, notifiSuccess } from "../../utils/notification";
 
 const { TabPane } = Tabs;
-
+const rate = [0, 1, 2, 3, 4];
 function ProductDetail({ socket }) {
-	// const [loading, setLoading] = useState(true);
 	const productDetail = useSelector((state) => state.productDetail);
+	const { user } = useSelector((state) => state.auth);
 	const { id } = useParams();
-	const [page, setPage] = useState(1);
-	const pageEnd = useRef();
 	const dispatch = useDispatch();
-	const seenList = useSelector((state) => state.seenList);
-	const [value, setValue] = useState(2.5);
-	const { product, comments } = productDetail;
+	const token = useSelector((state) => state.token);
+	const [dataEvalute, setDataEvalute] = useState({});
+	const { product, comments, star, evalute, value } = productDetail;
 	const [currentPage, setCurrentPage] = useState(1);
+
 	useEffect(() => {
 		if (socket) {
 			socket.emit("joinRoom", id);
@@ -40,71 +46,60 @@ function ProductDetail({ socket }) {
 		const getProduct = async () => {
 			const data = await productApi.getProductDetail(id);
 			dispatch(setProduct(data));
+
+			dispatch(setLoading(false));
 			if (data) {
 				dispatch(addSeenList(data));
-
-				// cookie.save("seenList", seenList);
 			}
-			dispatch(setLoading(false));
 		};
 		getProduct();
 	}, [dispatch, id]);
 
 	useEffect(() => {
-		dispatch(setLoading(true));
 		const getCM = async () => {
 			const data = await productApi.getComment(id);
 			dispatch(setComment(data));
-			dispatch(setLoading(false));
 		};
 		getCM();
 	}, [dispatch]);
-	useEffect(() => {
-		if (socket) {
-			socket.on("sendCommentToClient", (msg) => {
-				dispatch(setComment([msg, ...comments]));
-			});
 
-			return () => socket.off("sendCommentToClient");
+	useEffect(() => {
+		if (user) {
+			const getEvalute = async () => {
+				const res = await API(`api/product/${id}/evalutes`, "GET");
+				dispatch(setEvalute({ id: user._id, evalute: res.data }));
+			};
+
+			getEvalute();
 		}
-	}, [socket, comments]);
-	useEffect(() => {
-		// const observer = new IntersectionObserver(
-		// 	(entries) => {
-		// 		if (entries[0].isIntersecting) {
-		// 			setPage((prev) => prev + 1);
-		// 		}
-		// 	},
-		// 	{
-		// 		threshold: 0.1,
-		// 	}
-		// );
-		// observer.observe(pageEnd.current);
-	}, []);
-	useEffect(() => {
-		// console.log(3);
-		if (socket) {
-			socket.on("sendReplyCommentToClient", (msg) => {
-				// const newArr = [...comments];
-
-				// newArr.forEach((cm) => {
-				// 	if (cm._id === msg._id) {
-				// 		cm.reply = msg.reply;
-				// 	}
-				// });
-
-				// dispatch(setComment(newArr));
-				console.log("msg", msg);
-			});
-
-			return () => socket.off("sendReplyCommentToClient");
+	}, [user]);
+	const onEvalute = async (value) => {
+		try {
+			if (!token) {
+				notifiError("Vui lòng đăng nhập để đánh giá sản phẩm");
+				return;
+			}
+			await API(`api/evalutes/${id}`, "POST", token, { star: value });
+			dispatch(setValue({ id: user._id, value }));
+			notifiSuccess("Đánh giá thành công");
+		} catch (err) {
+			notifiError(err.response.data.msg || "Have error");
 		}
-	}, [socket, comments]);
-
-	const evalute = (value) => {
-		setValue(value);
-		// console.log(value);
 	};
+	const filter = () => {
+		let tamp = {};
+		evalute.map((ev) => {
+			if (tamp[ev.star]) {
+				tamp[ev.star]++;
+			} else tamp[ev.star] = 1;
+		});
+		setDataEvalute(tamp);
+	};
+	useEffect(() => {
+		if (evalute && evalute.length > 0) {
+			filter();
+		}
+	}, [evalute]);
 
 	return (
 		<>
@@ -132,11 +127,75 @@ function ProductDetail({ socket }) {
 							onChange={(key) => console.log(key)}
 						>
 							<TabPane tab="Đánh giá" key="1">
-								<Rate
-									// allowHalf
-									onChange={(value) => evalute(value)}
-									value={value}
-								/>
+								<div className="container-evalue">
+									<div className="table-evalue">
+										<div className="rate-evalue">
+											<div className="value-rate">
+												{star}/5
+											</div>
+											<Rate
+												defaultValue={star}
+												// disabled={true}
+												value={star}
+											/>
+											<div className="total-evalute">
+												{evalute?.length | 0} đánh giá
+											</div>
+										</div>
+										<div className="list-evalute">
+											{rate.map((i) => (
+												<div
+													style={{
+														display: "flex",
+														flexDirection: "row",
+														alignItems: "center",
+														justifyContent:
+															"center",
+													}}
+												>
+													<Rate
+														defaultValue={5 - i}
+														disabled={true}
+													/>
+													<div
+														style={{
+															width: "150px",
+															paddingLeft: "15px",
+														}}
+													>
+														<Progress
+															percent={
+																((dataEvalute[
+																	5 - i
+																] |
+																	0) /
+																	evalute?.length) *
+																100
+															}
+															strokeColor={{
+																"0%": "#fadb14",
+																"100%":
+																	"fadb14",
+															}}
+															size="small"
+														/>
+													</div>
+													<div className="quality-rate">
+														{dataEvalute[5 - i]}
+													</div>
+												</div>
+											))}
+										</div>
+									</div>
+									<div className="user-evalue">
+										<Rate
+											onChange={(value) =>
+												onEvalute(value)
+											}
+											value={value}
+										/>
+									</div>
+								</div>
 							</TabPane>
 							<TabPane tab="Nhận xét" key="2">
 								<FormInput
@@ -167,17 +226,19 @@ function ProductDetail({ socket }) {
 											width: "100%",
 										}}
 									>
-										<Pagination
-											defaultCurrent={currentPage}
-											defaultPageSize={1}
-											current={currentPage}
-											total={Math.ceil(
-												comments.length / 5
-											)}
-											onChange={(page, pageSize) =>
-												setCurrentPage(page)
-											}
-										/>
+										{comments.length > 0 && (
+											<Pagination
+												defaultCurrent={currentPage}
+												defaultPageSize={1}
+												current={currentPage}
+												total={Math.ceil(
+													comments.length / 5
+												)}
+												onChange={(page, pageSize) =>
+													setCurrentPage(page)
+												}
+											/>
+										)}
 									</div>
 								</div>
 							</TabPane>
@@ -190,32 +251,7 @@ function ProductDetail({ socket }) {
 								<ViewedProduct />
 							</div>
 						</div>
-						{/* <div className="related">
-							<div className="header__realated">
-							</div>
-							<RelatedProduct />
-						</div> */}
 					</div>
-
-					{/* <FormInput
-						productId={product._id}
-						socket={socket}
-						placeholder="Nhập nội dung bình luận"
-					/>
-					<div className="comments_list">
-						{comments
-							? comments.map((comment) => (
-									<CommentItem
-										key={comment._id}
-										comment={comment}
-										socket={socket}
-									/>
-							  ))
-							: null}
-					</div>
-					<button ref={pageEnd} style={{ opacity: 0 }}>
-						Load more
-					</button> */}
 				</div>
 			)}
 		</>

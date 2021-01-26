@@ -53,7 +53,7 @@ function Register(props) {
 		if (isLength(password))
 			return setUser({
 				...user,
-				err: "Password must be at least 6 characters.",
+				err: "Password must be at least 8 characters.",
 				success: "",
 			});
 
