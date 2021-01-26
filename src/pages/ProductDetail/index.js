@@ -135,7 +135,7 @@ function ProductDetail({ socket }) {
 											</div>
 											<Rate
 												defaultValue={star}
-												// disabled={true}
+												disabled={true}
 												value={star}
 											/>
 											<div className="total-evalute">

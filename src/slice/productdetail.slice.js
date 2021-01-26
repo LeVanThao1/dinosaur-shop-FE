@@ -47,11 +47,15 @@ const productDetail = createSlice({
 			return {
 				...state,
 				evalute: action.payload.evalute,
-				star: Math.floor(
-					(action.payload.evalute.reduce((a, b) => a + b.star, 0) |
-						0) /
-						action.payload.evalute.length
-				),
+				star:
+					Math.floor(
+						(action.payload.evalute.reduce(
+							(a, b) => a + b.star,
+							0
+						) |
+							0) /
+							action.payload.evalute.length
+					) || 0,
 				value:
 					action.payload.evalute.filter(
 						(cm) => cm.userId === action.payload.id
@@ -76,7 +80,7 @@ const productDetail = createSlice({
 					...state,
 					evalute: evalute,
 					value: action.payload.value,
-					star: Math.floor(
+					star: Math.round(
 						(evalute.reduce((a, b) => a + b.star, 0) | 0) /
 							evalute.length
 					),
@@ -95,10 +99,12 @@ const productDetail = createSlice({
 				...state,
 				evalute: evalute,
 				value: action.payload.value,
-				star: Math.floor(
-					(evalute.reduce((a, b) => a + b.star, 0) | 0) /
-						evalute.length
-				),
+				star:
+					Math.round(
+						((evalute.reduce((a, b) => a + b.star, 0) | 0) /
+							evalute.length) *
+							10
+					) / 10,
 			};
 		},
 	},
