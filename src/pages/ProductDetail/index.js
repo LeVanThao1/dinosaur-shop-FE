@@ -150,7 +150,7 @@ function ProductDetail({ socket }) {
 														flexDirection: "row",
 														alignItems: "center",
 														justifyContent:
-															"center",
+															"space-evenly",
 													}}
 												>
 													<Rate
@@ -164,6 +164,7 @@ function ProductDetail({ socket }) {
 														}}
 													>
 														<Progress
+															status="normal"
 															percent={
 																((dataEvalute[
 																	5 - i
@@ -172,17 +173,15 @@ function ProductDetail({ socket }) {
 																	evalute?.length) *
 																100
 															}
-															strokeColor={{
-																"0%": "#fadb14",
-																"100%":
-																	"fadb14",
-															}}
+															strokeColor={
+																"#fadb14"
+															}
 															size="small"
 														/>
 													</div>
-													<div className="quality-rate">
+													{/* <div className="quality-rate">
 														{dataEvalute[5 - i]}
-													</div>
+													</div> */}
 												</div>
 											))}
 										</div>
