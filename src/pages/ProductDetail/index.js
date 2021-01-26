@@ -44,12 +44,17 @@ function ProductDetail({ socket }) {
 	useEffect(() => {
 		dispatch(setLoading(true));
 		const getProduct = async () => {
-			const data = await productApi.getProductDetail(id);
-			dispatch(setProduct(data));
+			try {
+				const data = await productApi.getProductDetail(id);
+				dispatch(setProduct(data));
 
-			dispatch(setLoading(false));
-			if (data) {
-				dispatch(addSeenList(data));
+				dispatch(setLoading(false));
+				if (data) {
+					dispatch(addSeenList(data));
+				}
+			} catch (err) {
+				dispatch(setLoading(false));
+				notifiError(err.response.data.msg || "Have error");
 			}
 		};
 		getProduct();
@@ -98,8 +103,10 @@ function ProductDetail({ socket }) {
 	useEffect(() => {
 		if (evalute && evalute.length > 0) {
 			filter();
+		} else {
+			setDataEvalute({});
 		}
-	}, [evalute]);
+	}, [evalute, id]);
 
 	return (
 		<>
@@ -166,12 +173,17 @@ function ProductDetail({ socket }) {
 														<Progress
 															status="normal"
 															percent={
-																((dataEvalute[
-																	5 - i
-																] |
-																	0) /
-																	evalute?.length) *
-																100
+																Object.keys(
+																	dataEvalute
+																).length === 0
+																	? 0
+																	: ((dataEvalute[
+																			5 -
+																				i
+																	  ] |
+																			0) /
+																			evalute?.length) *
+																	  100
 															}
 															strokeColor={
 																"#fadb14"
