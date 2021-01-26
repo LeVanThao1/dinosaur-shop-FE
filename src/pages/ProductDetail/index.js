@@ -61,7 +61,7 @@ function ProductDetail({ socket }) {
 			dispatch(setComment(data));
 		};
 		getCM();
-	}, [dispatch]);
+	}, [dispatch, id]);
 
 	useEffect(() => {
 		if (user) {
@@ -72,7 +72,7 @@ function ProductDetail({ socket }) {
 
 			getEvalute();
 		}
-	}, [user]);
+	}, [user, id]);
 	const onEvalute = async (value) => {
 		try {
 			if (!token) {
