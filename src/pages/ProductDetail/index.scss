@@ -125,7 +125,9 @@
 		}
 	}
 }
-
+* {
+	transition: all 0.03s;
+}
 // @media only screen and (max-width: 1250px) {
 //   .main__logo > img {
 //     width: 600px;
