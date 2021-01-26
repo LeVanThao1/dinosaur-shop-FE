@@ -176,7 +176,7 @@ function CartContent({ pd }) {
 						return false;
 					return true;
 				});
-				dispatch(setCart(data));
+				dispatch(setCart({ cart: data }));
 				notifiSuccess("Notify", "Xoá sản phẩm thành công.");
 			} catch (e) {
 				notifiError("Notify", "Xoá sản phẩm thất bại.");
