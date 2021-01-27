@@ -14,6 +14,7 @@ import { notifiError, notifiSuccess } from "../../utils/notification";
 import { useHistory } from "react-router-dom";
 import API from "../../axios";
 import { useTranslation } from "react-i18next";
+import { changeCart } from "../../slice/auth.slice";
 Payment.propTypes = {};
 
 function Payment(props) {
@@ -52,6 +53,7 @@ function Payment(props) {
 				)
 				.then((res) => {
 					dispatch(setCart({ cart: [], type: true }));
+					dispatch(changeCart([]));
 					notifiSuccess("Notify", res.data.msg);
 				})
 				.catch((err) => {
