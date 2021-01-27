@@ -34,16 +34,9 @@ function Filters(props) {
 					</Row>
 					<Row>
 						<Col xs={12} sm={12} md={24} lg={24} xl={24}>
-							<StateFilter />
-							{/* <Divider style={dividerStyles} /> */}
-						</Col>
-
-						<Col xs={12} sm={12} md={24} lg={24} xl={24}>
 							<TypeFilter />
 							{/* <Divider style={dividerStyles} /> */}
 						</Col>
-					</Row>
-					<Row>
 						<Col xs={12} sm={12} md={24} lg={24} xl={24}>
 							<MaterialFilter />
 							{/* <Divider style={dividerStyles} /> */}

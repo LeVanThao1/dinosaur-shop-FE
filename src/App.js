@@ -22,6 +22,7 @@ import { setToken } from "./slice/token.slice";
 import { notifiError } from "./utils/notification";
 import InfiniteCarousel from "react-leaf-carousel";
 import ReactGa from "react-ga";
+import { useTranslation } from "react-i18next";
 const Components = {};
 
 for (const c of routes) {
@@ -31,11 +32,17 @@ for (const c of routes) {
 }
 
 function App() {
+	const { t, i18n } = useTranslation();
 	const dispatch = useDispatch();
 	const auth = useSelector((state) => state.auth);
 	const token = useSelector((state) => state.token);
 	const [socket, setSocket] = useState(null);
 	const loading = useSelector((state) => state.loading);
+
+	useEffect(() => {
+		const language = localStorage.getItem("language");
+		i18n.changeLanguage(language ? language : "vi");
+	}, []);
 
 	useEffect(() => {
 		ReactGa.initialize("G-5FV85HQS7Z");

@@ -4,11 +4,13 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setMaterialFT } from "../../../slice/products.slice";
 import { setMaterials } from "../../../slice/menu.slice";
+import { useTranslation } from "react-i18next";
 
 function MaterialFilter(props) {
 	/*
     @state = {key: {name, state}}
   */
+	const { t } = useTranslation();
 	const dispatch = useDispatch();
 	const { filter } = useSelector((state) => state.products);
 	const { materials } = useSelector((state) => state.menu);
@@ -30,7 +32,7 @@ function MaterialFilter(props) {
 
 	return (
 		<Collapse ghost expandIconPosition="right">
-			<Collapse.Panel header="Materials" key="1">
+			<Collapse.Panel header={t("products.material")} key="1">
 				<ul>
 					{materials.map((mt, i) => (
 						<li

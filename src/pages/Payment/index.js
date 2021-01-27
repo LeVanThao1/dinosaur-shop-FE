@@ -13,10 +13,12 @@ import { setLoading } from "../../slice/loading.slice";
 import { notifiError, notifiSuccess } from "../../utils/notification";
 import { useHistory } from "react-router-dom";
 import API from "../../axios";
+import { useTranslation } from "react-i18next";
 Payment.propTypes = {};
 
 function Payment(props) {
 	// const { price } = props;
+	const { t } = useTranslation();
 	const dispatch = useDispatch();
 	const token = useSelector((state) => state.token);
 	const history = useHistory();
@@ -74,14 +76,14 @@ function Payment(props) {
 			<Container className="container_cart">
 				<Row>
 					<Col lg="8" sm="12">
-						<div className="header__cart">GIỎ HÀNG</div>
+						<div className="header__cart">{t("carts.cart")}</div>
 						{cart && cart.length > 0 ? (
 							cart?.map((pd, i) => (
 								<CartContent pd={pd} key={pd._id} />
 							))
 						) : (
 							<h4 style={{ textAlign: "center" }}>
-								Giỏ hàng đang trống
+								{t("carts.cartEmpty")}
 							</h4>
 						)}
 						<div className="btn btn-delete-back">
@@ -93,13 +95,13 @@ function Payment(props) {
 									cart && cart.length > 0 ? false : true
 								}
 							>
-								XOÁ HẾT
+								{t("carts.deleteAll")}
 							</Button>
 							<Button
 								className="btn__back"
 								onClick={() => history.push("/products")}
 							>
-								QUAY LẠI MUA HÀNG
+								{t("carts.goBackShop")}
 							</Button>
 						</div>
 					</Col>

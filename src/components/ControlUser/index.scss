@@ -48,7 +48,9 @@
 	-ms-animation: none !important;
 	animation: none !important;
 }
-
+.ant-switch {
+	background-color: #1890ff !important;
+}
 @media screen and (max-width: 950px) {
 	.control_user {
 		// position: absolute;

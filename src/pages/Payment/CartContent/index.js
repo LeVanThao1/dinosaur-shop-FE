@@ -13,9 +13,11 @@ import { notifiError, notifiSuccess } from "../../../utils/notification";
 import { changeCart } from "../../../slice/auth.slice";
 import API from "../../../axios";
 import { formatMoney } from "../../../utils/format";
+import { useTranslation } from "react-i18next";
 const { Option } = Select;
 
 function CartContent({ pd }) {
+	const { t } = useTranslation();
 	const likeList = useSelector((state) => state.likeList);
 	const dispatch = useDispatch();
 	const auth = useSelector((state) => state.auth);
@@ -188,21 +190,40 @@ function CartContent({ pd }) {
 			<div className="left__detail">
 				<div className="details__cart " key={pd.productId._id}>
 					<div className="img_detail__cart">
-						<div className="logo">
+						<div
+							className="logo"
+							style={{ cursor: "pointer" }}
+							onClick={() => {
+								history.push(
+									"/product-detail/" + pd.productId._id
+								);
+							}}
+						>
 							<img src={pd.productId.images[0]} alt="" />
 						</div>
 						<div className="detail">
 							<div className="detail__content">
-								<div className="name">{pd.productId.name}</div>
+								<div
+									className="name"
+									style={{ cursor: "pointer" }}
+									onClick={() => {
+										history.push(
+											"/product-detail/" +
+												pd.productId._id
+										);
+									}}
+								>
+									{pd.productId.name}
+								</div>
 								<div className="price">
-									<b>Giá: </b>
+									<b>{t("carts.price")}: </b>
 									{pd.productId.salePrice} VND
 								</div>
 							</div>
 							<div className="size-amount">
 								<div className="size">
 									<div>
-										<span>Size</span>
+										<span>{t("carts.size")}</span>
 									</div>
 									<Select
 										labelInValue
@@ -221,7 +242,7 @@ function CartContent({ pd }) {
 								</div>
 								<div className="amount">
 									<div>
-										<span>Số lượng</span>
+										<span>{t("carts.quality")}</span>
 									</div>
 									<InputNumber
 										min={1}
@@ -246,10 +267,10 @@ function CartContent({ pd }) {
 							</div>
 							<div className="status">
 								{sizeSelect.amount === 0
-									? "Hết hàng"
+									? t("carts.outOfStock")
 									: sizeSelect.amount >= quality
-									? "Còn hàng"
-									: "Không đủ hàng"}
+									? t("carts.stocking")
+									: t("carts.notEnough")}
 							</div>
 						</div>
 						<div className="btnAction">

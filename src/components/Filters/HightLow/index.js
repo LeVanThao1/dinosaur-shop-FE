@@ -3,11 +3,13 @@ import { Collapse } from "antd";
 import axios from "axios";
 import { setSortPrice } from "../../../slice/products.slice";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 function HightLow(props) {
 	/*
     @state = {[key]: {name, state}}
   */
+	const { t } = useTranslation();
 	const dispatch = useDispatch();
 	const { filter } = useSelector((state) => state.products);
 	const { sortPrice } = filter;
@@ -19,7 +21,7 @@ function HightLow(props) {
 
 	return (
 		<Collapse ghost expandIconPosition="right">
-			<Collapse.Panel header="SortPrice" key="1">
+			<Collapse.Panel header={t("products.sortPrice")} key="1">
 				<ul>
 					<li
 						className={
@@ -28,7 +30,7 @@ function HightLow(props) {
 						id={"asc"}
 						onClick={(e) => handleClick(e)}
 					>
-						Low High
+						{t("products.low-high")}
 					</li>
 					<li
 						className={
@@ -37,7 +39,7 @@ function HightLow(props) {
 						id={"des"}
 						onClick={(e) => handleClick(e)}
 					>
-						High Low
+						{t("products.high-low")}
 					</li>
 				</ul>
 			</Collapse.Panel>

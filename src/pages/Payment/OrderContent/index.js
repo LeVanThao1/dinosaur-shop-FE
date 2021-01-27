@@ -10,8 +10,10 @@ import API from "../../../axios";
 import { showErrMsg } from "../../../utils/notification";
 import { setOrdering } from "../../../slice/order.slice";
 import { formatMoney } from "../../../utils/format";
+import { useTranslation } from "react-i18next";
 
 function OrderContent({ total }) {
+	const { t } = useTranslation();
 	const history = useHistory();
 	const [text, setText] = useState("");
 	const [promotion, setPromotion] = useState(null);
@@ -44,25 +46,28 @@ function OrderContent({ total }) {
 
 	return (
 		<div className="info__pay .col-6 .col-sm-4">
-			<div className="header">ĐƠN HÀNG</div>
+			<div className="header">{t("carts.order")}</div>
 			<div className="info__content">
 				<div className="promotion">
-					<div className="id_Promotion">Nhập mã khuyến mãi</div>
+					<div className="id_Promotion">{t("carts.enterCode")}</div>
 					<div className="promotion__content">
 						<Input type="text" value={text} onChange={_onChange} />
 						<Button className="btn btnOK" onClick={_onClick}>
-							ÁP DỤNG
+							{t("carts.apply")}
 						</Button>
 					</div>
 					{error && showErrMsg(error)}
 				</div>
 				<div className="orderDetail">
 					<div className="cost">
-						<span>Đơn hàng</span>
+						<span>{t("carts.order")}</span>
 						<span>{formatMoney(total)} VND</span>
 					</div>
 					<div className="reduction">
-						<p>Giảm {promotion ? promotion.percent : 0}%</p>
+						<p>
+							{t("carts.reduction")}{" "}
+							{promotion ? promotion.percent : 0}%
+						</p>
 						<p>
 							{formatMoney(
 								(total * (promotion ? promotion?.percent : 0)) /
@@ -74,7 +79,7 @@ function OrderContent({ total }) {
 				</div>
 				<div className="tempCacul">
 					<div className="child__tempCacul">
-						<span>TẠM TÍNH</span>
+						<span>{t("carts.provisional")}</span>
 						<span>
 							{formatMoney(
 								promotion
@@ -85,7 +90,7 @@ function OrderContent({ total }) {
 						</span>
 					</div>
 					<Button type="primary" onClick={handlePayment}>
-						TIẾP TỤC THANH TOÁN
+						{t("carts.continuePayment")}
 					</Button>
 				</div>
 			</div>

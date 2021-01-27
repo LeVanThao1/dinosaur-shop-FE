@@ -6,10 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { setTextSearchFT } from "../../slice/products.slice";
 import { Input } from "antd";
 import { useHistory, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 SearchBar.propTypes = {};
 
 function SearchBar(props) {
+	const { t, i18n } = useTranslation();
 	const { filter } = useSelector((state) => state.products);
 	const { textSearch } = filter;
 	const dispatch = useDispatch();
@@ -33,7 +35,7 @@ function SearchBar(props) {
 					// type="text"
 					name="search"
 					id="search"
-					placeholder="Search"
+					placeholder={t("homepage.search")}
 					value={textSearch}
 					onChange={_onChange}
 					onPressEnter={_onClick}

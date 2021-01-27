@@ -1,5 +1,6 @@
 import { Collapse } from "antd";
 import React, { memo } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import Images from "../../constant/image";
@@ -8,6 +9,7 @@ const { Panel } = Collapse;
 Menu.propTypes = {};
 
 function Menu(props) {
+	const { t, i18n } = useTranslation();
 	const history = useHistory();
 	const { filter } = useSelector((state) => state.products);
 	const location = useLocation();
@@ -22,7 +24,7 @@ function Menu(props) {
 					}
 					onClick={() => history.push("/products")}
 				>
-					Sản phẩm
+					{t("homepage.product")}
 					<div className="container_drop">
 						<div className="menu_drop">
 							<div className="drop_category">
@@ -32,7 +34,9 @@ function Menu(props) {
 										width="250px"
 										height="250px"
 									></img>
-									<p className="title">Cho nam</p>
+									<p className="title">
+										{t("homepage.male")}
+									</p>
 								</div>
 								<div className="drop_child">
 									<img
@@ -40,7 +44,9 @@ function Menu(props) {
 										width="250px"
 										height="250px"
 									></img>
-									<p className="title">Cho nữ</p>
+									<p className="title">
+										{t("homepage.female")}
+									</p>
 								</div>
 								<div className="drop_child">
 									<img
@@ -57,7 +63,7 @@ function Menu(props) {
 										height="250px"
 									></img>
 									<p className="title">
-										Thời trang & phụ kiện
+										{t("homepage.fashionAccessories")}
 									</p>
 								</div>
 							</div>
@@ -75,7 +81,9 @@ function Menu(props) {
 						"liactive"
 					}
 				>
-					<Link to="/products?caterogy=nam">Nam</Link>
+					<Link to="/products?caterogy=nam">
+						{t("homepage.male")}
+					</Link>
 				</li>
 				<li
 					className={
@@ -84,7 +92,9 @@ function Menu(props) {
 						"liactive"
 					}
 				>
-					<Link to="/products?category=nu">Nữ</Link>
+					<Link to="/products?category=nu">
+						{t("homepage.female")}
+					</Link>
 				</li>
 				<li>
 					<Link to="/products">Sale off</Link>
@@ -96,9 +106,11 @@ function Menu(props) {
 			<div className="menu_mobile">
 				<Collapse accordion>
 					<Panel header="SẢN PHẨM" key="1">
-						<div className="item">Giày Nam</div>
-						<div className="item">Giày Nữ</div>
-						<div className="item">Thời trang & phụ kiện</div>
+						<div className="item">{t("homepage.menShoes")}</div>
+						<div className="item">{t("homepage.womenShoes")}</div>
+						<div className="item">
+							{t("homepage.fashionAccessories")}
+						</div>
 						<div className="item">Sale-off</div>
 					</Panel>
 					<Panel header="NAM" key="2">

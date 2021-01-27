@@ -4,12 +4,14 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setStyles } from "../../../slice/menu.slice";
 import { setStyleFT } from "../../../slice/products.slice";
+import { useTranslation } from "react-i18next";
 
 function StyleFilter(props) {
 	/*
     @state = {[key]: {name, state}}
   */
 	const dispatch = useDispatch();
+	const { t } = useTranslation();
 	const { filter } = useSelector((state) => state.products);
 	const { styles } = useSelector((state) => state.menu);
 	const { style } = filter;
@@ -30,7 +32,7 @@ function StyleFilter(props) {
 
 	return (
 		<Collapse ghost expandIconPosition="right">
-			<Collapse.Panel header="Styles" key="1">
+			<Collapse.Panel header={t("products.style")} key="1">
 				<ul>
 					{styles.map((st, i) => (
 						<li

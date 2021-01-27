@@ -6,6 +6,7 @@ import sub from "sub-vn";
 import API from "../../../axios";
 import { changeCart } from "../../../slice/auth.slice";
 import { setCart } from "../../../slice/cart.slice";
+import { setOrdering } from "../../../slice/order.slice";
 import { notifiError, notifiSuccess } from "../../../utils/notification";
 import "./index.scss";
 
@@ -91,21 +92,27 @@ function ShippingForm({ form }) {
 		if (typePayment === 0) {
 			API("api/orders", "POST", token, dataOrder)
 				.then((res) => {
-					notifiSuccess(res.data.msg);
+					notifiSuccess(res?.data?.msg);
 					dispatch(setCart({ cart: [], type: true }));
 					dispatch(changeCart([]));
+					// dispatch(setOrdering({}));
 					history.push("/orders");
 				})
-				.catch((err) => notifiError(err.response.data.msg));
+				.catch((err) =>
+					notifiError(err?.response?.data?.msg || "Have error")
+				);
 		} else {
 			API("api/create_payment_url", "POST", token, dataOrder)
 				.then((res) => {
+					dispatch(setOrdering({}));
 					// notifiSuccess(res.data.msg);
 					// history.push("/orders");
 					// <Redirect to={res.data.url} />;
 					window.location.href = res.data.url;
 				})
-				.catch((err) => notifiError(err.response.data.msg));
+				.catch((err) =>
+					notifiError(err?.response?.data?.msg || "Have error")
+				);
 		}
 	};
 	return (

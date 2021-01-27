@@ -4,11 +4,13 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setTypeProducts } from "../../../slice/menu.slice";
 import { setTypeProductFT } from "../../../slice/products.slice";
+import { useTranslation } from "react-i18next";
 
 function TypeFilter(props) {
 	/*
     @state = {key: {name, state}}
   */
+	const { t } = useTranslation();
 	const dispatch = useDispatch();
 	const { filter } = useSelector((state) => state.products);
 	const { typeProducts } = useSelector((state) => state.menu);
@@ -30,7 +32,7 @@ function TypeFilter(props) {
 
 	return (
 		<Collapse ghost expandIconPosition="right">
-			<Collapse.Panel header="Types" key="1">
+			<Collapse.Panel header={t("products.type")} key="1">
 				<ul>
 					{typeProducts.map((td, i) => (
 						<li

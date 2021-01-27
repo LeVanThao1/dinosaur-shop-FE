@@ -5,6 +5,16 @@
 .header__cart {
 	font-size: 1.5rem;
 	font-weight: bold;
+	text-transform: uppercase;
+}
+.container_cart {
+	.ant-btn > span {
+		display: inline-block;
+		text-transform: uppercase;
+	}
+	.header {
+		text-transform: uppercase;
+	}
 }
 .btn-delete-back {
 	display: flex;

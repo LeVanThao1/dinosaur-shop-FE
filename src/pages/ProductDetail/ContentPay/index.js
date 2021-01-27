@@ -12,6 +12,8 @@ import axios from "axios";
 import { notifiSuccess, notifiError } from "../../../utils/notification";
 import { useHistory } from "react-router-dom";
 import { formatMoney } from "../../../utils/format";
+import { useTranslation } from "react-i18next";
+
 const { Panel } = Collapse;
 const { Option } = Select;
 function ContentPay(props) {
@@ -37,6 +39,7 @@ function ContentPay(props) {
 	const [warning, setWarning] = useState("none");
 	const dispatch = useDispatch();
 	// const refAmount = useRef(1);
+	const { t } = useTranslation();
 	const refSize = useRef(sizes[0].sizeId._id);
 	const [sizeSelect, setSizeSelect] = useState(sizes[0]);
 	const [quality, setQuality] = useState(1);
@@ -225,10 +228,10 @@ function ContentPay(props) {
 				</div>
 				<div className="id__status list-group-item">
 					<div className="id">
-						Mã sản phẩm: <b>{code}</b>
+						{t("productDetail.code")}: <b>{code}</b>
 					</div>
 					<div className="status">
-						Tình trạng: <b>Best Seller</b>
+						{t("productDetail.status")}: <b>Best Seller</b>
 					</div>
 				</div>
 				<div className="price child__detail list-group-item">
@@ -260,7 +263,7 @@ function ContentPay(props) {
 				<div className="dash list-group-item"></div>
 				<div className="size__amount child__detail list-group-item">
 					<div className="size">
-						<span>SIZE</span>
+						<span>{t("productDetail.size")}</span>
 						<div className="size__option">
 							<Select
 								className="size__option"
@@ -281,7 +284,7 @@ function ContentPay(props) {
 						</div>
 					</div>
 					<div className="amount">
-						<span>SỐ LƯỢNG</span>
+						<span>{t("productDetail.quality")}</span>
 						<div className="size__option">
 							<InputNumber
 								min={1}
@@ -296,7 +299,7 @@ function ContentPay(props) {
 				<div className="btn__addCart__like child__detail list-group-item">
 					<div className="btn btn__addCart" onClick={handleCart}>
 						<Button type="primary" className="btn__add">
-							THÊM VÀO GIỎ HÀNG
+							{t("productDetail.addToCart")}
 						</Button>
 					</div>
 					<div className="btn btn__like">
@@ -327,7 +330,7 @@ function ContentPay(props) {
 						className="btn__pay"
 						onClick={payment}
 					>
-						THANH TOÁN
+						{t("productDetail.payment")}
 					</Button>
 				</div>
 				<div
@@ -342,7 +345,7 @@ function ContentPay(props) {
 					<div className="panel__heading child__detail">
 						<div className="panel__title">
 							<Collapse>
-								<Panel header="THÔNG TIN SẢN PHẨM">
+								<Panel header={t("productDetail.infoProduct")}>
 									<p>
 										<span>Gender: {name}Unisex</span>
 										<span>Size run: 35 - 46</span>
@@ -358,7 +361,9 @@ function ContentPay(props) {
 					<div className="panel__heading child__detail">
 						<div className="panel__title">
 							<Collapse>
-								<Panel header="QUY ĐỊNH ĐỔI TRẢ">
+								<Panel
+									header={t("productDetail.rulesOfChange")}
+								>
 									<div
 										className="collapseTwo"
 										toggler="#collapseTwo"
@@ -424,7 +429,7 @@ function ContentPay(props) {
 					<div className="panel__heading child__detail">
 						<div className="panel__title">
 							<Collapse>
-								<Panel header="BẢO HÀNH THẾ NÀO">
+								<Panel header={t("productDetail.warranty")}>
 									<div
 										className="collapseThree"
 										id="collapseThree"

@@ -22,10 +22,12 @@ import RelatedProduct from "./RelatedProduct";
 import { Pagination, Rate, Tabs, Progress } from "antd";
 import API from "../../axios";
 import { notifiError, notifiSuccess } from "../../utils/notification";
+import { useTranslation } from "react-i18next";
 
 const { TabPane } = Tabs;
 const rate = [0, 1, 2, 3, 4];
 function ProductDetail({ socket }) {
+	const { t } = useTranslation();
 	const productDetail = useSelector((state) => state.productDetail);
 	const { user } = useSelector((state) => state.auth);
 	const { id } = useParams();
@@ -133,7 +135,7 @@ function ProductDetail({ socket }) {
 							defaultActiveKey="1"
 							onChange={(key) => console.log(key)}
 						>
-							<TabPane tab="Đánh giá" key="1">
+							<TabPane tab={t("productDetail.evaluate")} key="1">
 								<div className="container-evalue">
 									<div className="table-evalue">
 										<div className="rate-evalue">
@@ -146,7 +148,8 @@ function ProductDetail({ socket }) {
 												value={star}
 											/>
 											<div className="total-evalute">
-												{evalute?.length | 0} đánh giá
+												{evalute?.length | 0}{" "}
+												{t("productDetail.evaluate")}
 											</div>
 										</div>
 										<div className="list-evalute">
@@ -208,11 +211,13 @@ function ProductDetail({ socket }) {
 									</div>
 								</div>
 							</TabPane>
-							<TabPane tab="Nhận xét" key="2">
+							<TabPane tab={t("productDetail.comment")} key="2">
 								<FormInput
 									productId={product._id}
 									socket={socket}
-									placeholder="Nhập nội dung bình luận"
+									placeholder={t(
+										"productDetail.enterComment"
+									)}
 								/>
 								<div className="comments_list">
 									{comments
@@ -253,8 +258,11 @@ function ProductDetail({ socket }) {
 									</div>
 								</div>
 							</TabPane>
-							<TabPane tab="Chi tiết sản phẩm" key="3">
-								Chi tiết sản phẩm
+							<TabPane
+								tab={t("productDetail.detailProduct")}
+								key="3"
+							>
+								{product.description}
 							</TabPane>
 						</Tabs>
 						<div className="viewed">

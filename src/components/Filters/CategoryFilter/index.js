@@ -4,6 +4,7 @@ import axios from "axios";
 import { setCategogyFT } from "../../../slice/products.slice";
 import { useDispatch, useSelector } from "react-redux";
 import { setCategories } from "../../../slice/menu.slice";
+import { useTranslation } from "react-i18next";
 
 function CategoryFilter(props) {
 	/*
@@ -13,6 +14,7 @@ function CategoryFilter(props) {
 	const { filter } = useSelector((state) => state.products);
 	const { categories } = useSelector((state) => state.menu);
 	const { category } = filter;
+	const { t } = useTranslation();
 	React.useEffect(() => {
 		axios
 			.get("http://localhost:3001/api/categories")
@@ -29,7 +31,7 @@ function CategoryFilter(props) {
 
 	return (
 		<Collapse ghost expandIconPosition="right">
-			<Collapse.Panel header="Categories" key="1">
+			<Collapse.Panel header={t("products.categories")} key="1">
 				<ul>
 					{categories.map((ct, i) => (
 						<li

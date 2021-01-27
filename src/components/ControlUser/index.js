@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Button } from "antd";
+import { Button, Switch } from "antd";
 import { Badge } from "antd";
 import {
 	DropboxOutlined,
@@ -15,14 +15,17 @@ import { Link } from "react-router-dom";
 import { logout } from "../../slice/auth.slice";
 import userApi from "../../api/userApi";
 import { setToken } from "../../slice/token.slice";
+import { useTranslation } from "react-i18next";
 ControlUser.propTypes = {};
 
-function ControlUser(props) {
+function ControlUser() {
+	const { t, i18n } = useTranslation();
 	const dispatch = useDispatch();
 	const auth = useSelector((state) => state.auth);
 	const { user, isLogged } = auth;
 	const cart = useSelector((state) => state.cart);
 	const [count, setCount] = useState(0);
+
 	useEffect(() => {
 		if (auth.isLogged) {
 			setCount(user.cart ? user.cart.length : 0);
@@ -30,6 +33,7 @@ function ControlUser(props) {
 			setCount(cart ? cart.length : 0);
 		}
 	}, [auth, cart]);
+
 	const _onLogOut = async () => {
 		try {
 			await userApi.logout();
@@ -39,6 +43,10 @@ function ControlUser(props) {
 		} catch (e) {
 			console.log(e);
 		}
+	};
+	const onChangeLanguage = (e) => {
+		localStorage.setItem("language", e ? "vi" : "en");
+		i18n.changeLanguage(e ? "vi" : "en");
 	};
 	return (
 		<>
@@ -60,32 +68,32 @@ function ControlUser(props) {
 				<Link to="/orders">
 					<Button className="btn_control">
 						<DropboxOutlined className="icon" />
-						<span>Danh sách đơn hàng</span>
+						<span>{t("homepage.listOrder")}</span>
 					</Button>
 				</Link>
 				<Link to="/tracking-orders">
 					<Button className="btn_control">
 						<DropboxOutlined className="icon" />
-						<span>Tra cứu đơn hàng</span>
+						<span>{t("homepage.lookupOrder")}</span>
 					</Button>
 				</Link>
 				<Link to="/">
 					<Button className="btn_control">
 						<DropboxOutlined className="icon" />
-						<span>Tìm cửa hàng</span>
+						<span>{t("homepage.findStore")}</span>
 					</Button>
 				</Link>
 				<Link to="/like-products">
 					<Button className="btn_control">
 						<HeartOutlined className="icon" />
-						<span>Yêu thích</span>
+						<span>{t("homepage.favourite")}</span>
 					</Button>
 				</Link>
 				{!isLogged && (
 					<Link to="/login">
 						<Button className="btn_control">
 							<UserOutlined className="icon" />
-							<span>Đăng nhập</span>
+							<span>{t("homepage.login")}</span>
 						</Button>
 					</Link>
 				)}
@@ -97,15 +105,23 @@ function ControlUser(props) {
 								style={{ color: "white" }}
 							/>
 						</Badge>
-						<span> Giỏ hàng</span>
+						<span> {t("homepage.cart")}</span>
 					</Button>
 				</Link>
 				{isLogged && (
 					<Button className="btn_control" onClick={_onLogOut}>
 						<LogoutOutlined className="icon" />
-						<span>Đăng xuất</span>
+						<span>{t("homepage.logout")}</span>
 					</Button>
 				)}
+				<div>
+					<Switch
+						checkedChildren="VN"
+						unCheckedChildren="EN"
+						defaultChecked={i18n.language == "vi" ? true : false}
+						onChange={(e, t) => onChangeLanguage(e)}
+					/>
+				</div>
 			</section>
 			<div className="clear"></div>
 		</>
